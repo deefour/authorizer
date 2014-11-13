@@ -4,7 +4,17 @@
 [![Packagist Version](http://img.shields.io/packagist/v/deefour/authorizer.svg)](https://packagist.org/packages/deefour/authorizer)
 [![Code Climate](https://codeclimate.com/github/deefour/authorizer/badges/gpa.svg)](https://codeclimate.com/github/deefour/authorizer)
 
-Simple PHP Service Objects. Inspired by [elabs/**pundit**](https://github.com/elabs/authorizer).
+Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://github.com/elabs/authorizer).
+
+## Getting Started
+
+Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
+
+```
+"deefour/authorizer": "~0.1@dev"
+```
+
+**`>=PHP5.5.0` is required.**
 
 ## Policies
 
@@ -238,7 +248,7 @@ When calling the `authorize()` method, a policy class is instantiated and the fo
 A base `App\Http\Controllers\Controller` controller in Laravel might look as follows with Authorizer integrated
 
 ```php
-<?php namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
