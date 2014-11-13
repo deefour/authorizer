@@ -1,7 +1,7 @@
 # Authorizer
 
 [![Build Status](https://travis-ci.org/deefour/authorizer.svg)](https://travis-ci.org/deefour/authorizer)
-[![Packagist Version](http://img.shields.io/packagist/v/deefour/authorizer)](https://packagist.org/packages/deefour/authorizer)
+[![Packagist Version](http://img.shields.io/packagist/v/deefour/authorizer.svg)](https://packagist.org/packages/deefour/authorizer)
 [![Code Climate](https://codeclimate.com/github/deefour/authorizer/badges/gpa.svg)](https://codeclimate.com/github/deefour/authorizer)
 
 Simple PHP Service Objects. Inspired by [elabs/**pundit**](https://github.com/elabs/authorizer).
@@ -499,7 +499,7 @@ The `policy()` and `scope()` methods are pass-through's to the `...OrFail()` met
 
 ## Changelog
 
-#### 0.1.0 - November 14, 2014
+#### 0.1.0 - November 13, 2014
 
  - Initial release independent of [deefour/Aide](https://github.com/deefour/aide)
 
