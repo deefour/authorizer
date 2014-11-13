@@ -1,0 +1,36 @@
+{
+  "name": "deefour/authorizer",
+  "version": "0.1.0",
+  "description": "Simple Authorization via PHP Classes",
+  "homepage": "https://github.com/deefour/authorizer",
+  "keywords": ["authorizer", "deefour", "authorization", "policies", "policy", "scope", "laravel"],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.5.0",
+    "illuminate/support": "~5.0@dev"
+  },
+  "require-dev": {
+    "phpspec/phpspec": "~2.1@dev"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jason Daly",
+      "email": "jason@deefour.me"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Deefour\\": "src"
+    },
+    "files": [
+      "src/Authorizer/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Deefour\\Authorizer\\Stubs\\": "stub/"
+    }
+  }
+}

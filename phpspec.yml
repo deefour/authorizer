@@ -1,0 +1,4 @@
+suites:
+  interactor_suite:
+    namespace: Deefour\Authorizer
+    psr4_prefix: Deefour
