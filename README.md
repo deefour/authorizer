@@ -374,7 +374,7 @@ When a call to `authorize` fails, a `Deefour\Authorizer\Exceptions\NotAuthorized
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 use Illuminate\Contracts\Routing\Middleware;
 
-class HandleNotAuthorizedExceptionMiddleware implements Middleware {
+class HandleUnauthorizedAccess implements Middleware {
 
   /**
    * Run the request filter.
