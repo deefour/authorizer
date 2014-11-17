@@ -413,7 +413,7 @@ There is a similar method to ensure a scope is used, which is particularly usefu
 ```php
 public function __construct() {
   $this->afterFilter(function() {
-    $this->requirePolicyScoped();
+    $this->verifyScoped();
   }, [ 'only' => 'index' ]);
 }
 ```
