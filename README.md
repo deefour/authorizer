@@ -250,10 +250,10 @@ A base `App\Http\Controllers\Controller` controller in Laravel might look as fol
 ```php
 namespace App\Http\Controllers;
 
+use App\User;
+use Deefour\Authorizer\Traits\ProvidesAuthorization;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Deefour\Authorizer\Traits\ProvidesAuthorization;
-use App\User;
 
 abstract class Controller extends BaseController {
 
@@ -288,11 +288,13 @@ The IoC container is responsible for instantiating a single, shared instance of 
 ```php
 <?php
 
+use App\User;
+
 return [
 
   'user' => function() {
 
-    return Auth::user() ?: new User;
+    return app('auth')->user() ?: new User;
 
   },
 
