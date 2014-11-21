@@ -69,11 +69,9 @@ class Finder {
 
   /**
    * Derives a scope class name for the object the finder was passed when
-   * instantiated. There is no check made here to see if the class actually exists.
+   * instantiated. An exception is thrown if the scope class does not exist.
    *
-   * Fails loudly if the derived scope class does not exist.
-   *
-   * @throws Deefour\Authorizer\Exception\NotDefinedException
+   * @throws Deefour\Authorizer\Exceptions\NotDefinedException
    * @return string
    */
   public function scopeOrFail() {
@@ -88,11 +86,9 @@ class Finder {
 
   /**
    * Derives a policy class name for the object the finder was passed when
-   * instantiated. There is no check made here to see if the class actually exists.
+   * instantiated. An exception is thrown if the policy class does not exist.
    *
-   * Fails loudly if the derived policy class does not exist.
-   *
-   * @throws Deefour\Authorizer\Exception\NotDefinedException
+   * @throws Deefour\Authorizer\Exceptions\NotDefinedException
    * @return string
    */
   public function policyOrFail() {
@@ -110,6 +106,7 @@ class Finder {
   /**
    * Derives the class name for the object the finder was passed when instantiated.
    *
+   * @throws Deefour\Presenter\Exceptions\NotAuthorizableException
    * @param  $type  string
    * @return string
    */
