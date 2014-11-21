@@ -115,7 +115,7 @@ class Finder {
    */
   protected function find($type) {
     if ( ! ($this->object instanceof AuthorizableContract)) {
-      throw new NotAuthorizableException(sprintf('The `%s` object does not implement the `Deefour\\Authorizer\\Contracts\\AuthorizableContract`; authorization cannot be performed', get_class($this->object)));
+      throw new NotAuthorizableException(sprintf('The `%s` object does not implement `%`; authorization cannot be performed', get_class($this->object), AuthorizableContract::class));
     }
 
     $namespace  = $this->object->policyNamespace();
