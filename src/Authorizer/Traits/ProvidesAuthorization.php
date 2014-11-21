@@ -104,7 +104,7 @@ trait ProvidesAuthorization {
    * @protected
    * @throws Deefour\Authorizer\Exception\ScopingNotPerformedException
    */
-  protected function verifyPolicyScoped() {
+  protected function verifyScoped() {
     if ( ! $this->_policyScoped) {
       throw new ScopingNotPerformedException;
     }
