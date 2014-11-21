@@ -79,11 +79,11 @@ class Finder {
   public function scopeOrFail() {
     $scope = $this->scope();
 
-    if (class_exists($scope)) {
-      return $scope;
+    if ( ! class_exists($scope)) {
+      throw new NotDefinedException(sprintf('Unable to find scope class for `%s`', get_class($this->object)));
     }
 
-    throw new NotDefinedException(sprintf('Unable to find scope class for `%s`', get_class($this->object)));
+    return $scope;
   }
 
   /**
@@ -98,11 +98,11 @@ class Finder {
   public function policyOrFail() {
     $policy = $this->policy();
 
-    if (class_exists($policy)) {
-      return $policy;
+    if ( ! class_exists($policy)) {
+      throw new NotDefinedException(sprintf('Unable to find policy class for `%s`', get_class($this->object)));
     }
 
-    throw new NotDefinedException(sprintf('Unable to find policy class for `%s`', get_class($this->object)));
+    return $policy;
   }
 
 
