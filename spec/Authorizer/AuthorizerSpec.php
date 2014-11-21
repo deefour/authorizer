@@ -1,5 +1,7 @@
 <?php namespace spec\Deefour\Authorizer;
 
+use BadMethodCallException;
+use Deefour\Authorizer\Authorizer;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 use Deefour\Authorizer\Stubs\Article;
 use Deefour\Authorizer\Stubs\ArticlePolicy;
@@ -14,11 +16,11 @@ class AuthorizerSpec extends ObjectBehavior {
   }
 
   function it_is_initializable() {
-    $this->shouldHaveType('Deefour\Authorizer\Authorizer');
+    $this->shouldHaveType(Authorizer::class);
   }
 
   function it_denies_access_to_non_whitelisted_api_methods() {
-    $this->shouldThrow('\BadMethodCallException')->during('currentUser');
+    $this->shouldThrow(BadMethodCallException::class)->during('currentUser');
   }
 
   function it_generates_policies() {
