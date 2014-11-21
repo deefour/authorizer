@@ -118,8 +118,8 @@ class Finder {
       throw new NotAuthorizableException(sprintf('The `%s` object does not implement `%`; authorization cannot be performed', get_class($this->object), AuthorizableContract::class));
     }
 
-    $namespace  = $this->object->policyNamespace();
-    $klass      = $this->object->{"${type}Class"}();
+    $namespace = $this->object->policyNamespace();
+    $klass     = $this->object->{"${type}Class"}();
 
     if (class_exists($klass)) {
       return $klass;
