@@ -1,6 +1,7 @@
 <?php namespace spec\Deefour\Authorizer;
 
 use Deefour\Authorizer\Exceptions\NotDefinedException;
+use Deefour\Authorizer\Finder;
 use Deefour\Authorizer\Stubs\Article;
 use Deefour\Authorizer\Stubs\ArticlePolicy;
 use Deefour\Authorizer\Stubs\Category;
@@ -14,7 +15,7 @@ class FinderSpec extends ObjectBehavior {
   function it_is_initializable(Article $article) {
     $this->beConstructedWith($article);
 
-    $this->shouldHaveType('Deefour\Authorizer\Finder');
+    $this->shouldHaveType(Finder::class);
   }
 
   function it_will_always_return_class_name_by_default() {
