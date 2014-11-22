@@ -21,7 +21,7 @@ if ( ! function_exists('scope')) {
    * @param  Deefour\Authorizer\Contracts\AuthorizableContract  $object
    * @return Deefour\Authorizer\AbstractScope
    */
-  function policy(AuthorizableContract $object) {
+  function scope(AuthorizableContract $object) {
     return app('authorizer')->scope($object);
   }
 }
