@@ -1,7 +1,7 @@
 <?php namespace Deefour\Authorizer\Stubs;
 
-use Deefour\Authorizer\AbstractPolicy;
+use Deefour\Authorizer\Policy;
 
-class EmptyPolicy extends AbstractPolicy {
+class EmptyPolicy extends Policy {
 
 }

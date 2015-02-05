@@ -4,26 +4,16 @@
 [![Packagist Version](http://img.shields.io/packagist/v/deefour/authorizer.svg)](https://packagist.org/packages/deefour/authorizer)
 [![Code Climate](https://codeclimate.com/github/deefour/authorizer/badges/gpa.svg)](https://codeclimate.com/github/deefour/authorizer)
 
-Simple authorization via PHP classes. Inspired by [elabs/**pundit**](https://github.com/elabs/authorizer).
-
-## Getting Started
-
-Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
-
-```
-"deefour/authorizer": "~0.1@dev"
-```
-
-**`>=PHP5.5.0` is required.**
+Simple PHP Service Objects. Inspired by [elabs/**pundit**](https://github.com/elabs/authorizer).
 
 ## Policies
 
-At the core of Authorizer is the notion of policy classes. A policy must extend `Deefour\Authorizer\AbstractPolicy`. Each method should return a boolean. For example
+At the core of Authorizer is the notion of policy classes. A policy must extend `Deefour\Authorizer\Policy`. Each method should return a boolean. For example
 
 ```php
-use Deefour\Authorizer\AbstractPolicy;
+use Deefour\Authorizer\Policy;
 
-class ArticlePolicy extends AbstractPolicy {
+class ArticlePolicy extends Policy {
 
   public function edit() {
     return $this->user->id === $this->record->author_id; // Only the article's author is allowed to edit it
@@ -32,7 +22,7 @@ class ArticlePolicy extends AbstractPolicy {
 }
 ```
 
-When a policy class is instantiated, the `$user` to authorize is provided along with a `$record` to authorize against. The `$record` must implement `Deefour\Authorizer\Contracts\AuthorizableContract` to be "authorizable".
+When a policy class is instantiated, the `$user` to authorize is provided along with a `$record` to authorize against. The `$record` must implement `Deefour\Authorizer\Contracts\Authorizable` to be "authorizable".
 
 ```php
 $user    = User::find(1);
@@ -48,9 +38,9 @@ $policy->edit(); //=> true; the $user can edit the $article
 A special `permittedAttributes` method can be created on a policy to conditionally provide a whitelist of attributes for a given request by a user to create or modify a record.
 
 ```php
-use Deefour\Authorizer\AbstractPolicy;
+use Deefour\Authorizer\Policy;
 
-class ArticlePolicy extends AbstractPolicy {
+class ArticlePolicy extends Policy {
 
   public function permittedAttributes() {
     $attributes = [ 'title', 'body', ];
@@ -74,14 +64,15 @@ Many apps only allow authenticated users to perform actions. Instead of verifyin
 ```php
 namespace App\Policies;
 
-use Deefour\Authorizer\AbstractPolicy;
-use Deefour\Authorizer\Exception\NotAuthorizedException;
+use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
+use Deefour\Authorizer\Policy;
+use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 
-class Policy extends AbstractPolicy {
+class Policy extends Policy {
 
-  public function __construct($user, $record) {
+  public function __construct(AuthorizeeContract $user, $record) {
     if (is_null($user) or ! $user->exists) {
-      throw new NotAuthorizedException;
+      throw new NotAuthorizedException('You must be logged in!');
     }
 
     parent::__construct($user, $record);
@@ -92,12 +83,12 @@ class Policy extends AbstractPolicy {
 
 ## Scopes
 
-Policy-based scopes are also supported. A policy scope must extend `Deefour\Authorizer\AbstractScope` and will be required to implement a `resolve()` method. The return value will typically be an iterable collection of objects the current user is able to access. For example
+Policy-based scopes are also supported. A policy scope must extend `Deefour\Authorizer\Scope` and will be required to implement a `resolve()` method. The return value will typically be an iterable collection of objects the current user is able to access. For example
 
 ```php
-use Deefour\Authorizer\AbstractScope;
+use Deefour\Authorizer\Scope;
 
-class ArticleScope extends AbstractScope {
+class ArticleScope extends Scope {
 
   public function resolve() {
     if ($this->user->isAdmin()) {
@@ -123,17 +114,17 @@ $policyScope->resolve(); //=> ALL Articles if the $user is an administrator; oth
 
 ## Authorizable Objects
 
-Any PHP class can be used as the source object for which authorization will be performed as long as it implements `Deefour\Authorizer\Contracts\AuthorizableContract`. This will require the following methods be defined on the object
+Any PHP class can be used as the source object for which authorization will be performed as long as it implements `Deefour\Authorizer\Contracts\Authorizable`. This will require the following methods be defined on the object
 
  - `policyNamespace()`
  - `policyClass()`
  - `scopeClass()`
 
-A default implementation for this interface is provided in the `Deefour\Authorizer\Traits\Authorizable` trait. A basic implementation for an authorizable object looks something like this
+A default implementation for this interface is provided in the `Deefour\Authorizer\Authorizable` trait. A basic implementation for an authorizable object looks something like this
 
 ```php
-use Deefour\Authorizer\Contracts\AuthorizableContract;
-use Deefour\Authorizer\Traits\Authorizable;
+use Deefour\Authorizer\Contracts\Authorizable as AuthorizableContract;
+use Deefour\Authorizer\Authorizable;
 
 class Article implements AuthorizableContract {
 
@@ -178,10 +169,10 @@ Authorizer::policy($user, $nsArticle); //=> Policies\ArticlePolicy
 
 ## Making Classes Aware of Authorization
 
-The `Deefour\Authorizer\Traits\ProvidesAuthorization` trait can be included in any class to make working with policies and scopes easier. Using this trait requires implementing a `currentUser()` method on the class.
+The `Deefour\Authorizer\ProvidesAuthorization` trait can be included in any class to make working with policies and scopes easier. Using this trait requires implementing a `currentUser()` method on the class.
 
 ```php
-use Deefour\Authorizer\Traits\ProvidesAuthorization;
+use Deefour\Authorizer\ProvidesAuthorization;
 
 class ArticleController {
 
@@ -248,12 +239,12 @@ When calling the `authorize()` method, a policy class is instantiated and the fo
 A base `App\Http\Controllers\Controller` controller in Laravel might look as follows with Authorizer integrated
 
 ```php
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
-use App\User;
-use Deefour\Authorizer\Traits\ProvidesAuthorization;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Deefour\Authorizer\ProvidesAuthorization;
+use App\User;
 
 abstract class Controller extends BaseController {
 
@@ -288,13 +279,11 @@ The IoC container is responsible for instantiating a single, shared instance of 
 ```php
 <?php
 
-use App\User;
-
 return [
 
   'user' => function() {
 
-    return app('auth')->user() ?: new User;
+    return Auth::user() ?: new User;
 
   },
 
@@ -371,10 +360,11 @@ When a call to `authorize` fails, a `Deefour\Authorizer\Exceptions\NotAuthorized
 ```php
 <?php namespace App\Http\Middleware;
 
+use Closure;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 use Illuminate\Contracts\Routing\Middleware;
 
-class HandleUnauthorizedAccess implements Middleware {
+class HandleNotAuthorizedExceptionMiddleware implements Middleware {
 
   /**
    * Run the request filter.
@@ -413,7 +403,7 @@ There is a similar method to ensure a scope is used, which is particularly usefu
 ```php
 public function __construct() {
   $this->afterFilter(function() {
-    $this->verifyScoped();
+    $this->requirePolicyScoped();
   }, [ 'only' => 'index' ]);
 }
 ```
@@ -511,9 +501,15 @@ The `policy()` and `scope()` methods are pass-through's to the `...OrFail()` met
 
 ## Changelog
 
+#### 0.2.0 - February 4, 2014
+
+ - Adding `Authorizee` contract to be attached to a `User` model for easy lookup through service containers.
+ - Class Reorganization.
+ - Fixes for the Laravel service provider.
+
 #### 0.1.0 - November 13, 2014
 
- - Initial release independent of [deefour/Aide](https://github.com/deefour/aide)
+ - Initial release independent of [deefour/Aide](https://github.com/deefour/aide).
 
 ## License
 

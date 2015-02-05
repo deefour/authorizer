@@ -1,9 +1,8 @@
-<?php namespace Deefour\Authorizer\Traits;
+<?php namespace Deefour\Authorizer;
 
 use Deefour\Authorizer\Exceptions\ScopingNotPerformedException;
 use Deefour\Authorizer\Exceptions\AuthorizationNotPerformedException;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
-use Deefour\Authorizer\Finder;
 
 trait ProvidesAuthorization {
 
@@ -54,7 +53,7 @@ trait ProvidesAuthorization {
    * @throws Deefour\Authorizer\Exception\NotDefinedException
    * @param  mixed  $user
    * @param  mixed  $scope
-   * @return Deefour\Authorizer\AbstractScope
+   * @return Deefour\Authorizer\Scope
    */
   protected static function getScopeOrFail($user, $scope) {
     $policyScope = (new Finder($scope))->scopeOrFail();
@@ -71,7 +70,7 @@ trait ProvidesAuthorization {
    * @throws Deefour\Authorizer\Exception\NotDefinedException
    * @param  mixed  $user
    * @param  mixed  $record
-   * @return Deefour\Authorizer\AbstractPolicy
+   * @return Deefour\Authorizer\Policy
    */
   protected static function getPolicyOrFail($user, $record) {
     $policy = (new Finder($record))->policyOrFail();
@@ -104,7 +103,7 @@ trait ProvidesAuthorization {
    * @protected
    * @throws Deefour\Authorizer\Exception\ScopingNotPerformedException
    */
-  protected function verifyScoped() {
+  protected function verifyPolicyScoped() {
     if ( ! $this->_policyScoped) {
       throw new ScopingNotPerformedException;
     }
@@ -163,7 +162,7 @@ trait ProvidesAuthorization {
    * @see    getScopeOrFail
    * @throws Deefour\Authorizer\Exception\NotDefinedException
    * @param  mixed  $scope
-   * @return Deefour\Authorizer\AbstractScope
+   * @return Deefour\Authorizer\Scope
    */
   protected function scope($scope) {
     $this->_policyScoped = true;
@@ -179,7 +178,7 @@ trait ProvidesAuthorization {
    * @see    getPolicyOrFail
    * @throws Deefour\Authorizer\Exception\NotDefinedException
    * @param  mixed  $record
-   * @return Deefour\Authorizer\Exception\AbstractPolicy
+   * @return Deefour\Authorizer\Exception\Policy
    */
   protected function policy($record) {
     return static::getPolicyOrFail($this->currentUser(), $record);

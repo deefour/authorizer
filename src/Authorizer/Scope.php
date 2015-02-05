@@ -4,7 +4,7 @@
  * Base scope class all application scopes are encouraged to extend. Aide
  * expects a `resolve` method to be present on the scope
  */
-abstract class AbstractScope {
+abstract class Scope {
 
   /**
    * The user

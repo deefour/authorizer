@@ -1,4 +1,4 @@
-<?php namespace Deefour\Authorizer\Traits;
+<?php namespace Deefour\Authorizer;
 
 trait Authorizable {
 

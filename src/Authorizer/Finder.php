@@ -1,6 +1,6 @@
 <?php namespace Deefour\Authorizer;
 
-use Deefour\Authorizer\Contracts\AuthorizableContract;
+use Deefour\Authorizer\Contracts\Authorizable as AuthorizableContract;
 use Deefour\Authorizer\Exceptions\NotDefinedException;
 use Deefour\Authorizer\Exceptions\NotAuthorizableException;
 use ReflectionClass;

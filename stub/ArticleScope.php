@@ -1,8 +1,8 @@
 <?php namespace Deefour\Authorizer\Stubs;
 
-use Deefour\Authorizer\AbstractScope;
+use Deefour\Authorizer\Scope;
 
-class ArticleScope extends AbstractScope {
+class ArticleScope extends Scope {
 
   public function resolve() {
     return [];

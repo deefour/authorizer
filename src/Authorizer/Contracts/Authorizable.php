@@ -1,6 +1,6 @@
 <?php namespace Deefour\Authorizer\Contracts;
 
-interface AuthorizableContract {
+interface Authorizable {
 
   public function policyNamespace();
 

@@ -1,11 +1,13 @@
 <?php namespace Deefour\Authorizer;
 
+use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
+
 /**
  * Base policy class all application policies are encouraged to extend. Aide
  * expects to pass a user as the first argument to a new policy and the record
  * to authorize against as the second argument.
  */
-abstract class AbstractPolicy {
+abstract class Policy {
 
   /**
    * The user to be authorized
@@ -29,7 +31,7 @@ abstract class AbstractPolicy {
    * @param  mixed  $user
    * @param  mixed  $record
    */
-  public function __construct($user, $record) {
+  public function __construct(AuthorizeeContract $user = null, $record) {
     $this->user   = $user;
     $this->record = $record;
   }

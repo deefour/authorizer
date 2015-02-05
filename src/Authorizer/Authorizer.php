@@ -8,7 +8,7 @@ use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
  *
  * Policy/Scope lookups and authorization can be performed against an
  * instance using a select subset of methods found on the
- * `Deefour\Authorizer\Traits\ProvidesAuthorization` class.
+ * `Deefour\Authorizer\ProvidesAuthorization` class.
  *
  *   $authorizer->authorize(new Article, 'create'); //=> boolean
  *   $authorizer->policy(new Article); //=> ArticlePolicy

@@ -1,8 +1,8 @@
 <?php namespace Deefour\Authorizer\Stubs;
 
-use Deefour\Authorizer\AbstractPolicy;
+use Deefour\Authorizer\Policy;
 
-class ArticlePolicy extends AbstractPolicy {
+class ArticlePolicy extends Policy {
 
   public function create() {
     return true;
