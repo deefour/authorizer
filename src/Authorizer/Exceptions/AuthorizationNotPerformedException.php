@@ -8,4 +8,4 @@
  * middleware to help prevent unwanted holes in the applicaiton due to a failure
  * to properly authorize the user against a resource for a specific action.
  */
-class AuthorizationNotPerformedException extends \Exception { }
+class AuthorizationNotPerformedException extends Exception { }

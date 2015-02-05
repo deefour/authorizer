@@ -6,4 +6,4 @@
  * This is typically used within an `after` filter of a controller action or other
  * middleware to help prevent unwanted data from being displayed to a user.
  */
-class ScopingNotPerformedException extends \Exception { }
+class ScopingNotPerformedException extends Exception { }

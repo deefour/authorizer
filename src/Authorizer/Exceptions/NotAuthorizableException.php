@@ -1,3 +1,3 @@
 <?php namespace Deefour\Authorizer\Exceptions;
 
-class NotAuthorizableException extends \Exception { }
+class NotAuthorizableException extends Exception { }

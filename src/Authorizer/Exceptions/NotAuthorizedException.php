@@ -6,4 +6,4 @@
  *
  * This is the generic "sorry, you can't do that!" exception.
  */
-class NotAuthorizedException extends \Exception {}
+class NotAuthorizedException extends Exception {}
