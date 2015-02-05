@@ -1,7 +1,5 @@
 <?php namespace spec\Deefour\Authorizer;
 
-use BadMethodCallException;
-use Deefour\Authorizer\Authorizer;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 use Deefour\Authorizer\Stubs\Article;
 use Deefour\Authorizer\Stubs\ArticlePolicy;

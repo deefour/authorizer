@@ -1,5 +1,6 @@
 <?php namespace Deefour\Authorizer\Providers;
 
+use Deefour\Authorizer\Authorizer;
 use Illuminate\Support\ServiceProvider;
 
 class AuthorizationServiceProvider extends ServiceProvider {
@@ -9,7 +10,7 @@ class AuthorizationServiceProvider extends ServiceProvider {
    *
    * @var bool
    */
-  protected $defer = true;
+  //protected $defer = true;
 
 
 

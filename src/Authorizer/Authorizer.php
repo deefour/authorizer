@@ -1,6 +1,7 @@
 <?php namespace Deefour\Authorizer;
 
-use Deefour\Authorizer\Traits\ProvidesAuthorization;
+use Deefour\Authorizer\ProvidesAuthorization;
+use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
 
 /**
  * Provides easy access to much of Authorizer's functionality.
@@ -31,14 +32,6 @@ class Authorizer {
   protected $user;
 
   /**
-   * Options to modify the context of the policy class
-   *
-   * @protected
-   * @var array
-   */
-  protected $options;
-
-  /**
    * List of methods on the trait to expose publicly
    *
    * @protected
@@ -52,11 +45,9 @@ class Authorizer {
    * Configure the policy class with the current user and context
    *
    * @param  mixed  $user
-   * @param  array  $options [optional]
    */
-  public function __construct($user, array $options = []) {
-    $this->user    = $user;
-    $this->options = $options;
+  public function __construct(AuthorizeeContract $user = null) {
+    $this->user = $user;
   }
 
 
