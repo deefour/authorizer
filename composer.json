@@ -1,6 +1,6 @@
 {
   "name": "deefour/authorizer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Simple Authorization via PHP Classes",
   "homepage": "https://github.com/deefour/authorizer",
   "keywords": ["authorizer", "deefour", "authorization", "policies", "policy", "scope", "laravel"],

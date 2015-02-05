@@ -11,7 +11,7 @@ Simple PHP Service Objects. Inspired by [elabs/**pundit**](https://github.com/el
 Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
 
 ```
-"deefour/authorizer": "~0.2.0"
+"deefour/authorizer": "~0.2.1"
 ```
 
 **`>=PHP5.5.0` is required.**
