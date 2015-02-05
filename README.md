@@ -6,6 +6,16 @@
 
 Simple PHP Service Objects. Inspired by [elabs/**pundit**](https://github.com/elabs/authorizer).
 
+## Getting Started
+
+Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
+
+```
+"deefour/authorizer": "~0.2.0"
+```
+
+**`>=PHP5.5.0` is required.**
+
 ## Policies
 
 At the core of Authorizer is the notion of policy classes. A policy must extend `Deefour\Authorizer\Policy`. Each method should return a boolean. For example
