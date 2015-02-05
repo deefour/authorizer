@@ -1,3 +1,5 @@
 <?php namespace Deefour\Authorizer\Stubs;
 
-class User extends Model { }
+use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
+
+class User extends Model implements AuthorizeeContract { }

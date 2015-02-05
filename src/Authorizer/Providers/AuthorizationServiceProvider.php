@@ -20,22 +20,20 @@ class AuthorizationServiceProvider extends ServiceProvider {
    * @return void
    */
   public function register() {
-    $this->app->bindShared('authorizer', function() {
-      $config = $this->app['config'];
+    $this->registerAuthorizer();
 
-      if ( ! $config->has('authorizer.user')) {
-        throw new \LogicException('A \'authorizer.user\' must be defined in the application config.');
-      }
+    $this->registerUserResolver();
+  }
 
-      $user   = $config->get('authorizer.user');
-      $config = $config->get('authorizer');
+  public function registerAuthorizer() {
+    $this->app->singleton('authorizer', function() {
+      return new Authorizer($this->app['Deefour\Authorizer\Contracts\Authorizee']);
+    });
+  }
 
-      // The `user` option can be a Closure. If it is, get the return value
-      if (is_callable($user)) {
-        $user = call_user_func($user);
-      }
-
-      return new Policy($user, $config);
+  public function registerUserResolver() {
+    $this->app->bind('Deefour\Authorizer\Contracts\Authorizee', function($app) {
+      return $app['auth']->user();
     });
   }
 

@@ -1,36 +1,25 @@
 <?php
 
-use Deefour\Authorizer\Contracts\AuthorizableContract;
-
-if ( ! function_exists('policy')) {
+if ( ! function_exists('authorizer')) {
   /**
-   * Retrieve a policy class for the passed object
+   * Assign high numeric IDs to a config item to force appending.
    *
-   * @param  Deefour\Authorizer\Contracts\AuthorizableContract  $object
-   * @return Deefour\Authorizer\AbstractPolicy
+   * @param  array  $array
+   * @return array
    */
-  function policy(AuthorizableContract $object) {
-    return app('authorizer')->policy($object);
-  }
-}
+  function policy(Authorizable $object) {
+    $authorizer = app('authorizer');
 
-if ( ! function_exists('scope')) {
-  /**
-   * Retrieve a scope class for the passed object
-   *
-   * @param  Deefour\Authorizer\Contracts\AuthorizableContract  $object
-   * @return Deefour\Authorizer\AbstractScope
-   */
-  function scope(AuthorizableContract $object) {
-    return app('authorizer')->scope($object);
+    return $authorizer->policy($object);
   }
 }
 
 if ( ! function_exists('authorizer')) {
   /**
-   * Retrieve the authorizer instance from the IoC container
+   * Assign high numeric IDs to a config item to force appending.
    *
-   * @return Deefour\Authorizer\Authorizer
+   * @param  array  $array
+   * @return array
    */
   function authorizer() {
     return app('authorizer');
