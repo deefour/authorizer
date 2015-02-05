@@ -14,11 +14,11 @@ class AuthorizerSpec extends ObjectBehavior {
   }
 
   function it_is_initializable() {
-    $this->shouldHaveType(Authorizer::class);
+    $this->shouldHaveType('Deefour\Authorizer\Authorizer');
   }
 
   function it_denies_access_to_non_whitelisted_api_methods() {
-    $this->shouldThrow(BadMethodCallException::class)->during('currentUser');
+    $this->shouldThrow('\BadMethodCallException')->during('currentUser');
   }
 
   function it_generates_policies() {
