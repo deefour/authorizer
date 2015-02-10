@@ -127,7 +127,7 @@ trait ProvidesAuthorization {
    * @return true
    */
   protected function authorize($record, $action = null) {
-    $className   = get_class($record);
+    $className = get_class($record);
 
     $this->_policyAuthorized = true;
 
