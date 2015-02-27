@@ -1,5 +1,7 @@
 <?php
 
+use Deefour\Authorizer\Contracts\Authorizable;
+
 if ( ! function_exists('authorizer')) {
   /**
    * Assign high numeric IDs to a config item to force appending.
