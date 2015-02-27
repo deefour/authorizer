@@ -52,7 +52,12 @@ abstract class Policy {
       throw new \BadMethodCallException(sprintf('There is no `%s` method defined on `%s`', $action, static::class));
     }
 
-    return $this->{$action}();
+    $args = func_get_args();
+
+    // pop the action off the stack
+    array_shift($args);
+
+    return call_user_func_array([ $this, $action ], $args);
   }
 
   /**
