@@ -11,7 +11,7 @@ Simple PHP Service Objects. Inspired by [elabs/**pundit**](https://github.com/el
 Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
 
 ```
-"deefour/authorizer": "~0.2.1"
+"deefour/authorizer": "~0.3.0"
 ```
 
 **`>=PHP5.5.0` is required.**
@@ -134,11 +134,11 @@ A default implementation for this interface is provided in the `Deefour\Authoriz
 
 ```php
 use Deefour\Authorizer\Contracts\Authorizable as AuthorizableContract;
-use Deefour\Authorizer\Authorizable;
+use Deefour\Authorizer\ResolvesPoliciesAndScopes;
 
 class Article implements AuthorizableContract {
 
-  use Authorizable;
+  use ResolvesPoliciesAndScopes;
 
 }
 ```
@@ -353,7 +353,20 @@ Authorizer::policy(new Article); //=> ArticlePolicy
 
 ### Helper Methods
 
-Global `authorizer()` and `policy()` methods are available for use anywhere in the application, but they're particularly useful within views. For example, to conditionally show an 'Edit' link for a specific `$article` based on the current user's ability to edit that article
+Global `authorizer()` and `policy()`, and `scope()` functions can be made globally available by including the `helpers.php` file in your project's `composer.json`. Authorizer doesn't autoload this file, giving you the choice whether or not to 'pollute' the global environment with these functions.
+
+```php
+"autoload": {
+  "psr-4": {
+    ...
+  },
+  "files": [
+    "vendor/deefour/authorizer/src/Authorizer/helpers.php"
+  ]
+}
+```
+
+These helpers are particularly useful within views. For example, to conditionally show an 'Edit' link for a specific `$article` based on the current user's ability to edit that article
 
 ```php
 @if (policy($article)->can('edit'))
@@ -511,7 +524,13 @@ The `policy()` and `scope()` methods are pass-through's to the `...OrFail()` met
 
 ## Changelog
 
-#### 0.2.0 - February 4, 2014
+#### 0.3.0 - March 19, 2015
+
+ - Adding much improved support for policy scopes
+ - Remove `helpers.php` from Composer autoload. Developers should be able to choose whether these functions are included.
+ - Cleaned up docblocks.
+
+#### 0.2.0 - February 4, 2015
 
  - Adding `Authorizee` contract to be attached to a `User` model for easy lookup through service containers.
  - Class Reorganization.
@@ -524,5 +543,3 @@ The `policy()` and `scope()` methods are pass-through's to the `...OrFail()` met
 ## License
 
 Copyright (c) 2014 [Jason Daly](http://www.deefour.me) ([deefour](https://github.com/deefour)). Released under the [MIT License](http://deefour.mit-license.org/).
-
-

@@ -1,8 +1,12 @@
 <?php namespace Deefour\Authorizer;
 
-use Deefour\Authorizer\Exceptions\ScopingNotPerformedException;
+use Deefour\Authorizer\Contracts\Authorizable;
+use Deefour\Authorizer\Contracts\Authorizee;
+use Deefour\Authorizer\Contracts\Scopeable;
 use Deefour\Authorizer\Exceptions\AuthorizationNotPerformedException;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
+use Deefour\Authorizer\Exceptions\ScopingNotPerformedException;
+use InvalidArgumentException;
 
 trait ProvidesAuthorization {
 
@@ -30,17 +34,25 @@ trait ProvidesAuthorization {
    * Derive the name for and instantiate an instance of a scope class for the passed
    * `$scope` object. The `$user` will be used to conditionally modify the scope.
    *
-   * @param  mixed  $user
-   * @param  mixed  $scope
-   * @return mixed
+   * @param  Authorizee  $user
+   * @param  Scopeable  $scope
+   * @return Scope|null
    */
-  protected static function getScope($user, $scope) {
+  protected static function getScope(Authorizee $user, Scopeable $scope) {
     $policyScope = (new Finder($scope))->scope();
 
-    return $policyScope ? (new $policyScope($user, $scope))->resolve() : null;
+    return $policyScope ? (new $policyScope($user, $scope->baseScope()))->resolve() : null;
   }
 
-  protected static function getPolicy($user, $record) {
+  /**
+   * Derive the name for and instantiate an instance of a policy class for the passed
+   * `$record` object.
+   *
+   * @param  Authorizee  $user
+   * @param  Authorizable  $record
+   * @return Policy|null
+   */
+  protected static function getPolicy(Authorizee $user, Authorizeable $record) {
     $policy = (new Finder($record))->policy();
 
     return $policy ? new $policy($user, $record) : null;
@@ -50,15 +62,15 @@ trait ProvidesAuthorization {
    * Retrieve a modified scope for the passed `$scope`, throwing an exception if no scope
    * could be found.
    *
-   * @throws Deefour\Authorizer\Exception\NotDefinedException
-   * @param  mixed  $user
-   * @param  mixed  $scope
-   * @return Deefour\Authorizer\Scope
+   * @throws  NotDefinedException
+   * @param  Authorizee  $user
+   * @param  Scopeable  $scope
+   * @return Scope
    */
-  protected static function getScopeOrFail($user, $scope) {
+  protected static function getScopeOrFail(Authorizee $user, Scopeable $scope) {
     $policyScope = (new Finder($scope))->scopeOrFail();
 
-    return (new $policyScope($user, $scope))->resolve();
+    return (new $policyScope($user, $scope->baseScope()))->resolve();
   }
 
   /**
@@ -67,12 +79,12 @@ trait ProvidesAuthorization {
    *
    * @protected
    * @see    getPolicyOrFail
-   * @throws Deefour\Authorizer\Exception\NotDefinedException
-   * @param  mixed  $user
-   * @param  mixed  $record
-   * @return Deefour\Authorizer\Policy
+   * @throws  NotDefinedException
+   * @param  Authorizee  $user
+   * @param  Authorizable  $record
+   * @return Policy
    */
-  protected static function getPolicyOrFail($user, $record) {
+  protected static function getPolicyOrFail(Authorizee $user, Authorizable $record) {
     $policy = (new Finder($record))->policyOrFail();
 
     return new $policy($user, $record);
@@ -86,7 +98,7 @@ trait ProvidesAuthorization {
    * Aide's authorization, called in some sort of middleware.
    *
    * @protected
-   * @throws Deefour\Authorizer\Exception\AuthorizationNotPerformedException
+   * @throws  AuthorizationNotPerformedException
    */
   protected function verifyAuthorized() {
     if ( ! $this->_policyAuthorized) {
@@ -101,7 +113,7 @@ trait ProvidesAuthorization {
    * displayed to a user.
    *
    * @protected
-   * @throws Deefour\Authorizer\Exception\ScopingNotPerformedException
+   * @throws  ScopingNotPerformedException
    */
   protected function verifyPolicyScoped() {
     if ( ! $this->_policyScoped) {
@@ -117,16 +129,16 @@ trait ProvidesAuthorization {
    * authorization check.
    *
    * @protected
-   * @param  mixed   $record
+   * @param  Authorizable   $record
    * @param  string  $action  [optional]
-   * @throws \InvalidArgumentException if the action to call against the policy was
+   * @throws InvalidArgumentException if the action to call against the policy was
    *         not explicitly passed to the `authorize` call and could not be derived
    *         from the caller.
-   * @throws Deefour\Authorizer\Exception\NotAuthorizedException if the current user
+   * @throws  NotAuthorizedException if the current user
    *         is not authorized for the requested `$action`
    * @return true
    */
-  protected function authorize($record, $action = null) {
+  protected function authorize(Authorizable $record, $action = null) {
     $className = get_class($record);
 
     $this->_policyAuthorized = true;
@@ -135,7 +147,7 @@ trait ProvidesAuthorization {
       $action = debug_backtrace(false)[1]['function'];
 
       if ($action === 'call_user_func_array' and static::class === debug_backtrace(false)[0]['class']) {
-        throw new \InvalidArgumentException(sprintf('No method/action passed to static `%s::authorize()` call.', static::class));
+        throw new InvalidArgumentException(sprintf('No method/action passed to static `%s::authorize()` call.', static::class));
       }
     }
 
@@ -160,11 +172,11 @@ trait ProvidesAuthorization {
    *
    * @protected
    * @see    getScopeOrFail
-   * @throws Deefour\Authorizer\Exception\NotDefinedException
-   * @param  mixed  $scope
-   * @return Deefour\Authorizer\Scope
+   * @throws  NotDefinedException
+   * @param  Scopeable  $scope
+   * @return Scope
    */
-  protected function scope($scope) {
+  protected function scope(Scopeable $scope) {
     $this->_policyScoped = true;
 
     return static::getScopeOrFail($this->currentUser(), $scope);
@@ -176,11 +188,11 @@ trait ProvidesAuthorization {
    *
    * @protected
    * @see    getPolicyOrFail
-   * @throws Deefour\Authorizer\Exception\NotDefinedException
-   * @param  mixed  $record
-   * @return Deefour\Authorizer\Exception\Policy
+   * @throws  NotDefinedException
+   * @param  Authorizable  $record
+   * @return Policy
    */
-  protected function policy($record) {
+  protected function policy(Authorizable $record) {
     return static::getPolicyOrFail($this->currentUser(), $record);
   }
 

@@ -1,5 +1,8 @@
 <?php namespace Deefour\Authorizer;
 
+use Deefour\Authorizer\Contracts\Scopeable;
+use Deefour\Authorizer\Exceptions\NotScopeableException;
+
 /**
  * Base scope class all application scopes are encouraged to extend. Aide
  * expects a `resolve` method to be present on the scope
@@ -7,14 +10,14 @@
 abstract class Scope {
 
   /**
-   * The user
+   * The user.
    *
    * @var mixed
    */
   protected $user;
 
   /**
-   * The
+   * The base scope.
    *
    * @var mixed
    */
@@ -22,14 +25,13 @@ abstract class Scope {
 
 
   /**
-   * Sets expectations for dependencies on the policy class and stores references
-   * to them locally.
+   * Constructor.
    *
    * @param  mixed  $user
    * @param  mixed  $scope
    */
   public function __construct($user, $scope) {
-    $this->user   = $user;
+    $this->user  = $user;
     $this->scope = $scope;
   }
 

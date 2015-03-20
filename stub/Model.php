@@ -1,10 +1,18 @@
 <?php namespace Deefour\Authorizer\Stubs;
 
-use Deefour\Authorizer\Contracts\Authorizable as AuthorizableContract;
-use Deefour\Authorizer\Authorizable;
+use Deefour\Authorizer\Contracts\Authorizable;
+use Deefour\Authorizer\Contracts\Scopeable;
+use Deefour\Authorizer\ResolvesPoliciesAndScopes;
 
-abstract class Model implements AuthorizableContract {
+abstract class Model implements Authorizable, Scopeable {
 
-  use Authorizable;
+  use ResolvesPoliciesAndScopes;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function baseScope() {
+    return 'foo';
+  }
 
 }

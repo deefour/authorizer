@@ -7,7 +7,7 @@ use Prophecy\Argument;
 class ArticleScopeSpec extends ObjectBehavior {
 
   function let(User $user) {
-    $this->beConstructedWith($user, []);
+    $this->beConstructedWith($user, 'bar');
   }
 
   function it_is_initializable() {
@@ -15,7 +15,7 @@ class ArticleScopeSpec extends ObjectBehavior {
   }
 
   function it_should_respond_to_resolve() {
-    $this->resolve()->shouldBeArray();
+    $this->resolve()->shouldBe('bar');
   }
 
 }

@@ -5,7 +5,7 @@ use Deefour\Authorizer\Scope;
 class ArticleScope extends Scope {
 
   public function resolve() {
-    return [];
+    return $this->scope;
   }
 
 }

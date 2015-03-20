@@ -26,7 +26,7 @@ class AuthorizerSpec extends ObjectBehavior {
   }
 
   function it_generates_scopes() {
-    $this->scope(new Article)->shouldBeArray();
+    $this->scope(new Article)->shouldBe('foo');
   }
 
   public function it_authorizes_actions() {
@@ -36,7 +36,7 @@ class AuthorizerSpec extends ObjectBehavior {
 
   function it_allows_static_api_access() {
     $this::policy(new Article)->shouldBeAnInstanceOf(ArticlePolicy::class);
-    $this::scope(new Article)->shouldBeArray();
+    $this::scope(new Article)->shouldBe('foo');
   }
 
 }

@@ -73,7 +73,7 @@ class Finder {
    *
    * Fails loudly if the derived scope class does not exist.
    *
-   * @throws Deefour\Authorizer\Exception\NotDefinedException
+   * @throws NotDefinedException
    * @return string
    */
   public function scopeOrFail() {
@@ -92,7 +92,7 @@ class Finder {
    *
    * Fails loudly if the derived policy class does not exist.
    *
-   * @throws Deefour\Authorizer\Exception\NotDefinedException
+   * @throws NotDefinedException
    * @return string
    */
   public function policyOrFail() {
@@ -118,8 +118,8 @@ class Finder {
       throw new NotAuthorizableException(sprintf('The `%s` object does not implement the `Deefour\\Authorizer\\Contracts\\Authorizable`; authorization cannot be performed', get_class($this->object)));
     }
 
-    $namespace  = $this->object->policyNamespace();
-    $klass      = $this->object->{"${type}Class"}();
+    $namespace = $this->object->{"${type}Namespace"}();
+    $klass     = $this->object->{"${type}Class"}();
 
     if (class_exists($klass)) {
       return $klass;
