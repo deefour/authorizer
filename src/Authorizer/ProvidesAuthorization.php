@@ -179,7 +179,7 @@ trait ProvidesAuthorization {
   protected function scope(Scopeable $scope) {
     $this->_policyScoped = true;
 
-    return static::getScopeOrFail($this->currentUser(), $scope);
+    return static::getScopeOrFail($this->authorizee(), $scope);
   }
 
   /**
@@ -193,7 +193,27 @@ trait ProvidesAuthorization {
    * @return Policy
    */
   protected function policy(Authorizable $record) {
-    return static::getPolicyOrFail($this->currentUser(), $record);
+    return static::getPolicyOrFail($this->authorizee(), $record);
+  }
+
+  /**
+   * Returns an object representing the user being authorized against the resource.
+   *
+   * This gracefully fails if an object NOT implementing the Authorizee contract
+   * is returned.
+   *
+   * @return [type] [description]
+   */
+  protected function authorizee() {
+    $authorizee = $this->currentUser();
+
+    if ( ! ($authorizee instanceof Authorizee)) {
+      throw new NotAuthorizedException(
+        'A valid authorizee was not provided. This often means no user is logged in.'
+      );
+    }
+
+    return $authorizee;
   }
 
 
