@@ -41,7 +41,7 @@ if ( ! function_exists('scope')) {
         'A $scope must be passed to the scope() helper when $object doesn\'t ' .
         'implement [%s]. The $object passed was [%s].',
         Scopeable::class,
-        get_class($this->object)
+        get_class($object)
       ));
     }
 
