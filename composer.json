@@ -1,4 +1,4 @@
-{
+  {
   "name": "deefour/authorizer",
   "version": "0.3.0",
   "description": "Simple Authorization via PHP Classes",
@@ -10,7 +10,7 @@
     "illuminate/support": "~5.0@dev"
   },
   "require-dev": {
-    "phpspec/phpspec": "~2.1@dev"
+    "phpspec/phpspec": "~2.2.0"
   },
   "license": "MIT",
   "authors": [
