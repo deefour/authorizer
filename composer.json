@@ -10,7 +10,7 @@
     "illuminate/support": "~5.0@dev"
   },
   "require-dev": {
-    "phpspec/phpspec": "~2.2.0"
+    "phpspec/phpspec": "^2.2.0"
   },
   "license": "MIT",
   "authors": [
