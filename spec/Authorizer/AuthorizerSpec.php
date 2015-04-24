@@ -39,4 +39,9 @@ class AuthorizerSpec extends ObjectBehavior {
     $this::scope(new Article)->shouldBe('foo');
   }
 
+  function it_should_pass_additional_context_through_to_policy() {
+    $this->shouldThrow(NotAuthorizedException::class)->during('authorize', [ new Article, 'destroy', 'bar' ]);
+    $this->authorize(new Article, 'destroy', 'baz')->shouldReturn(true);
+  }
+
 }

@@ -130,7 +130,6 @@ trait ProvidesAuthorization {
    *
    * @protected
    * @param  Authorizable   $record
-   * @param  string  $action  [optional]
    * @throws InvalidArgumentException if the action to call against the policy was
    *         not explicitly passed to the `authorize` call and could not be derived
    *         from the caller.
@@ -138,8 +137,13 @@ trait ProvidesAuthorization {
    *         is not authorized for the requested `$action`
    * @return true
    */
-  protected function authorize(Authorizable $record, $action = null) {
+  protected function authorize(Authorizable $record) {
     $className = get_class($record);
+    $args      = func_get_args();
+
+    array_shift($args); // shift $record off the stack.
+
+    $action = array_shift($args);
 
     $this->_policyAuthorized = true;
 
@@ -153,7 +157,7 @@ trait ProvidesAuthorization {
 
     $policy = $this->policy($record);
 
-    if ( ! $policy->$action()) {
+    if ( ! call_user_func_array([ $policy, $action ], $args)) {
       $exception = new NotAuthorizedException("Not allowed to `${action}` this `${className}`");
 
       $exception->action = $action;

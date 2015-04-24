@@ -12,6 +12,10 @@ class ArticlePolicy extends Policy {
     return false;
   }
 
+  public function destroy($foo) {
+    return $foo === 'baz';
+  }
+
   public function permittedAttributes() {
     return [ 'title', 'user_id' ];
   }
