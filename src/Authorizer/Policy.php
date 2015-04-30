@@ -60,13 +60,4 @@ abstract class Policy {
     return call_user_func_array([ $this, $action ], $args);
   }
 
-  /**
-   * Protects mass-assignment of unauthorized/unwanted attributes
-   *
-   * @return array
-   */
-  public function permittedAttributes() {
-    throw new \BadMethodCallException('A `permittedAttributes` method has not been defined for this class');
-  }
-
 }
