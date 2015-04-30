@@ -15,8 +15,4 @@ class EmptyPolicySpec extends ObjectBehavior {
     $this->shouldHaveType('Deefour\Authorizer\Stubs\EmptyPolicy');
   }
 
-  function it_should_throw_exception_when_permitted_attributes_is_undefined() {
-    $this->shouldThrow('\\BadMethodCallException')->during('permittedAttributes');
-  }
-
 }
