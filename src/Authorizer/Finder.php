@@ -125,6 +125,12 @@ class Finder {
       return $klass;
     }
 
+    $klass = join('\\', [ $namespace, $klass ]);
+
+    if (class_exists($klass)) {
+      return $klass;
+    }
+
     $shortName = (new ReflectionClass($this->object))->getShortName();
 
     return join('\\', [ $namespace, $shortName . ucfirst($type) ]);
