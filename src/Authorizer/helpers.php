@@ -1,6 +1,7 @@
 <?php
 
 use Deefour\Authorizer\Contracts\Authorizable;
+use Deefour\Authorizer\Contracts\ResolvesAuthorizable;
 use Deefour\Authorizer\Contracts\Scopeable;
 use Deefour\Authorizer\Exceptions\NotScopeableException;
 
@@ -16,6 +17,10 @@ if ( ! function_exists('policy')) {
 
     if (is_string($object)) {
       $object = app($object);
+    }
+
+    if ($object instanceof ResolvesAuthorizable) {
+      $object = $object->resolveAuthorizable();
     }
 
     return $authorizer->policy($object);
