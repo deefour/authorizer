@@ -150,7 +150,7 @@ trait ProvidesAuthorization {
     if (is_null($action)) {
       $action = debug_backtrace(false)[1]['function'];
 
-      if ($action === 'call_user_func_array' and static::class === debug_backtrace(false)[0]['class']) {
+      if ($action === 'call_user_func_array' && static::class === debug_backtrace(false)[0]['class']) {
         throw new InvalidArgumentException(sprintf('No method/action passed to static `%s::authorize()` call.', static::class));
       }
     }
@@ -206,7 +206,7 @@ trait ProvidesAuthorization {
    * This gracefully fails if an object NOT implementing the Authorizee contract
    * is returned.
    *
-   * @return [type] [description]
+   * @return Authorizee
    */
   protected function authorizee() {
     $authorizee = $this->currentUser();
