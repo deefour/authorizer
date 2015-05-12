@@ -4,7 +4,7 @@
 [![Packagist Version](http://img.shields.io/packagist/v/deefour/authorizer.svg)](https://packagist.org/packages/deefour/authorizer)
 [![Code Climate](https://codeclimate.com/github/deefour/authorizer/badges/gpa.svg)](https://codeclimate.com/github/deefour/authorizer)
 
-Simple PHP Service Objects. Inspired by [elabs/**pundit**](https://github.com/elabs/authorizer).
+Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://github.com/elabs/pundit).
 
 ## Getting Started
 
