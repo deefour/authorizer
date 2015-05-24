@@ -17,13 +17,13 @@ class AuthorizationServiceProvider extends ServiceProvider {
   }
 
   public function registerAuthorizer() {
-    $this->app->singleton('authorizer', function() {
+    $this->app->singleton('authorizer', function () {
       return new Authorizer($this->app['Deefour\Authorizer\Contracts\Authorizee']);
     });
   }
 
   public function registerUserResolver() {
-    $this->app->bind('Deefour\Authorizer\Contracts\Authorizee', function($app) {
+    $this->app->bind('Deefour\Authorizer\Contracts\Authorizee', function ($app) {
       return $app['auth']->user();
     });
   }

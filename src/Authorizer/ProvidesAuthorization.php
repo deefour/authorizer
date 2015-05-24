@@ -20,22 +20,23 @@ trait ProvidesAuthorization {
   protected $_policyScoped = false;
 
   /**
-   * Wether a request to derive and retrieve a policy class has been made for the
-   * current request
+   * Wether a request to derive and retrieve a policy class has been made for
+   * the current request
    *
    * @protected
    * @var boolean
    */
   protected $_policyAuthorized = false;
 
-
-
   /**
-   * Derive the name for and instantiate an instance of a scope class for the passed
-   * `$scope` object. The `$user` will be used to conditionally modify the scope.
+   * Derive the name for and instantiate an instance of a scope class for the
+   * passed
+   * `$scope` object. The `$user` will be used to conditionally modify the
+   * scope.
    *
-   * @param  Authorizee  $user
+   * @param  Authorizee $user
    * @param  Scopeable  $scope
+   *
    * @return Scope|null
    */
   protected static function getScope(Authorizee $user, Scopeable $scope) {
@@ -45,11 +46,13 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Derive the name for and instantiate an instance of a policy class for the passed
+   * Derive the name for and instantiate an instance of a policy class for the
+   * passed
    * `$record` object.
    *
-   * @param  Authorizee  $user
-   * @param  Authorizable  $record
+   * @param  Authorizee   $user
+   * @param  Authorizable $record
+   *
    * @return Policy|null
    */
   protected static function getPolicy(Authorizee $user, Authorizeable $record) {
@@ -59,12 +62,14 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Retrieve a modified scope for the passed `$scope`, throwing an exception if no scope
-   * could be found.
+   * Retrieve a modified scope for the passed `$scope`, throwing an exception
+   * if no scope could be found.
    *
    * @throws  NotDefinedException
-   * @param  Authorizee  $user
+   *
+   * @param  Authorizee $user
    * @param  Scopeable  $scope
+   *
    * @return Scope
    */
   protected static function getScopeOrFail(Authorizee $user, Scopeable $scope) {
@@ -74,14 +79,16 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Retrieve a policy for the passed `$record`, throwing an exception if no policy
-   * could be found.
+   * Retrieve a policy for the passed `$record`, throwing an exception if no
+   * policy could be found.
    *
    * @protected
    * @see    getPolicyOrFail
    * @throws  NotDefinedException
-   * @param  Authorizee  $user
-   * @param  Authorizable  $record
+   *
+   * @param  Authorizee   $user
+   * @param  Authorizable $record
+   *
    * @return Policy
    */
   protected static function getPolicyOrFail(Authorizee $user, Authorizable $record) {
@@ -90,12 +97,10 @@ trait ProvidesAuthorization {
     return new $policy($user, $record);
   }
 
-
-
   /**
-   * Throws an exception if authorization has not been performed when called. This
-   * is typically used as a guard against requests which have yet to be guarded by
-   * Aide's authorization, called in some sort of middleware.
+   * Throws an exception if authorization has not been performed when called.
+   * This is typically used as a guard against requests which have yet to be
+   * guarded by Aide's authorization, called in some sort of middleware.
    *
    * @protected
    * @throws  AuthorizationNotPerformedException
@@ -107,10 +112,10 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Throws an exception if the request has not made a request to resolve a scope.
-   * This is typically used as a guard against requests without proper scoping,
-   * called in some sort of middleware, preventing record data from being accidentally
-   * displayed to a user.
+   * Throws an exception if the request has not made a request to resolve a
+   * scope. This is typically used as a guard against requests without proper
+   * scoping, called in some sort of middleware, preventing record data from
+   * being accidentally displayed to a user.
    *
    * @protected
    * @throws  ScopingNotPerformedException
@@ -122,17 +127,21 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Authorizes the current user against the passed `$record` for a specific action.
+   * Authorizes the current user against the passed `$record` for a specific
+   * action.
    *
    * If no `$action` is passed, `debug_backtrace` looks back at the name of the
    * caller, using it as the method name to call on the policy class for the
    * authorization check.
    *
    * @protected
-   * @param  Authorizable   $record
-   * @throws InvalidArgumentException if the action to call against the policy was
-   *         not explicitly passed to the `authorize` call and could not be derived
-   *         from the caller.
+   *
+   * @param  Authorizable $record
+   *
+   * @throws InvalidArgumentException if the action to call against the policy
+   *                                  was not explicitly passed to the
+   *                                  `authorize` call and could not be derived
+   *                                  from the caller.
    * @throws  NotAuthorizedException if the current user
    *         is not authorized for the requested `$action`
    * @return true
@@ -171,13 +180,16 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Retrieve a modified scope for the passed `$scope`, throwing an exception if no scope
-   * could be found. This is a convenience method for the `getScopeOrFail` method.
+   * Retrieve a modified scope for the passed `$scope`, throwing an exception
+   * if no scope could be found. This is a convenience method for the
+   * `getScopeOrFail` method.
    *
    * @protected
    * @see    getScopeOrFail
    * @throws  NotDefinedException
-   * @param  Scopeable  $scope
+   *
+   * @param  Scopeable $scope
+   *
    * @return Scope
    */
   protected function scope(Scopeable $scope) {
@@ -187,13 +199,16 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Retrieve a policy for the passed `$record`, throwing an exception if no policy
-   * could be found. This is a convenience method for the `getPolicyOrFail` method.
+   * Retrieve a policy for the passed `$record`, throwing an exception if no
+   * policy could be found. This is a convenience method for the
+   * `getPolicyOrFail` method.
    *
    * @protected
    * @see    getPolicyOrFail
    * @throws  NotDefinedException
-   * @param  Authorizable  $record
+   *
+   * @param  Authorizable $record
+   *
    * @return Policy
    */
   protected function policy(Authorizable $record) {
@@ -201,9 +216,11 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Returns an object representing the user being authorized against the resource.
+   * Returns an object representing the user being authorized against the
+   * resource.
    *
-   * This gracefully fails if an object NOT implementing the Authorizee contract
+   * This gracefully fails if an object NOT implementing the Authorizee
+   * contract
    * is returned.
    *
    * @return Authorizee
@@ -219,8 +236,6 @@ trait ProvidesAuthorization {
 
     return $authorizee;
   }
-
-
 
   /**
    * Returns an object representing the user being used for authorization.

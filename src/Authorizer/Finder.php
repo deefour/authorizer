@@ -1,17 +1,18 @@
 <?php namespace Deefour\Authorizer;
 
 use Deefour\Authorizer\Contracts\Authorizable as AuthorizableContract;
-use Deefour\Authorizer\Exceptions\NotDefinedException;
 use Deefour\Authorizer\Exceptions\NotAuthorizableException;
+use Deefour\Authorizer\Exceptions\NotDefinedException;
 use ReflectionClass;
 
 /**
  * Derives the full class name for a policy or scope based on a passed object.
  *
- * There is support for silent or noisy failure if a class could not be provided.
+ * There is support for silent or noisy failure if a class could not be
+ * provided.
  *
- * This class does not actually instantiate the derived class - it simply returns
- * the class' name
+ * This class does not actually instantiate the derived class - it simply
+ * returns the class' name
  */
 class Finder {
 
@@ -29,9 +30,7 @@ class Finder {
    * @const
    * @var string
    */
-  const SCOPE  = 'scope';
-
-
+  const SCOPE = 'scope';
 
   /**
    * The object to derive the scope or policy class name from
@@ -41,15 +40,14 @@ class Finder {
    */
   protected $object;
 
-
-
   public function __construct($object) {
     $this->object = $object;
   }
 
   /**
    * Derives a scope class name for the object the finder was passed when
-   * instantiated. There is no check made here to see if the class actually exists.
+   * instantiated. There is no check made here to see if the class actually
+   * exists.
    *
    * @return string
    */
@@ -59,7 +57,8 @@ class Finder {
 
   /**
    * Derives a policy class name for the object the finder was passed when
-   * instantiated. There is no check made here to see if the class actually exists.
+   * instantiated. There is no check made here to see if the class actually
+   * exists.
    *
    * @return string
    */
@@ -69,7 +68,8 @@ class Finder {
 
   /**
    * Derives a scope class name for the object the finder was passed when
-   * instantiated. There is no check made here to see if the class actually exists.
+   * instantiated. There is no check made here to see if the class actually
+   * exists.
    *
    * Fails loudly if the derived scope class does not exist.
    *
@@ -88,7 +88,8 @@ class Finder {
 
   /**
    * Derives a policy class name for the object the finder was passed when
-   * instantiated. There is no check made here to see if the class actually exists.
+   * instantiated. There is no check made here to see if the class actually
+   * exists.
    *
    * Fails loudly if the derived policy class does not exist.
    *
@@ -105,12 +106,12 @@ class Finder {
     throw new NotDefinedException(sprintf('Unable to find policy class for `%s`', get_class($this->object)));
   }
 
-
-
   /**
-   * Derives the class name for the object the finder was passed when instantiated.
+   * Derives the class name for the object the finder was passed when
+   * instantiated.
    *
    * @param  $type  string
+   *
    * @return string
    */
   protected function find($type) {

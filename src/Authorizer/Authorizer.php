@@ -1,6 +1,5 @@
 <?php namespace Deefour\Authorizer;
 
-use Deefour\Authorizer\ProvidesAuthorization;
 use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
 
 /**
@@ -39,18 +38,14 @@ class Authorizer {
    */
   protected $publicApi = [ 'authorize', 'policy', 'scope' ];
 
-
-
   /**
    * Configure the policy class with the current user and context
    *
-   * @param  mixed  $user
+   * @param  mixed $user
    */
   public function __construct(AuthorizeeContract $user = null) {
     $this->user = $user;
   }
-
-
 
   /**
    * {@inheritdoc}
@@ -59,16 +54,15 @@ class Authorizer {
     return $this->user;
   }
 
-
-
   /**
    * Magic `__callStatic` method, providing access to accessor methods on the
    * policy trait without the need to use the `get` prefix. For example,
    *
    *   Policy::scope(new Article); //=> ArticleScope
    *
-   * @param  string  $method
-   * @param  array   $parameters
+   * @param  string $method
+   * @param  array  $parameters
+   *
    * @return mixed
    */
   public static function __callStatic($method, array $parameters) {
@@ -85,8 +79,9 @@ class Authorizer {
    * Magice `_call` method, providing access to a specific subset of protected
    * methods defined on the policy trait
    *
-   * @param  string  $method
-   * @param  array   $parameters
+   * @param  string $method
+   * @param  array  $parameters
+   *
    * @return mixed
    */
   public function __call($method, array $parameters) {
@@ -94,7 +89,7 @@ class Authorizer {
       throw new \BadMethodCallException(sprintf('A `%s` method is not defined or exposed publicly on `%s`.', $method, get_class()));
     }
 
-    return call_user_func_array([$this, $method], $parameters);
+    return call_user_func_array([ $this, $method ], $parameters);
   }
 
 }

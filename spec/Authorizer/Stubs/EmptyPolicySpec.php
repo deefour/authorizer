@@ -1,7 +1,7 @@
 <?php namespace spec\Deefour\Authorizer\Stubs;
 
-use Deefour\Authorizer\Stubs\User;
 use Deefour\Authorizer\Stubs\Article;
+use Deefour\Authorizer\Stubs\User;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

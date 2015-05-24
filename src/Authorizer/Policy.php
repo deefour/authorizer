@@ -23,13 +23,12 @@ abstract class Policy {
    */
   protected $record;
 
-
   /**
-   * Sets expectations for dependencies on the policy class and stores references
-   * to them locally.
+   * Sets expectations for dependencies on the policy class and stores
+   * references to them locally.
    *
-   * @param  mixed  $user
-   * @param  mixed  $record
+   * @param  mixed $user
+   * @param  mixed $record
    */
   public function __construct(AuthorizeeContract $user = null, $record) {
     $this->user   = $user;

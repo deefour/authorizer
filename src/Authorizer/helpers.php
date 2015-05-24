@@ -9,7 +9,8 @@ if ( ! function_exists('policy')) {
   /**
    * Assign high numeric IDs to a config item to force appending.
    *
-   * @param  Authorizable|string  $object
+   * @param  Authorizable|string $object
+   *
    * @return array
    */
   function policy($object) {
@@ -31,7 +32,8 @@ if ( ! function_exists('scope')) {
   /**
    * Assign high numeric IDs to a config item to force appending.
    *
-   * @param  Scopeable|string  $object
+   * @param  Scopeable|string $object
+   *
    * @return array
    */
   function scope($object) {

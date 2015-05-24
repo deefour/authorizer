@@ -2,4 +2,5 @@
 
 use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
 
-class User extends Model implements AuthorizeeContract { }
+class User extends Model implements AuthorizeeContract {
+}

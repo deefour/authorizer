@@ -1,3 +1,4 @@
 <?php namespace Deefour\Authorizer\Exceptions;
 
-class NotScopeableException extends Exception { }
+class NotScopeableException extends Exception {
+}
