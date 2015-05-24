@@ -11,7 +11,7 @@ Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://git
 Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
 
 ```
-"deefour/authorizer": "~0.3.0"
+"deefour/authorizer": "~0.4.0"
 ```
 
 **`>=PHP5.5.0` is required.**
@@ -525,6 +525,12 @@ The `policy()` and `scope()` methods are pass-through's to the `...OrFail()` met
 - Source Code: https://github.com/deefour/authorizer
 
 ## Changelog
+
+#### 0.4.0 - March 25, 2015
+
+ - New `ResolvesAuthorizable` interface. This can be used on a class such as the decorators in [`deefour/presenter`](https://github.com/deefour/presenter) to map an authorization attempt back to the underlying model, since the presenter itself is not implementing the `Authorizable` interface.
+ - Now requires `symfony/http-kernel` to throw a full HTTP exception when authorization fails.
+ - Code formatting improved.
 
 #### 0.3.0 - March 19, 2015
 
