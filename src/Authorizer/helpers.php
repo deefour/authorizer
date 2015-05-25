@@ -73,7 +73,7 @@ if ( ! function_exists('scope')) {
     }
 
     if ($object === $scope) {
-      $scope = $object->getBaseScope();
+      $scope = $object->baseScope();
     }
 
     return $authorizer->scope($object, $scope);
