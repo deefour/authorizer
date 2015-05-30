@@ -11,7 +11,7 @@ Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://git
 Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
 
 ```
-"deefour/authorizer": "~0.4.0"
+"deefour/authorizer": "~0.4.1"
 ```
 
 **`>=PHP5.5.0` is required.**
