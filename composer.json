@@ -23,7 +23,7 @@
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "Deefour\\": "src"
+      "Deefour\\Authorizer\\": "src"
     }
   },
   "autoload-dev": {
@@ -31,7 +31,7 @@
       "Deefour\\Authorizer\\Stubs\\": "stub/"
     },
     "files": [
-      "src/Authorizer/helpers.php"
+      "src/helpers.php"
     ]
   }
 }
