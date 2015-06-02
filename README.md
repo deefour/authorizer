@@ -369,7 +369,7 @@ Global `authorizer()` and `policy()`, and `scope()` functions can be made global
     ...
   },
   "files": [
-    "vendor/deefour/authorizer/src/Authorizer/helpers.php"
+    "vendor/deefour/authorizer/src/helpers.php"
   ]
 }
 ```
