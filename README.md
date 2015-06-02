@@ -187,7 +187,7 @@ $authorizer->policy($user, $nsArticle); //=> Policies\ArticlePolicy
 
 ## Making Classes Aware of Authorization
 
-The `Deefour\Authorizer\ProvidesAuthorization` trait can be included in any class to make working with policies and scopes easier. Using this trait requires implementing a `currentUser()` method on the class.
+The `Deefour\Authorizer\ProvidesAuthorization` trait can be included in any class to make working with policies and scopes easier. Using this trait requires implementing a `user()` method on the class.
 
 ```php
 use Deefour\Authorizer\ProvidesAuthorization;
@@ -196,7 +196,7 @@ class ArticleController {
 
   use ProvidesAuthorization;
 
-  protected function currentUser() {
+  protected function user() {
     return app('user') ?: new User;
   }
 
@@ -240,12 +240,12 @@ Some assumptions are made by this Authorizer trait to provide you with the simpl
 When generating a policy class for an object, the following assumptions are made:
 
  1. The policy class is resolved by taking the FQCN of the object being authorized and appending `"Policy"` *( this can be overridden)*.
- 2. The user the authorization is for is based on the return value of the `currentUser()` method.
+ 2. The user the authorization is for is based on the return value of the `user()` method.
 
 When generating a policy scope, the following assumptions are made:
 
  1. The policy class is resolved by taking the FQCN of the object being authorized and appending `"Scope"` *( this can be overridden)*.
- 2. The user the authorization is for is based on the return value of the `currentUser()` method.
+ 2. The user the authorization is for is based on the return value of the `user()` method.
 
 When calling the `authorize()` method, a policy class is instantiated and the following assumptions are made:
 
@@ -269,7 +269,7 @@ abstract class Controller extends BaseController {
   use ValidatesRequests;
   use ProvidesAuthorization;
 
-  protected function currentUser() {
+  protected function user() {
     return app('auth')->user() ?: new User;
   }
 
@@ -292,7 +292,7 @@ Authorizer comes with a service provider for `Deefour\Authorizer\Authorizer`. In
 ],
 ```
 
-The IoC container is responsible for instantiating a single, shared instance of the `Deefour\Authorizer\Authorizer` class. This is done outside the scope of a controller method, meaning the IoC container has no access to or knowledge of the `currentUser` method that may exist within a base controller. Because the API provided by the `Authorizer` does not expect a user to be passed, the service provider looks for configuration in an `app/config/authorizer.php` file on boot. At a minimum, the config must contain a callable `'user'` setting.
+The IoC container is responsible for instantiating a single, shared instance of the `Deefour\Authorizer\Authorizer` class. This is done outside the scope of a controller method, meaning the IoC container has no access to or knowledge of the `user()` method that may exist within a base controller. Because the API provided by the `Authorizer` does not expect a user to be passed, the service provider looks for configuration in an `app/config/authorizer.php` file on boot. At a minimum, the config must contain a callable `'user'` setting.
 
 ```php
 <?php
@@ -308,10 +308,10 @@ return [
 ];
 ```
 
-To keep things DRY, the `currentUser` method in the base controller could be modified to take advantage of this same Closure.
+To keep things DRY, the `user()` method in the base controller could be modified to take advantage of this same Closure.
 
 ```php
-public function currentUser() {
+public function user() {
   return call_user_func(config('authorizer.user'));
 }
 ```

@@ -36,7 +36,7 @@ class Authorizer {
   /**
    * {@inheritdoc}
    */
-  protected function currentUser() {
+  protected function user() {
     return $this->user;
   }
 

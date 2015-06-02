@@ -218,7 +218,7 @@ trait ProvidesAuthorization {
    * @return Authorizee
    */
   protected function authorizee() {
-    $authorizee = $this->currentUser();
+    $authorizee = $this->user();
 
     if ( ! ($authorizee instanceof Authorizee)) {
       throw new NotAuthorizedException(
@@ -235,6 +235,6 @@ trait ProvidesAuthorization {
    * @abstract
    * @return mixed
    */
-  abstract protected function currentUser();
+  abstract protected function user();
 
 }
