@@ -79,6 +79,22 @@ trait ProvidesAuthorization {
   }
 
   /**
+   * Retrieve a policy for the passed `$record`, throwing an exception if no
+   * policy could be found. This is a convenience method for the
+   * `getPolicyOrFail` method.
+   *
+   * @see    getPolicyOrFail
+   * @throws  NotDefinedException
+   *
+   * @param  Authorizable $record
+   *
+   * @return Policy
+   */
+  public function policy(Authorizable $record) {
+    return $this->getPolicyOrFail($this->authorizee(), $record);
+  }
+
+  /**
    * Retrieve a modified scope for the passed `$scope`, throwing an exception
    * if no scope could be found. This is a convenience method for the
    * `getScopeOrFail` method.
@@ -97,19 +113,19 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Retrieve a policy for the passed `$record`, throwing an exception if no
-   * policy could be found. This is a convenience method for the
-   * `getPolicyOrFail` method.
+   * Derive the name for and instantiate an instance of a policy class for the
+   * passed
+   * `$record` object.
    *
-   * @see    getPolicyOrFail
-   * @throws  NotDefinedException
-   *
+   * @param  Authorizee   $user
    * @param  Authorizable $record
    *
-   * @return Policy
+   * @return Policy|null
    */
-  public function policy(Authorizable $record) {
-    return $this->getPolicyOrFail($this->authorizee(), $record);
+  public function getPolicy(Authorizee $user, Authorizeable $record) {
+    $policy = (new Finder($record))->policy();
+
+    return $policy ? new $policy($user, $record) : null;
   }
 
   /**
@@ -130,19 +146,21 @@ trait ProvidesAuthorization {
   }
 
   /**
-   * Derive the name for and instantiate an instance of a policy class for the
-   * passed
-   * `$record` object.
+   * Retrieve a policy for the passed `$record`, throwing an exception if no
+   * policy could be found.
+   *
+   * @see    getPolicyOrFail
+   * @throws  NotDefinedException
    *
    * @param  Authorizee   $user
    * @param  Authorizable $record
    *
-   * @return Policy|null
+   * @return Policy
    */
-  public function getPolicy(Authorizee $user, Authorizeable $record) {
-    $policy = (new Finder($record))->policy();
+  public function getPolicyOrFail(Authorizee $user, Authorizable $record) {
+    $policy = (new Finder($record))->policyOrFail();
 
-    return $policy ? new $policy($user, $record) : null;
+    return new $policy($user, $record);
   }
 
   /**
@@ -160,24 +178,6 @@ trait ProvidesAuthorization {
     $policyScope = (new Finder($scope))->scopeOrFail();
 
     return (new $policyScope($user, $scope->baseScope()))->resolve();
-  }
-
-  /**
-   * Retrieve a policy for the passed `$record`, throwing an exception if no
-   * policy could be found.
-   *
-   * @see    getPolicyOrFail
-   * @throws  NotDefinedException
-   *
-   * @param  Authorizee   $user
-   * @param  Authorizable $record
-   *
-   * @return Policy
-   */
-  public function getPolicyOrFail(Authorizee $user, Authorizable $record) {
-    $policy = (new Finder($record))->policyOrFail();
-
-    return new $policy($user, $record);
   }
 
   /**
