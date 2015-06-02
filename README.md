@@ -482,6 +482,7 @@ class CreateArticleRequest extends FormRequest {
 #### 0.5.0 - June 2, 2015
 
  - All static methods are now public instance methods.
+ - Changed `currentUser()` to `user()` for simplicity and compatibility with Laravel.
  - Code cleaning.
 
 #### 0.4.0 - March 25, 2015
