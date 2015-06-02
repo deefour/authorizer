@@ -292,37 +292,43 @@ Authorizer comes with a service provider for `Deefour\Authorizer\Authorizer`. In
 ],
 ```
 
-The IoC container is responsible for instantiating a single, shared instance of the `Deefour\Authorizer\Authorizer` class. This is done outside the scope of a controller method, meaning the IoC container has no access to or knowledge of the `user()` method that may exist within a base controller. Because the API provided by the `Authorizer` does not expect a user to be passed, the service provider looks for configuration in an `app/config/authorizer.php` file on boot. At a minimum, the config must contain a callable `'user'` setting.
+Laravel's service container is responsible for instantiating a single, shared instance of the `Deefour\Authorizer\Authorizer` class.
+Because this resolution is done outside the scope of a controller method, the container has no access to or knowledge of the `user()`
+method defined in the base controller above.
+
+The `AuthorizationServiceProvider` binds an implementation of the `Authorizee` contract for use within the container.
 
 ```php
-<?php
-
-return [
-
-  'user' => function() {
-
-    return Auth::user() ?: new User;
-
-  },
-
-];
+$this->app->bind(Authorizee::class, function ($app) {
+  return $app['auth']->user();
+});
 ```
 
-To keep things DRY, the `user()` method in the base controller could be modified to take advantage of this same Closure.
+This can be overridden in your `app/Providers/AppServiceProvider.php`.
 
 ```php
-public function user() {
-  return call_user_func(config('authorizer.user'));
+protected function bindAuthorizeeWithDefault() {
+  $this->app->bind(Authorizee::class, function ($app) {
+    return $app['auth']->user() ?: new User;
+  });
 }
 ```
 
-The `Authorizer` can be accessed directly from the application container
+To keep things DRY, the `user()` method in the base controller could be modified to take advantage of this same binding.
+
+```php
+public function user() {
+  return app(Authorizee::class);
+}
+```
+
+The `Authorizer` can now be accessed directly from the service container
 
 ```php
 app('authorizer')->policy(new Article); //=> ArticlePolicy
 ```
 
-or via typehinted methods resolved through the container, like controller actions
+or via type-hinted methods resolved through the container
 
 ```php
 use Deefour\Authorizer\Authorizer;
