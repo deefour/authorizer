@@ -1,6 +1,6 @@
 <?php namespace Deefour\Authorizer;
 
-use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
+use Deefour\Authorizer\Contracts\Authorizee;
 
 /**
  * Provides easy access to much of Authorizer's functionality.
@@ -12,11 +12,6 @@ use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
  *   $authorizer->authorize(new Article, 'create'); //=> boolean
  *   $authorizer->policy(new Article); //=> ArticlePolicy
  *   $authorizer->scope(new Article);  //=> ArticleScope
- *
- * Alternatively, some methods are exposed statically
- *
- *   Policy::scope(new Article); //=> ArticlePolicy
- *   Policy::policyOrFail(new ObjectWithoutPolicy); //=> NotDefinedException
  */
 class Authorizer {
 
@@ -25,25 +20,16 @@ class Authorizer {
   /**
    * The current user
    *
-   * @protected
-   * @var mixed
+   * @var Authorizee
    */
   protected $user;
 
   /**
-   * List of methods on the trait to expose publicly
-   *
-   * @protected
-   * @var array
-   */
-  protected $publicApi = [ 'authorize', 'policy', 'scope' ];
-
-  /**
    * Configure the policy class with the current user and context
    *
-   * @param  mixed $user
+   * @param Authorizee $user
    */
-  public function __construct(AuthorizeeContract $user = null) {
+  public function __construct(Authorizee $user = null) {
     $this->user = $user;
   }
 
@@ -52,44 +38,6 @@ class Authorizer {
    */
   protected function currentUser() {
     return $this->user;
-  }
-
-  /**
-   * Magic `__callStatic` method, providing access to accessor methods on the
-   * policy trait without the need to use the `get` prefix. For example,
-   *
-   *   Policy::scope(new Article); //=> ArticleScope
-   *
-   * @param  string $method
-   * @param  array  $parameters
-   *
-   * @return mixed
-   */
-  public static function __callStatic($method, array $parameters) {
-    $staticMethod = 'get' . ucfirst($method);
-
-    if ( ! method_exists(get_class(), $staticMethod)) {
-      throw new \BadMethodCallException(sprintf('A `%s` static method is not defined on `%s`.', $method, get_class()));
-    }
-
-    return call_user_func_array('static::' . $staticMethod, $parameters);
-  }
-
-  /**
-   * Magice `_call` method, providing access to a specific subset of protected
-   * methods defined on the policy trait
-   *
-   * @param  string $method
-   * @param  array  $parameters
-   *
-   * @return mixed
-   */
-  public function __call($method, array $parameters) {
-    if ( ! in_array($method, $this->publicApi)) {
-      throw new \BadMethodCallException(sprintf('A `%s` method is not defined or exposed publicly on `%s`.', $method, get_class()));
-    }
-
-    return call_user_func_array([ $this, $method ], $parameters);
   }
 
 }

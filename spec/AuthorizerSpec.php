@@ -17,10 +17,6 @@ class AuthorizerSpec extends ObjectBehavior {
     $this->shouldHaveType('Deefour\Authorizer\Authorizer');
   }
 
-  function it_denies_access_to_non_whitelisted_api_methods() {
-    $this->shouldThrow('\BadMethodCallException')->during('currentUser');
-  }
-
   function it_generates_policies() {
     $this->policy(new Article)->shouldBeAnInstanceOf(ArticlePolicy::class);
   }
@@ -32,11 +28,6 @@ class AuthorizerSpec extends ObjectBehavior {
   public function it_authorizes_actions() {
     $this->shouldThrow(NotAuthorizedException::class)->during('authorize', [ new Article, 'edit' ]);
     $this->authorize(new Article, 'create')->shouldBeBoolean();
-  }
-
-  function it_allows_static_api_access() {
-    $this::policy(new Article)->shouldBeAnInstanceOf(ArticlePolicy::class);
-    $this::scope(new Article)->shouldBe('foo');
   }
 
   function it_should_pass_additional_context_through_to_policy() {

@@ -1,5 +1,8 @@
 <?php namespace Deefour\Authorizer;
 
+/**
+ * A default implementation of the Authorizable and Scopable interfaces
+ */
 trait ResolvesPoliciesAndScopes {
 
   /**

@@ -1,5 +1,6 @@
 <?php namespace Deefour\Authorizer\Providers;
 
+use Deefour\Authorizer\Contracts\Authorizee;
 use Deefour\Authorizer\Authorizer;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,18 +13,17 @@ class AuthorizationServiceProvider extends ServiceProvider {
    */
   public function register() {
     $this->registerAuthorizer();
-
     $this->registerUserResolver();
   }
 
   public function registerAuthorizer() {
     $this->app->singleton('authorizer', function () {
-      return new Authorizer($this->app['Deefour\Authorizer\Contracts\Authorizee']);
+      return new Authorizer($this->app[Authorizee::class]);
     });
   }
 
   public function registerUserResolver() {
-    $this->app->bind('Deefour\Authorizer\Contracts\Authorizee', function ($app) {
+    $this->app->bind(Authorizee::class, function ($app) {
       return $app['auth']->user();
     });
   }

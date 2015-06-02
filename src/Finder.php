@@ -35,7 +35,6 @@ class Finder {
   /**
    * The object to derive the scope or policy class name from
    *
-   * @protected
    * @var mixed
    */
   protected $object;
@@ -113,6 +112,7 @@ class Finder {
    * @param  $type  string
    *
    * @return string
+   * @throws NotAuthorizableException
    */
   protected function find($type) {
     if ( ! ($this->object instanceof AuthorizableContract)) {

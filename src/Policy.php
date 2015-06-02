@@ -1,5 +1,6 @@
 <?php namespace Deefour\Authorizer;
 
+use BadMethodCallException;
 use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
 
 /**
@@ -37,8 +38,10 @@ abstract class Policy {
 
   /**
    * Convenience method to call a policy action by passing the action name as a
-   * string. This is particularly handy within the context of a view, making the
-   * authorization check a bit more human-readable.
+   * string. This is particularly handy within the context of a view, making
+   * the
+   * authorization check a bit more human-readable. For example, within a
+   * Laravel blade template:
    *
    * @if (policy($article)->can('edit'))
    *   // ...
@@ -48,7 +51,7 @@ abstract class Policy {
    */
   public function can($action) {
     if ( ! method_exists($this, $action)) {
-      throw new \BadMethodCallException(sprintf('There is no `%s` method defined on `%s`', $action, static::class));
+      throw new BadMethodCallException(sprintf('There is no [%s] method defined on [%s]', $action, static::class));
     }
 
     $args = func_get_args();

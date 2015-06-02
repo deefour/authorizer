@@ -5,6 +5,7 @@ use Deefour\Authorizer\Contracts\Authorizee;
 use Deefour\Authorizer\Contracts\Scopeable;
 use Deefour\Authorizer\Exceptions\AuthorizationNotPerformedException;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
+use Deefour\Authorizer\Exceptions\NotDefinedException;
 use Deefour\Authorizer\Exceptions\ScopingNotPerformedException;
 use InvalidArgumentException;
 
@@ -14,7 +15,6 @@ trait ProvidesAuthorization {
    * Wether a request to derive and retrieve a scope class has been made for the
    * current request
    *
-   * @protected
    * @var boolean
    */
   protected $_policyScoped = false;
@@ -23,108 +23,9 @@ trait ProvidesAuthorization {
    * Wether a request to derive and retrieve a policy class has been made for
    * the current request
    *
-   * @protected
    * @var boolean
    */
   protected $_policyAuthorized = false;
-
-  /**
-   * Derive the name for and instantiate an instance of a scope class for the
-   * passed
-   * `$scope` object. The `$user` will be used to conditionally modify the
-   * scope.
-   *
-   * @param  Authorizee $user
-   * @param  Scopeable  $scope
-   *
-   * @return Scope|null
-   */
-  protected static function getScope(Authorizee $user, Scopeable $scope) {
-    $policyScope = (new Finder($scope))->scope();
-
-    return $policyScope ? (new $policyScope($user, $scope->baseScope()))->resolve() : null;
-  }
-
-  /**
-   * Derive the name for and instantiate an instance of a policy class for the
-   * passed
-   * `$record` object.
-   *
-   * @param  Authorizee   $user
-   * @param  Authorizable $record
-   *
-   * @return Policy|null
-   */
-  protected static function getPolicy(Authorizee $user, Authorizeable $record) {
-    $policy = (new Finder($record))->policy();
-
-    return $policy ? new $policy($user, $record) : null;
-  }
-
-  /**
-   * Retrieve a modified scope for the passed `$scope`, throwing an exception
-   * if no scope could be found.
-   *
-   * @throws  NotDefinedException
-   *
-   * @param  Authorizee $user
-   * @param  Scopeable  $scope
-   *
-   * @return Scope
-   */
-  protected static function getScopeOrFail(Authorizee $user, Scopeable $scope) {
-    $policyScope = (new Finder($scope))->scopeOrFail();
-
-    return (new $policyScope($user, $scope->baseScope()))->resolve();
-  }
-
-  /**
-   * Retrieve a policy for the passed `$record`, throwing an exception if no
-   * policy could be found.
-   *
-   * @protected
-   * @see    getPolicyOrFail
-   * @throws  NotDefinedException
-   *
-   * @param  Authorizee   $user
-   * @param  Authorizable $record
-   *
-   * @return Policy
-   */
-  protected static function getPolicyOrFail(Authorizee $user, Authorizable $record) {
-    $policy = (new Finder($record))->policyOrFail();
-
-    return new $policy($user, $record);
-  }
-
-  /**
-   * Throws an exception if authorization has not been performed when called.
-   * This is typically used as a guard against requests which have yet to be
-   * guarded by Aide's authorization, called in some sort of middleware.
-   *
-   * @protected
-   * @throws  AuthorizationNotPerformedException
-   */
-  protected function verifyAuthorized() {
-    if ( ! $this->_policyAuthorized) {
-      throw new AuthorizationNotPerformedException;
-    }
-  }
-
-  /**
-   * Throws an exception if the request has not made a request to resolve a
-   * scope. This is typically used as a guard against requests without proper
-   * scoping, called in some sort of middleware, preventing record data from
-   * being accidentally displayed to a user.
-   *
-   * @protected
-   * @throws  ScopingNotPerformedException
-   */
-  protected function verifyPolicyScoped() {
-    if ( ! $this->_policyScoped) {
-      throw new ScopingNotPerformedException;
-    }
-  }
 
   /**
    * Authorizes the current user against the passed `$record` for a specific
@@ -133,8 +34,6 @@ trait ProvidesAuthorization {
    * If no `$action` is passed, `debug_backtrace` looks back at the name of the
    * caller, using it as the method name to call on the policy class for the
    * authorization check.
-   *
-   * @protected
    *
    * @param  Authorizable $record
    *
@@ -146,7 +45,7 @@ trait ProvidesAuthorization {
    *         is not authorized for the requested `$action`
    * @return true
    */
-  protected function authorize(Authorizable $record) {
+  public function authorize(Authorizable $record) {
     $className = get_class($record);
     $args      = func_get_args();
 
@@ -184,7 +83,6 @@ trait ProvidesAuthorization {
    * if no scope could be found. This is a convenience method for the
    * `getScopeOrFail` method.
    *
-   * @protected
    * @see    getScopeOrFail
    * @throws  NotDefinedException
    *
@@ -192,10 +90,10 @@ trait ProvidesAuthorization {
    *
    * @return Scope
    */
-  protected function scope(Scopeable $scope) {
+  public function scope(Scopeable $scope) {
     $this->_policyScoped = true;
 
-    return static::getScopeOrFail($this->authorizee(), $scope);
+    return $this->getScopeOrFail($this->authorizee(), $scope);
   }
 
   /**
@@ -203,7 +101,6 @@ trait ProvidesAuthorization {
    * policy could be found. This is a convenience method for the
    * `getPolicyOrFail` method.
    *
-   * @protected
    * @see    getPolicyOrFail
    * @throws  NotDefinedException
    *
@@ -211,8 +108,103 @@ trait ProvidesAuthorization {
    *
    * @return Policy
    */
-  protected function policy(Authorizable $record) {
-    return static::getPolicyOrFail($this->authorizee(), $record);
+  public function policy(Authorizable $record) {
+    return $this->getPolicyOrFail($this->authorizee(), $record);
+  }
+
+  /**
+   * Derive the name for and instantiate an instance of a scope class for the
+   * passed
+   * `$scope` object. The `$user` will be used to conditionally modify the
+   * scope.
+   *
+   * @param  Authorizee $user
+   * @param  Scopeable  $scope
+   *
+   * @return Scope|null
+   */
+  public function getScope(Authorizee $user, Scopeable $scope) {
+    $policyScope = (new Finder($scope))->scope();
+
+    return $policyScope ? (new $policyScope($user, $scope->baseScope()))->resolve() : null;
+  }
+
+  /**
+   * Derive the name for and instantiate an instance of a policy class for the
+   * passed
+   * `$record` object.
+   *
+   * @param  Authorizee   $user
+   * @param  Authorizable $record
+   *
+   * @return Policy|null
+   */
+  public function getPolicy(Authorizee $user, Authorizeable $record) {
+    $policy = (new Finder($record))->policy();
+
+    return $policy ? new $policy($user, $record) : null;
+  }
+
+  /**
+   * Retrieve a modified scope for the passed `$scope`, throwing an exception
+   * if no scope could be found.
+   *
+   * @throws  NotDefinedException
+   *
+   * @param  Authorizee $user
+   * @param  Scopeable  $scope
+   *
+   * @return Scope
+   */
+  public function getScopeOrFail(Authorizee $user, Scopeable $scope) {
+    $policyScope = (new Finder($scope))->scopeOrFail();
+
+    return (new $policyScope($user, $scope->baseScope()))->resolve();
+  }
+
+  /**
+   * Retrieve a policy for the passed `$record`, throwing an exception if no
+   * policy could be found.
+   *
+   * @see    getPolicyOrFail
+   * @throws  NotDefinedException
+   *
+   * @param  Authorizee   $user
+   * @param  Authorizable $record
+   *
+   * @return Policy
+   */
+  public function getPolicyOrFail(Authorizee $user, Authorizable $record) {
+    $policy = (new Finder($record))->policyOrFail();
+
+    return new $policy($user, $record);
+  }
+
+  /**
+   * Throws an exception if authorization has not been performed when called.
+   * This is typically used as a guard against requests which have yet to be
+   * guarded by Aide's authorization, called in some sort of middleware.
+   *
+   * @throws  AuthorizationNotPerformedException
+   */
+  protected function verifyAuthorized() {
+    if ( ! $this->_policyAuthorized) {
+      throw new AuthorizationNotPerformedException;
+    }
+  }
+
+  /**
+   * Throws an exception if the request has not made a request to resolve a
+   * scope. This is typically used as a guard against requests without proper
+   * scoping, called in some sort of middleware, preventing record data from
+   * being accidentally displayed to a user.
+   *
+   * @throws  ScopingNotPerformedException
+   */
+  protected function verifyPolicyScoped() {
+    if ( ! $this->_policyScoped) {
+      throw new ScopingNotPerformedException;
+    }
   }
 
   /**
@@ -241,7 +233,6 @@ trait ProvidesAuthorization {
    * Returns an object representing the user being used for authorization.
    *
    * @abstract
-   * @protected
    * @return mixed
    */
   abstract protected function currentUser();

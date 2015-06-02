@@ -11,7 +11,7 @@ Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://git
 Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
 
 ```
-"deefour/authorizer": "~0.4.1"
+"deefour/authorizer": "~0.5.0"
 ```
 
 **`>=PHP5.5.0` is required.**
@@ -525,6 +525,11 @@ The `policy()` and `scope()` methods are pass-through's to the `...OrFail()` met
 - Source Code: https://github.com/deefour/authorizer
 
 ## Changelog
+
+#### 0.5.0 - June 2, 2015
+
+ - All static methods are now public instance methods.
+ - Code cleaning.
 
 #### 0.4.0 - March 25, 2015
 
