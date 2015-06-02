@@ -152,11 +152,14 @@ Some of the helper methods Authorizer provides automatically derive policy and s
 ```php
 use Deefour\Authorizer\Authorizer;
 
-$article   = new Article;
-$nsArticle = new Foo\Bar\Article;
+$article    = new Article;
+$nsArticle  = new Foo\Bar\Article;
+$user       = User::find(1);
 
-Authorizer::policy($user, $article);   //=> ArticlePolicy
-Authorizer::policy($user, $nsArticle); //=> Foo\Bar\ArticlePolicy
+$authorizer = new Authorizer($user);
+
+$authorizer->policy($user, $article);   //=> ArticlePolicy
+$authorizer->policy($user, $nsArticle); //=> Foo\Bar\ArticlePolicy
 ```
 
 This behavior can be overridden. Both of the `Article` classes above, regardless of their namespace, may share a single `Policies\ArticlePolicy` class. A `policyNamespace()` method can be implemented on both `Article` and `Foo\Bar\Article`.
@@ -172,11 +175,14 @@ This will cause the following lookups to occur:
 ```php
 use Deefour\Authorizer\Authorizer;
 
-$article   = new Article;
-$nsArticle = new Foo\Bar\Article;
+$article    = new Article;
+$nsArticle  = new Foo\Bar\Article;
+$user       = User::find(1);
 
-Authorizer::policy($user, $article);   //=> Policies\ArticlePolicy
-Authorizer::policy($user, $nsArticle); //=> Policies\ArticlePolicy
+$authorizer = new Authorizer($user);
+
+$authorizer->policy($user, $article);   //=> Policies\ArticlePolicy
+$authorizer->policy($user, $nsArticle); //=> Policies\ArticlePolicy
 ```
 
 ## Making Classes Aware of Authorization
@@ -466,58 +472,6 @@ class CreateArticleRequest extends FormRequest {
   }
 }
 ```
-
-## Standalone Instantiation
-
-Policies and scopes can easily be retrieved using static or instance methods on the `Deefour\Authorizer\Authorizer` class. The user object to be authorized must be provided as the first argument.
-
-### Static Instantiation
-
-The following methods are statically exposed:
-
- - `Authorizer::policy()`
- - `Authorizer::policyOrFail()`
- - `Authorizer::scope()`
- - `Authorizer::scopeOrFail()`
-
-For example:
-
-```php
-use Deefour\Authorizer\Authorizer;
-
-$user    = User::find(1);
-$article = $user->articles()->first();
-
-Authorizer::policy($user, $article);         //=> ArticlePolicy
-Authorizer::policyOrFail($user, $article);   //=> ArticlePolicy
-
-Authorizer::scope($user, new Article);       //=> ArticleScope
-Authorizer::scopeOrFail($user, new Article); //=> ArticleScope
-```
-
-The `...OrFail` version of each method fails loudly with a `Deefour\Authorizer\Exceptions\NotDefinedException` exception if the policy class Aide tries to instantiate doesn't exist.
-
-### Instance Instantiation
-
-A limited version of the above API is available when creating an instance of the `Policy` class.
-
- - `Authorizer::policy()`
- - `Authorizer::scope()`
- - `Authorizer::authorize()`
-
-```php
-use Deefour\Authorizer\Policy;
-
-$user       = User::find(1);
-$article    = $user->articles()->first();
-$authorizer = new Authorizer($user);
-
-$authorizer->policy($article);            //=> ArticlePolicy
-$authorizer->scope($article);             //=> ArticleScope
-$authorizer->authorize($article, 'edit'); //=> true | Deefour\Authorizer\Exceptions\NotAuthorizedException
-```
-
-The `policy()` and `scope()` methods are pass-through's to the `...OrFail()` methods on the `PolicyTrait`; exceptions will be thrown if a policy or scope cannot be found.
 
 ## Contribute
 
