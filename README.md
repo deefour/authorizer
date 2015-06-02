@@ -446,14 +446,12 @@ Laravel's `Illuminate\Foundation\Http\FormRequest` class provides support for an
 ```php
 <?php namespace App\Http\Requests;
 
-use Deefour\Authorizer\Authorizer;
+use Deefour\Authorizer\ProvidesAuthorization;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateArticleRequest extends FormRequest {
 
-  public function __construct(Authorizer $authorizer) {
-    $this->policy = $authorizer->policy(new Article);
-  }
+  use ProvidesAuthorization;
 
   public function rules() {
     $rules = [
@@ -468,8 +466,9 @@ class CreateArticleRequest extends FormRequest {
   }
 
   public function authorize() {
-    return $this->policy->can('create');
+    return $this->policy(new Article)->can('create');
   }
+
 }
 ```
 
