@@ -1,4 +1,7 @@
-<?php namespace Deefour\Authorizer\Contracts;
+<?php
 
-interface Authorizee {
+namespace Deefour\Authorizer\Contracts;
+
+interface Authorizee
+{
 }

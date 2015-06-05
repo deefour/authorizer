@@ -1,4 +1,6 @@
-<?php namespace Deefour\Authorizer;
+<?php
+
+namespace Deefour\Authorizer;
 
 use Deefour\Authorizer\Contracts\Authorizee;
 
@@ -13,31 +15,32 @@ use Deefour\Authorizer\Contracts\Authorizee;
  *   $authorizer->policy(new Article); //=> ArticlePolicy
  *   $authorizer->scope(new Article);  //=> ArticleScope
  */
-class Authorizer {
+class Authorizer
+{
+    use ProvidesAuthorization;
 
-  use ProvidesAuthorization;
+    /**
+     * The current user.
+     *
+     * @var Authorizee
+     */
+    protected $user;
 
-  /**
-   * The current user
-   *
-   * @var Authorizee
-   */
-  protected $user;
+    /**
+     * Configure the policy class with the current user and context.
+     *
+     * @param Authorizee $user
+     */
+    public function __construct(Authorizee $user = null)
+    {
+        $this->user = $user;
+    }
 
-  /**
-   * Configure the policy class with the current user and context
-   *
-   * @param Authorizee $user
-   */
-  public function __construct(Authorizee $user = null) {
-    $this->user = $user;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function user() {
-    return $this->user;
-  }
-
+    /**
+     * {@inheritdoc}
+     */
+    protected function user()
+    {
+        return $this->user;
+    }
 }

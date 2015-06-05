@@ -1,12 +1,13 @@
-<?php namespace Deefour\Authorizer\Contracts;
+<?php
 
-interface ResolvesAuthorizable {
+namespace Deefour\Authorizer\Contracts;
 
-  /**
-   * Resolves an authorizable object linked to this implementing resource.
-   *
-   * @return Authorizable
-   */
-  public function resolveAuthorizable();
-
+interface ResolvesAuthorizable
+{
+    /**
+     * Resolves an authorizable object linked to this implementing resource.
+     *
+     * @return Authorizable
+     */
+    public function resolveAuthorizable();
 }

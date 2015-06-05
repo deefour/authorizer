@@ -1,18 +1,20 @@
-<?php namespace spec\Deefour\Authorizer\Stubs;
+<?php
+
+namespace spec\Deefour\Authorizer\Stubs;
 
 use Deefour\Authorizer\Stubs\Article;
 use Deefour\Authorizer\Stubs\User;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
-class EmptyPolicySpec extends ObjectBehavior {
+class EmptyPolicySpec extends ObjectBehavior
+{
+    public function let(User $user, Article $article)
+    {
+        $this->beConstructedWith($user, $article);
+    }
 
-  function let(User $user, Article $article) {
-    $this->beConstructedWith($user, $article);
-  }
-
-  function it_is_initializable() {
-    $this->shouldHaveType('Deefour\Authorizer\Stubs\EmptyPolicy');
-  }
-
+    public function it_is_initializable()
+    {
+        $this->shouldHaveType('Deefour\Authorizer\Stubs\EmptyPolicy');
+    }
 }

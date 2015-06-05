@@ -1,4 +1,6 @@
-<?php namespace Deefour\Authorizer\Exceptions;
+<?php
+
+namespace Deefour\Authorizer\Exceptions;
 
 /**
  * When thrown, no attempt to resolve a scope was performed for the current
@@ -8,5 +10,6 @@
  * other middleware to help prevent unwanted data from being displayed to a
  * user.
  */
-class ScopingNotPerformedException extends Exception {
+class ScopingNotPerformedException extends Exception
+{
 }

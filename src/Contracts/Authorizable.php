@@ -1,20 +1,21 @@
-<?php namespace Deefour\Authorizer\Contracts;
+<?php
 
-interface Authorizable {
+namespace Deefour\Authorizer\Contracts;
 
-  /**
-   * The namespace to use for the policy class lookups.
-   *
-   * @return string
-   */
-  public function policyNamespace();
+interface Authorizable
+{
+    /**
+     * The namespace to use for the policy class lookups.
+     *
+     * @return string
+     */
+    public function policyNamespace();
 
-  /**
-   * Generates the name of the policy class, usually based off of the name of
-   * the class implementing this contract.
-   *
-   * @return string
-   */
-  public function policyClass();
-
+    /**
+     * Generates the name of the policy class, usually based off of the name of
+     * the class implementing this contract.
+     *
+     * @return string
+     */
+    public function policyClass();
 }

@@ -1,23 +1,28 @@
-<?php namespace Deefour\Authorizer\Stubs;
+<?php
+
+namespace Deefour\Authorizer\Stubs;
 
 use Deefour\Authorizer\Policy;
 
-class ArticlePolicy extends Policy {
-
-  public function create() {
-    return true;
+class ArticlePolicy extends Policy
+{
+  public function create()
+  {
+      return true;
   }
 
-  public function edit() {
-    return false;
-  }
+    public function edit()
+    {
+        return false;
+    }
 
-  public function destroy($foo) {
-    return $foo === 'baz';
-  }
+    public function destroy($foo)
+    {
+        return $foo === 'baz';
+    }
 
-  public function permittedAttributes() {
-    return [ 'title', 'user_id' ];
-  }
-
+    public function permittedAttributes()
+    {
+        return ['title', 'user_id'];
+    }
 }

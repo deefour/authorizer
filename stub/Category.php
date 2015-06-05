@@ -1,4 +1,7 @@
-<?php namespace Deefour\Authorizer\Stubs;
+<?php
 
-class Category extends Model {
+namespace Deefour\Authorizer\Stubs;
+
+class Category extends Model
+{
 }

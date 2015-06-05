@@ -1,34 +1,40 @@
-<?php namespace spec\Deefour\Authorizer\Stubs;
+<?php
+
+namespace spec\Deefour\Authorizer\Stubs;
 
 use Deefour\Authorizer\Stubs\Article;
 use Deefour\Authorizer\Stubs\User;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
-class ArticlePolicySpec extends ObjectBehavior {
+class ArticlePolicySpec extends ObjectBehavior
+{
+    public function let(User $user, Article $article)
+    {
+        $this->beConstructedWith($user, $article);
+    }
 
-  function let(User $user, Article $article) {
-    $this->beConstructedWith($user, $article);
-  }
+    public function it_is_initializable()
+    {
+        $this->shouldHaveType('Deefour\Authorizer\Stubs\ArticlePolicy');
+    }
 
-  function it_is_initializable() {
-    $this->shouldHaveType('Deefour\Authorizer\Stubs\ArticlePolicy');
-  }
+    public function it_should_respond_to_actions()
+    {
+        $this->edit()->shouldBeBoolean();
+    }
 
-  function it_should_respond_to_actions() {
-    $this->edit()->shouldBeBoolean();
-  }
+    public function it_should_call_action_via_can()
+    {
+        $this->can('edit')->shouldBeBoolean();
+    }
 
-  function it_should_call_action_via_can() {
-    $this->can('edit')->shouldBeBoolean();
-  }
+    public function it_should_throw_exception_for_bad_exception_via_can()
+    {
+        $this->shouldThrow('\\BadMethodCallException')->during('can', ['bad']);
+    }
 
-  function it_should_throw_exception_for_bad_exception_via_can() {
-    $this->shouldThrow('\\BadMethodCallException')->during('can', [ 'bad' ]);
-  }
-
-  function it_should_respond_to_permitted_attributes() {
-    $this->permittedAttributes()->shouldBeArray();
-  }
-
+    public function it_should_respond_to_permitted_attributes()
+    {
+        $this->permittedAttributes()->shouldBeArray();
+    }
 }

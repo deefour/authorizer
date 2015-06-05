@@ -1,4 +1,6 @@
-<?php namespace Deefour\Authorizer\Exceptions;
+<?php
+
+namespace Deefour\Authorizer\Exceptions;
 
 use Deefour\Authorizer\Contracts\Authorizable;
 use Deefour\Authorizer\Policy;
@@ -10,36 +12,36 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
  *
  * This is the generic "sorry, you can't do that!" exception.
  */
-class NotAuthorizedException extends UnauthorizedHttpException {
+class NotAuthorizedException extends UnauthorizedHttpException
+{
+    /**
+     * Constructor.
+     *
+     * {@inheritdoc}
+     */
+    public function __construct($message)
+    {
+        parent::__construct(null, $message);
+    }
 
-  /**
-   * Constructor.
-   *
-   * {@inheritdoc}
-   */
-  public function __construct($message) {
-    parent::__construct(null, $message);
-  }
+    /**
+     * The name of the action being authorized.
+     *
+     * @var string
+     */
+    public $action;
 
-  /**
-   * The name of the action being authorized.
-   *
-   * @var string
-   */
-  public $action;
+    /**
+     * The policy class.
+     *
+     * @var Policy
+     */
+    public $policy;
 
-  /**
-   * The policy class.
-   *
-   * @var Policy
-   */
-  public $policy;
-
-  /**
-   * The authorizable record.
-   *
-   * @var Authorizable
-   */
-  public $record;
-
+    /**
+     * The authorizable record.
+     *
+     * @var Authorizable
+     */
+    public $record;
 }

@@ -1,4 +1,7 @@
-<?php namespace Deefour\Authorizer\Stubs;
+<?php
 
-class Article extends Model {
+namespace Deefour\Authorizer\Stubs;
+
+class Article extends Model
+{
 }
