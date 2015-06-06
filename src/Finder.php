@@ -85,16 +85,7 @@ class Finder
      */
     public function scopeOrFail()
     {
-        $scope = $this->scope();
-
-        if (class_exists($scope)) {
-            return $scope;
-        }
-
-        throw new NotDefinedException(sprintf(
-            'Unable to find scope class for `%s`',
-            get_class($this->object)
-        ));
+        return $this->getOrFail(self::SCOPE);
     }
 
     /**
@@ -110,16 +101,7 @@ class Finder
      */
     public function policyOrFail()
     {
-        $policy = $this->policy();
-
-        if (class_exists($policy)) {
-            return $policy;
-        }
-
-        throw new NotDefinedException(sprintf(
-            'Unable to find policy class for `%s`',
-            get_class($this->object)
-        ));
+        return $this->getOrFail(self::POLICY);
     }
 
     /**
@@ -158,5 +140,27 @@ class Finder
         $shortName = (new ReflectionClass($this->object))->getShortName();
 
         return implode('\\', [$namespace, $shortName.ucfirst($type)]);
+    }
+
+    /**
+     * Find a policy or scope. Throw an exception otherwise.
+     *
+     * @throws NotDefinedException
+     * @param  string  $which
+     * @return Policy|Scope
+     */
+    protected function getOrFail($which)
+    {
+        $what = $this->$which();
+
+        if (class_exists($what)) {
+            return $what;
+        }
+
+        throw new NotDefinedException(sprintf(
+            'Unable to find %s class for [%s]',
+            $which,
+            get_class($this->object)
+        ));
     }
 }
