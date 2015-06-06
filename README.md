@@ -11,7 +11,7 @@ Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://git
 Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
 
 ```
-"deefour/authorizer": "~0.5.0"
+"deefour/authorizer": "~0.5.1"
 ```
 
 **`>=PHP5.5.0` is required.**
@@ -484,6 +484,10 @@ class CreateArticleRequest extends FormRequest {
 - Source Code: https://github.com/deefour/authorizer
 
 ## Changelog
+
+#### 0.5.1 - June 5, 2015
+
+ - Now following PSR-2.
 
 #### 0.5.0 - June 2, 2015
 
