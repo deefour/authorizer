@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/deefour/authorizer.svg)](https://travis-ci.org/deefour/authorizer)
 [![Packagist Version](http://img.shields.io/packagist/v/deefour/authorizer.svg)](https://packagist.org/packages/deefour/authorizer)
 [![Code Climate](https://codeclimate.com/github/deefour/authorizer/badges/gpa.svg)](https://codeclimate.com/github/deefour/authorizer)
+[![License](https://poser.pugx.org/deefour/interactor/authorizer.svg)](https://packagist.org/packages/deefour/authorizer)
 
 Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://github.com/elabs/pundit).
 
@@ -25,12 +26,12 @@ At the core of Authorizer is the notion of policy classes. A policy must extend 
 ```php
 use Deefour\Authorizer\Policy;
 
-class ArticlePolicy extends Policy {
-
-  public function edit() {
-    return $this->user->id === $this->record->author_id; // Only the article's author is allowed to edit it
-  }
-
+class ArticlePolicy extends Policy
+{
+    public function edit()
+    {
+        return $this->user->id === $this->record->author_id; // Only the article's author is allowed to edit it
+    }
 }
 ```
 
@@ -52,20 +53,20 @@ A special `permittedAttributes` method can be created on a policy to conditional
 ```php
 use Deefour\Authorizer\Policy;
 
-class ArticlePolicy extends Policy {
+class ArticlePolicy extends Policy
+{
+    public function permittedAttributes()
+    {
+        $attributes = [ 'title', 'body', ];
 
-  public function permittedAttributes() {
-    $attributes = [ 'title', 'body', ];
+        // prevent the author and slug from being modified after the article
+        // has been persisted to the database.
+        if ( ! $this->record->exists) {
+            return array_merge($attributes, [ 'user_id', 'slug', ]);
+        }
 
-    // prevent the author and slug from being modified after the article
-    // has been persisted to the database.
-    if ( ! $this->record->exists) {
-      return array_merge($attributes, [ 'user_id', 'slug', ]);
+        return $attributes;
     }
-
-    return $attributes;
-  }
-
 }
 ```
 
@@ -80,16 +81,16 @@ use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
 use Deefour\Authorizer\Policy;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 
-class Policy extends Policy {
+class Policy extends Policy
+{
+    public function __construct(AuthorizeeContract $user, $record)
+    {
+        if (is_null($user) or ! $user->exists) {
+            throw new NotAuthorizedException('You must be logged in!');
+        }
 
-  public function __construct(AuthorizeeContract $user, $record) {
-    if (is_null($user) or ! $user->exists) {
-      throw new NotAuthorizedException('You must be logged in!');
+        parent::__construct($user, $record);
     }
-
-    parent::__construct($user, $record);
-  }
-
 }
 ```
 
@@ -100,24 +101,24 @@ Policy-based scopes are also supported. A policy scope must extend `Deefour\Auth
 ```php
 use Deefour\Authorizer\Scope;
 
-class ArticleScope extends Scope {
-
-  public function resolve() {
-    if ($this->user->isAdmin()) {
-      return $this->scope->all();
-    } else {
-      return $this->scope->where('published', true)->get();
-    }
+class ArticleScope extends Scope
+{
+    public function resolve()
+    {
+        if ($this->user->isAdmin()) {
+            return $this->scope->all();
+        } else {
+            return $this->scope->where('published', true)->get();
+        }
   }
-
 }
 ```
 
 When a scope class is instantiated, the `$user` to authorize is provided along with a `$scope` to manipulate.
 
 ```php
-$user        = User::find(1);
-$query       = Article::newQuery();
+$user  = User::find(1);
+$query = Article::newQuery();
 
 $policyScope = new ArticleScope($user, $query);
 
@@ -138,10 +139,9 @@ A default implementation for this interface is provided in the `Deefour\Authoriz
 use Deefour\Authorizer\Contracts\Authorizable as AuthorizableContract;
 use Deefour\Authorizer\ResolvesPoliciesAndScopes;
 
-class Article implements AuthorizableContract {
-
-  use ResolvesPoliciesAndScopes;
-
+class Article implements AuthorizableContract
+{
+    use ResolvesPoliciesAndScopes;
 }
 ```
 
@@ -165,8 +165,9 @@ $authorizer->policy($user, $nsArticle); //=> Foo\Bar\ArticlePolicy
 This behavior can be overridden. Both of the `Article` classes above, regardless of their namespace, may share a single `Policies\ArticlePolicy` class. A `policyNamespace()` method can be implemented on both `Article` and `Foo\Bar\Article`.
 
 ```php
-public function policyNamespace() {
-  return 'Policies';
+public function policyNamespace()
+{
+    return 'Policies';
 }
 ```
 
@@ -192,14 +193,14 @@ The `Deefour\Authorizer\ProvidesAuthorization` trait can be included in any clas
 ```php
 use Deefour\Authorizer\ProvidesAuthorization;
 
-class ArticleController {
+class ArticleController
+{
+    use ProvidesAuthorization;
 
-  use ProvidesAuthorization;
-
-  protected function user() {
-    return app('user') ?: new User;
-  }
-
+    protected function user()
+    {
+        return app('user') ?: new User;
+    }
 }
 ```
 
@@ -222,12 +223,13 @@ $this->scope($query); //=> Properly scoped collection of Articles via ArticleSco
 A failing authorization can trigger a loud response, throwing `Deefour\Authorizer\Exceptions\NotAuthorizedException`. This can short-circuit method execution with a single line of code.
 
 ```php
-public function edit($id) {
-  $object = Article::find($id);
+public function edit($id)
+{
+    $object = Article::find($id);
 
-  $this->authorize($object); //=> NotAuthorizedException will be thrown on failure
+    $this->authorize($object); //=> NotAuthorizedException will be thrown on failure
 
-  echo "You can edit this article!"
+    echo "You can edit this article!"
 }
 ```
 
@@ -257,22 +259,22 @@ When calling the `authorize()` method, a policy class is instantiated and the fo
 A base `App\Http\Controllers\Controller` controller in Laravel might look as follows with Authorizer integrated
 
 ```php
-<?php namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Deefour\Authorizer\ProvidesAuthorization;
 use App\User;
 
-abstract class Controller extends BaseController {
+abstract class Controller extends BaseController
+{
+    use ValidatesRequests;
+    use ProvidesAuthorization;
 
-  use ValidatesRequests;
-  use ProvidesAuthorization;
-
-  protected function user() {
-    return app('auth')->user() ?: new User;
-  }
-
+    protected function user()
+    {
+        return app('auth')->user() ?: new User;
+    }
 }
 ```
 
@@ -299,26 +301,29 @@ method defined in the base controller above.
 The `AuthorizationServiceProvider` binds an implementation of the `Authorizee` contract for use within the container.
 
 ```php
-$this->app->bind(Authorizee::class, function ($app) {
-  return $app['auth']->user();
+$this->app->bind(Authorizee::class, function ($app)
+{
+    return $app['auth']->user();
 });
 ```
 
 This can be overridden in your `app/Providers/AppServiceProvider.php`.
 
 ```php
-protected function bindAuthorizeeWithDefault() {
-  $this->app->bind(Authorizee::class, function ($app) {
-    return $app['auth']->user() ?: new User;
-  });
+protected function bindAuthorizeeWithDefault()
+{
+    $this->app->bind(Authorizee::class, function ($app) {
+        return $app['auth']->user() ?: new User;
+    });
 }
 ```
 
 To keep things DRY, the `user()` method in the base controller could be modified to take advantage of this same binding.
 
 ```php
-public function user() {
-  return app(Authorizee::class);
+public function user()
+{
+    return app(Authorizee::class);
 }
 ```
 
@@ -334,12 +339,12 @@ or via type-hinted methods resolved through the container
 use Deefour\Authorizer\Authorizer;
 // ...
 
-class ArticleController extends Controller {
-
-  public function new(Authorizer $authorizer) {
-    $authorizer->policy(new Article); //=> ArticlePolicy
-  }
-
+class ArticleController extends Controller
+{
+    public function new(Authorizer $authorizer)
+    {
+        $authorizer->policy(new Article); //=> ArticlePolicy
+    }
 }
 ```
 
@@ -395,31 +400,31 @@ The `can()` method above is simply an alternative syntax to `policy($article)->e
 When a call to `authorize` fails, a `Deefour\Authorizer\Exceptions\NotAuthorizedException` exception is thrown. This can be caught by Laravel with a simple middleware.
 
 ```php
-<?php namespace App\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 use Illuminate\Contracts\Routing\Middleware;
 
-class HandleNotAuthorizedExceptionMiddleware implements Middleware {
+class HandleNotAuthorizedExceptionMiddleware implements Middleware
+{
+    /**
+     * Run the request filter.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        try {
+            $response = $next($request);
+        } catch (NotAuthorizedException $e) {
+            return response('Unauthorized.', 401); // fail gracefully
+        }
 
-  /**
-   * Run the request filter.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \Closure  $next
-   * @return mixed
-  */
-  public function handle($request, Closure $next) {
-    try {
-      $response = $next($request);
-    } catch (NotAuthorizedException $e) {
-      return response('Unauthorized.', 401); // fail gracefully
+        return $response;
     }
-
-    return $response;
-  }
-
 }
 ```
 
@@ -428,20 +433,22 @@ class HandleNotAuthorizedExceptionMiddleware implements Middleware {
 An after filter can be configured to prevent actions missing authorization checks from being wide open by default. The following could be placed in a controller
 
 ```php
-public function __construct() {
-  $this->afterFilter(function() {
-    $this->verifyAuthorized();
-  }, [ 'except' => 'index' ]);
+public function __construct()
+{
+    $this->afterFilter(function() {
+        $this->verifyAuthorized();
+    }, [ 'except' => 'index' ]);
 }
 ```
 
 There is a similar method to ensure a scope is used, which is particularly useful for `index` actions where a collection of objects is rendered and is dependent on the current user's privileges.
 
 ```php
-public function __construct() {
-  $this->afterFilter(function() {
-    $this->requirePolicyScoped();
-  }, [ 'only' => 'index' ]);
+public function __construct()
+{
+    $this->afterFilter(function() {
+        $this->requirePolicyScoped();
+    }, [ 'only' => 'index' ]);
 }
 ```
 
@@ -450,31 +457,32 @@ public function __construct() {
 Laravel's `Illuminate\Foundation\Http\FormRequest` class provides support for an `authorize()` method. Integrating policies into form request objects is easy. An added benefit is the validation rules can be based on authorization too:
 
 ```php
-<?php namespace App\Http\Requests;
+namespace App\Http\Requests;
 
 use Deefour\Authorizer\ProvidesAuthorization;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateArticleRequest extends FormRequest {
+class CreateArticleRequest extends FormRequest
+{
+    use ProvidesAuthorization;
 
-  use ProvidesAuthorization;
+    public function rules()
+    {
+        $rules = [
+            'title' => 'required'
+        ];
 
-  public function rules() {
-    $rules = [
-      'title' => 'required'
-    ];
+        if ( ! $this->policy->can('createWithoutApproval')) {
+            $rules['approval_from'] => 'required';
+        }
 
-    if ( ! $this->policy->can('createWithoutApproval')) {
-      $rules['approval_from'] => 'required';
+        return $rules;
     }
 
-    return $rules;
-  }
-
-  public function authorize() {
-    return $this->policy(new Article)->can('create');
-  }
-
+    public function authorize()
+    {
+        return $this->policy(new Article)->can('create');
+    }
 }
 ```
 
