@@ -21,7 +21,7 @@ class NotAuthorizedException extends AccessDeniedHttpException
      */
     public function __construct($message)
     {
-        parent::__construct(null, $message);
+        parent::__construct($message);
     }
 
     /**
