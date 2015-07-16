@@ -4,7 +4,7 @@ namespace Deefour\Authorizer\Exceptions;
 
 use Deefour\Authorizer\Contracts\Authorizable;
 use Deefour\Authorizer\Policy;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * When thrown, the current user is not allowed to perform the requested action
@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
  *
  * This is the generic "sorry, you can't do that!" exception.
  */
-class NotAuthorizedException extends UnauthorizedHttpException
+class NotAuthorizedException extends AccessDeniedHttpException
 {
     /**
      * Constructor.
