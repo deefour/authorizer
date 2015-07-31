@@ -493,6 +493,10 @@ class CreateArticleRequest extends FormRequest
 
 ## Changelog
 
+#### 0.5.2 - July 31, 2015
+
+ - Throw `403` instead of `401` when unauthorized.
+
 #### 0.5.1 - June 5, 2015
 
  - Now following PSR-2.
