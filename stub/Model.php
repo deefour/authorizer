@@ -4,11 +4,11 @@ namespace Deefour\Authorizer\Stubs;
 
 use Deefour\Authorizer\Contracts\Authorizable;
 use Deefour\Authorizer\Contracts\Scopeable;
-use Deefour\Authorizer\ResolvesPoliciesAndScopes;
+use Deefour\Authorizer\ProducesPoliciesAndScopes;
 
 abstract class Model implements Authorizable, Scopeable
 {
-  use ResolvesPoliciesAndScopes;
+  use ProducesPoliciesAndScopes;
 
   /**
    * {@inheritdoc}

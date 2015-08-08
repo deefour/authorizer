@@ -15,21 +15,11 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class NotAuthorizedException extends AccessDeniedHttpException
 {
     /**
-     * Constructor.
+     * The authorizable record.
      *
-     * {@inheritdoc}
+     * @var Authorizable
      */
-    public function __construct($message)
-    {
-        parent::__construct($message);
-    }
-
-    /**
-     * The name of the action being authorized.
-     *
-     * @var string
-     */
-    public $action;
+    public $record;
 
     /**
      * The policy class.
@@ -39,9 +29,41 @@ class NotAuthorizedException extends AccessDeniedHttpException
     public $policy;
 
     /**
-     * The authorizable record.
+     * The name of the action being authorized.
      *
-     * @var Authorizable
+     * @var string
      */
-    public $record;
+    public $action;
+
+    /**
+     * Constructor.
+     *
+     * {@inheritdoc}
+     *
+     * @param Authorizable $record
+     * @param Policy $policy
+     * @param string $action
+     */
+    public function __construct(Authorizable $record, Policy $policy, $action)
+    {
+        $this->record = $record;
+        $this->policy = $policy;
+        $this->action = $action;
+
+        parent::__construct($this->message());
+    }
+
+    /**
+     * Format a message for the exception.
+     *
+     * @return string
+     */
+    protected function message() {
+        return sprintf(
+            'Not allowed to [%s] the [%s] (according to [%s])',
+            $this->action,
+            get_class($this->record),
+            get_class($this->policy)
+        );
+    }
 }

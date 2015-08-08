@@ -2,6 +2,8 @@
 
 namespace Deefour\Authorizer\Exceptions;
 
+use Exception;
+
 /**
  * When thrown, no attempt to resolve a scope was performed for the current
  * request.
@@ -12,4 +14,5 @@ namespace Deefour\Authorizer\Exceptions;
  */
 class ScopingNotPerformedException extends Exception
 {
+    //
 }

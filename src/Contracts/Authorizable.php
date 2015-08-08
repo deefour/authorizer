@@ -2,20 +2,25 @@
 
 namespace Deefour\Authorizer\Contracts;
 
-interface Authorizable
+use Deefour\Authorizer\Policy;
+use Deefour\Authorizer\Scope;
+use Deefour\Producer\Contracts\Producer;
+
+interface Authorizable extends Producer
 {
     /**
-     * The namespace to use for the policy class lookups.
+     * Wrap this object in a newly instantiated policy.
      *
-     * @return string
+     * @param string $policy [optional]
+     * @return Policy
      */
-    public function policyNamespace();
+    public function policy(Authorizee $authorizee, $policy = null);
 
     /**
-     * Generates the name of the policy class, usually based off of the name of
-     * the class implementing this contract.
+     * Wrap this object in a newly instantiated scope.
      *
-     * @return string
+     * @param string $scope [optional]
+     * @return Scope
      */
-    public function policyClass();
+    public function scope(Authorizee $authorizee, $scope = null);
 }

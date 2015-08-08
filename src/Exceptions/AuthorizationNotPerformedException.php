@@ -2,6 +2,8 @@
 
 namespace Deefour\Authorizer\Exceptions;
 
+use Exception;
+
 /**
  * When thrown, no attempt to authorize the current user against any policy was
  * performed for the current request.
@@ -13,4 +15,5 @@ namespace Deefour\Authorizer\Exceptions;
  */
 class AuthorizationNotPerformedException extends Exception
 {
+    //
 }

@@ -27,7 +27,7 @@ class AuthorizerSpec extends ObjectBehavior
 
     public function it_generates_scopes()
     {
-        $this->scope(new Article())->shouldBe('foo');
+        $this->scope(new Article())->resolve()->shouldBe('foo');
     }
 
     public function it_authorizes_actions()

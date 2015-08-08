@@ -2,11 +2,13 @@
 
 namespace Deefour\Authorizer;
 
+use Deefour\Producer\Contracts\Producible;
+
 /**
  * Base scope class all application scopes are encouraged to extend. Aide
  * expects a `resolve` method to be present on the scope.
  */
-abstract class Scope
+abstract class Scope implements Producible
 {
     /**
      * The user.

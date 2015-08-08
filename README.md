@@ -9,10 +9,10 @@ Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://git
 
 ## Getting Started
 
-Add Authorizer to your `composer.json` file and run `composer update`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
+Run the following to add Authorizer to your project's `composer.json`. See [Packagist](https://packagist.org/packages/deefour/authorizer) for specific versions.
 
-```
-"deefour/authorizer": "~0.5.1"
+```bash
+composer require deefour/authorizer
 ```
 
 **`>=PHP5.5.0` is required.**
@@ -127,27 +127,21 @@ $policyScope->resolve(); //=> ALL Articles if the $user is an administrator; oth
 
 ## Authorizable Objects
 
-Any PHP class can be used as the source object for which authorization will be performed as long as it implements `Deefour\Authorizer\Contracts\Authorizable`. This will require the following methods be defined on the object
-
- - `policyNamespace()`
- - `policyClass()`
- - `scopeClass()`
-
-A default implementation for this interface is provided in the `Deefour\Authorizer\Authorizable` trait. A basic implementation for an authorizable object looks something like this
+Any PHP class can be used as the source object for which authorization will be performed as long as it implements `Deefour\Authorizer\Contracts\Authorizable`. A default implementation for this interface is provided in the `Deefour\Authorizer\ProducesPoliciesAndScopes` trait. A basic implementation for an authorizable object looks something like this
 
 ```php
-use Deefour\Authorizer\Contracts\Authorizable as AuthorizableContract;
-use Deefour\Authorizer\ResolvesPoliciesAndScopes;
+use Deefour\Authorizer\Contracts\Authorizable;
+use Deefour\Authorizer\ProducesPoliciesAndScopes;
 
-class Article implements AuthorizableContract
+class Article implements Authorizable
 {
-    use ResolvesPoliciesAndScopes;
+    use ProducesPoliciesAndScopes;
 }
 ```
 
 ### Policy & Scope Class Resolution
 
-Some of the helper methods Authorizer provides automatically derive policy and scope class names based on the FQCN of the passed object. It does this by using the same namespace as the object, appending `'Policy'` or `'Scope'` to the object name. For example
+When asking an authorizable object for a policy or scope, the default behavior is to simply append `'Policy'` or `'Scope'` to the FQCN of the object. For example
 
 ```php
 use Deefour\Authorizer\Authorizer;
@@ -162,29 +156,30 @@ $authorizer->policy($user, $article);   //=> ArticlePolicy
 $authorizer->policy($user, $nsArticle); //=> Foo\Bar\ArticlePolicy
 ```
 
-This behavior can be overridden. Both of the `Article` classes above, regardless of their namespace, may share a single `Policies\ArticlePolicy` class. A `policyNamespace()` method can be implemented on both `Article` and `Foo\Bar\Article`.
+This behavior can be customized through a `resolve()` method on the authorizable object. This method will be passed a single argument containing either an FQCN or a string identifier like 'policy', 'scope', etc... The return value should be the FQCN of the class to be created. For example
 
 ```php
-public function policyNamespace()
+public function resolve($what)
 {
-    return 'Policies';
+    if (class_exists($what)) {
+        return $what;
+    }
+
+    $className = class_name($this);
+    $suffix    = ucfirst($what);
+
+    return join('\\', [ $suffix, $className.$suffix ]);
 }
 ```
 
-This will cause the following lookups to occur:
+This would cause Authorizer to generate the following FQCN's for the article example above
 
 ```php
-use Deefour\Authorizer\Authorizer;
-
-$article    = new Article;
-$nsArticle  = new Foo\Bar\Article;
-$user       = User::find(1);
-
-$authorizer = new Authorizer($user);
-
-$authorizer->policy($user, $article);   //=> Policies\ArticlePolicy
-$authorizer->policy($user, $nsArticle); //=> Policies\ArticlePolicy
+$authorizer->policy($user, $article);   //=> Policy\ArticlePolicy
+$authorizer->policy($user, $nsArticle); //=> Policy\Foo\Bar\ArticlePolicy
 ```
+
+A more opinionated default can be found in [deefour/producer](https://github.com/deefour/producer)'s [`ResolvesProducibles`](https://github.com/deefour/producer/blob/master/src/ResolvesProducibles.php) trait.
 
 ## Making Classes Aware of Authorization
 
@@ -204,7 +199,7 @@ class ArticleController
 }
 ```
 
-Within the context of the `ArticleController` class above, the policy class for an object can be generated with simply
+Within the context of the `ArticleController` above, the policy for an object can be generated with simply
 
 ```php
 $object = new Article;
@@ -225,34 +220,19 @@ A failing authorization can trigger a loud response, throwing `Deefour\Authorize
 ```php
 public function edit($id)
 {
-    $object = Article::find($id);
+    $article = Article::find($id);
 
-    $this->authorize($object); //=> NotAuthorizedException will be thrown on failure
+    $this->authorize($article); //=> NotAuthorizedException will be thrown on failure
 
     echo "You can edit this article!"
 }
 ```
 
-If the current user is not allowed to edit the specified Article, the method execution will not make it to the `echo`.
+If the current user is not allowed to edit the specified Article, the method execution will not make it to the `echo`. Behind the scenes, the `authorize()` method above is resolving the policy for `$object` and calling the `edit()` method on it. An action can be passed as a second argument to override this.
 
-### Assumptions Made by the API
-
-Some assumptions are made by this Authorizer trait to provide you with the simple API described above.
-
-When generating a policy class for an object, the following assumptions are made:
-
- 1. The policy class is resolved by taking the FQCN of the object being authorized and appending `"Policy"` *( this can be overridden)*.
- 2. The user the authorization is for is based on the return value of the `user()` method.
-
-When generating a policy scope, the following assumptions are made:
-
- 1. The policy class is resolved by taking the FQCN of the object being authorized and appending `"Scope"` *( this can be overridden)*.
- 2. The user the authorization is for is based on the return value of the `user()` method.
-
-When calling the `authorize()` method, a policy class is instantiated and the following assumptions are made:
-
- 1. The policy method called is based on the name of the caller. If called within an `edit()` controller action, it will look for an `edit()` method on the policy class.
- 2. If the user is not authorized for the action, Authorizer should fail loudly.
+```php
+$this->authorize($article, 'modify');  // calls ArticlePolicy::modify()
+```
 
 ## Integration with Laravel
 
@@ -303,7 +283,7 @@ The `AuthorizationServiceProvider` binds an implementation of the `Authorizee` c
 ```php
 $this->app->bind(Authorizee::class, function ($app)
 {
-    return $app['auth']->user();
+    return $app['auth']->user() ?: new User();
 });
 ```
 
@@ -492,6 +472,12 @@ class CreateArticleRequest extends FormRequest
 - Source Code: https://github.com/deefour/authorizer
 
 ## Changelog
+
+#### 0.6.0 - August 8, 2015
+
+ - Large rewrite of the policy and scope resolver, now using [`deefour/producer`](https://github.com/deefour/producer).
+ - The `policyNamespace()`, `policyClass()`, `scopeNamespace()` and `scopeClass()` methods have all been removed in favor of a single `resolve()` method now, used by the `deefour/producer` resolver.
+ - Policies now **require** an `Authorizeee` be passed to the constructor.
 
 #### 0.5.2 - July 31, 2015
 
