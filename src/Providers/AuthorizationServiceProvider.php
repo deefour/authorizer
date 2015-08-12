@@ -19,7 +19,7 @@ class AuthorizationServiceProvider extends ServiceProvider
 
     public function registerAuthorizer()
     {
-        $this->app->singleton('authorizer', function () {
+        $this->app->bind('authorizer', function () {
             return new Authorizer($this->app[Authorizee::class]);
         });
     }
