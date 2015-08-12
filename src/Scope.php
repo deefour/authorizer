@@ -3,6 +3,7 @@
 namespace Deefour\Authorizer;
 
 use Deefour\Producer\Contracts\Producible;
+use Deefour\Authorizer\Contracts\Authorizee;
 
 /**
  * Base scope class all application scopes are encouraged to extend. Aide
@@ -13,7 +14,7 @@ abstract class Scope implements Producible
     /**
      * The user.
      *
-     * @var mixed
+     * @var Authorizee
      */
     protected $user;
 
@@ -30,7 +31,7 @@ abstract class Scope implements Producible
      * @param mixed $user
      * @param mixed $scope
      */
-    public function __construct($user, $scope)
+    public function __construct(Authorizee $user, $scope)
     {
         $this->user  = $user;
         $this->scope = $scope;
