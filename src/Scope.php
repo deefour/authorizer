@@ -34,6 +34,19 @@ abstract class Scope implements Producible
     public function __construct(Authorizee $user, $scope)
     {
         $this->user  = $user;
+
+        $this->setScope($scope);
+    }
+
+    /**
+     * Provides ability for scope to be overriden after the instance has been
+     * instantiated
+     *
+     * @param mixed $scope
+     * @return void
+     */
+    public function setScope($scope)
+    {
         $this->scope = $scope;
     }
 

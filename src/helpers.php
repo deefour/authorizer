@@ -58,7 +58,7 @@ if (!function_exists('scope')) {
      */
     function scope($object)
     {
-        $scope      = $object;
+        $baseScope  = dup($object);
         $authorizer = app('authorizer');
 
         if (is_string($object)) {
@@ -67,20 +67,13 @@ if (!function_exists('scope')) {
             $object = $object->getModel();
         }
 
-        if (!($object instanceof Scopeable)) {
-            throw new NotScopeableException(sprintf(
-                'A $scope must be passed to the scope() helper when $object doesn\'t '.
-                'implement [%s]. The $object passed was [%s].',
-                Scopeable::class,
-                get_class($object)
-            ));
+        $scope = $authorizer->scope($object);
+
+        if ($baseScope instanceof Builder) {
+            $scope->setScope($baseScope);
         }
 
-        if ($object === $scope) {
-            $scope = $object->baseScope();
-        }
-
-        return $authorizer->scope($object, $scope);
+        return $scope;
     }
 }
 
