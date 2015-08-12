@@ -113,14 +113,14 @@ trait ProvidesAuthorization
      * @see getScopeOrFail
      * @throws NotDefinedException
      *
-     * @param Scopeable $scope
+     * @param Scopeable $record
      * @return Scope
      */
-    public function scope(Scopeable $scope)
+    public function scope(Scopeable $record)
     {
         $this->_policyScoped = true;
 
-        return $this->getScopeOrFail($this->user(), $scope);
+        return $this->getScopeOrFail($this->user(), $record);
     }
 
     /**
@@ -146,13 +146,13 @@ trait ProvidesAuthorization
      * the scope.
      *
      * @param Authorizee $user
-     * @param Scopeable  $scope
+     * @param Scopeable  $record
      * @return Scope|null
      */
-    public function getScope(Authorizee $user, Scopeable $scope)
+    public function getScope(Authorizee $user, Scopeable $record)
     {
         try {
-            return $this->getScopeOrFail($user, $scope);
+            return $this->getScopeOrFail($user, $record);
         } catch (NotProducibleException $e) {
             return null;
         }
