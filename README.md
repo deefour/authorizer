@@ -17,8 +17,6 @@ composer require deefour/authorizer
 
 **`>=PHP5.5.0` is required.**
 
-> **Note:** A work-in-progress attempt to explain how I use this package along with [`deefour/transformer`](https://github.com/deefour/transformer) and [`deefour/interactor`](https://github.com/deefour/interactor) to aide me in application development **[is available at this gist](https://gist.github.com/deefour/c6cfcebe808216a874f5)**.
-
 ## Policies
 
 At the core of Authorizer is the notion of policy classes. A policy must extend `Deefour\Authorizer\Policy`. Each method should return a boolean. For example
