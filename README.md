@@ -76,10 +76,10 @@ Many apps only allow authenticated users to perform actions. Instead of verifyin
 namespace App\Policies;
 
 use Deefour\Authorizer\Contracts\Authorizee as AuthorizeeContract;
-use Deefour\Authorizer\Policy;
+use Deefour\Authorizer\Policy as BasePolicy;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 
-class Policy extends Policy
+class Policy extends BasePolicy
 {
     public function __construct(AuthorizeeContract $user, $record)
     {
