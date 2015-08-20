@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/deefour/authorizer.svg)](https://travis-ci.org/deefour/authorizer)
 [![Packagist Version](http://img.shields.io/packagist/v/deefour/authorizer.svg)](https://packagist.org/packages/deefour/authorizer)
 [![Code Climate](https://codeclimate.com/github/deefour/authorizer/badges/gpa.svg)](https://codeclimate.com/github/deefour/authorizer)
-[![License](https://poser.pugx.org/deefour/interactor/authorizer.svg)](https://packagist.org/packages/deefour/authorizer)
+[![License](https://poser.pugx.org/deefour/authorizer/license)](https://packagist.org/packages/deefour/authorizer)
 
 Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://github.com/elabs/pundit).
 
