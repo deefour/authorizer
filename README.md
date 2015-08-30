@@ -163,7 +163,7 @@ public function resolve($what)
         return $what;
     }
 
-    $className = class_name($this);
+    $className = get_class($this);
     $suffix    = ucfirst($what);
 
     return join('\\', [ $suffix, $className.$suffix ]);
