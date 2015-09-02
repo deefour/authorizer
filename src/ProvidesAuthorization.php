@@ -122,7 +122,7 @@ trait ProvidesAuthorization {
    *
    * @return Policy|null
    */
-  public function getPolicy(Authorizee $user, Authorizeable $record) {
+  public function getPolicy(Authorizee $user, Authorizable $record) {
     $policy = (new Finder($record))->policy();
 
     return $policy ? new $policy($user, $record) : null;
