@@ -131,7 +131,7 @@ trait ProvidesAuthorization
      * @param Authorizable $record
      * @return Policy|null
      */
-    public function getPolicy(Authorizee $user, Authorizeable $record)
+    public function getPolicy(Authorizee $user, Authorizable $record)
     {
         try {
             return $this->getPolicyOrFail($user, $record);
