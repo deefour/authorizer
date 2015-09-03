@@ -195,8 +195,9 @@ trait ProvidesAuthorization
      * guarded by Aide's authorization, called in some sort of middleware.
      *
      * @throws AuthorizationNotPerformedException
+     * @return void
      */
-    protected function verifyAuthorized()
+    public function verifyAuthorized()
     {
         if (!$this->_policyAuthorized) {
             throw new AuthorizationNotPerformedException();
@@ -210,12 +211,33 @@ trait ProvidesAuthorization
      * being accidentally displayed to a user.
      *
      * @throws ScopingNotPerformedException
+     * @return void
      */
-    protected function verifyPolicyScoped()
+    public function verifyScoped()
     {
         if (!$this->_policyScoped) {
             throw new ScopingNotPerformedException();
         }
+    }
+
+    /**
+     * Skip the requirement for authorization to be performed.
+     *
+     * @return void
+     */
+    public function skipAuthorization()
+    {
+        $this->_policyAuthorized = true;
+    }
+
+    /**
+     * Skip the requirement for scoping to be performed.
+     *
+     * @return void
+     */
+    public function skipScoping()
+    {
+        $this->_policyScoped = true;
     }
 
     /**

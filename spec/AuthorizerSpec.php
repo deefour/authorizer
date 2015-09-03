@@ -3,6 +3,8 @@
 namespace spec\Deefour\Authorizer;
 
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
+use Deefour\Authorizer\Exceptions\AuthorizationNotPerformedException;
+use Deefour\Authorizer\Exceptions\ScopingNotPerformedException;
 use Deefour\Authorizer\Stubs\Article;
 use Deefour\Authorizer\Stubs\Category;
 use Deefour\Authorizer\Stubs\ArticlePolicy;
@@ -62,5 +64,41 @@ class AuthorizerSpec extends ObjectBehavior
     {
         $this->shouldThrow(NotAuthorizedException::class)->during('authorize', [new Article(), 'destroy', 'bar']);
         $this->authorize(new Article(), 'destroy', 'baz')->shouldReturn(true);
+    }
+
+    public function it_should_mark_authorized_flag()
+    {
+        $this->shouldThrow(AuthorizationNotPerformedException::class)->during('verifyAuthorized');
+
+        $this->authorize(new Article(), 'destroy', 'baz');
+
+        $this->verifyAuthorized()->shouldReturn(null);
+    }
+
+    public function it_should_mark_scoped_flag()
+    {
+        $this->shouldThrow(ScopingNotPerformedException::class)->during('verifyScoped');
+
+        $this->scope(new Article())->resolve()->shouldBe('foo');
+
+        $this->verifyScoped()->shouldReturn(null);
+    }
+
+    public function it_should_allow_authorization_to_be_skipped()
+    {
+        $this->shouldThrow(AuthorizationNotPerformedException::class)->during('verifyAuthorized');
+
+        $this->skipAuthorization();
+
+        $this->verifyAuthorized()->shouldReturn(null);
+    }
+
+    public function it_should_allow_scoping_to_be_skipped()
+    {
+        $this->shouldThrow(ScopingNotPerformedException::class)->during('verifyScoped');
+
+        $this->skipScoping();
+
+        $this->verifyScoped()->shouldReturn(null);
     }
 }
