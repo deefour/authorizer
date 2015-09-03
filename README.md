@@ -425,10 +425,12 @@ There is a similar method to ensure a scope is used, which is particularly usefu
 public function __construct()
 {
     $this->afterFilter(function() {
-        $this->requirePolicyScoped();
+        $this->verifyScoped();
     }, [ 'only' => 'index' ]);
 }
 ```
+
+These methods throw exceptions if they are executed before authorization or scoping has been performed. On occasion, bypassing this blanket authorization or scoping requirement may be necessary. Exceptions will not be thrown if `skipAuthorization()` or `skipScoping()` are called before the verification occurs.
 
 ### Helping Form Requests
 
@@ -470,6 +472,11 @@ class CreateArticleRequest extends FormRequest
 - Source Code: https://github.com/deefour/authorizer
 
 ## Changelog
+
+#### 0.6.1 - TBD
+
+ - New `skipAuthorization()` and `skipScoping()` methods have been added
+ to bypass the exception throwing of the verification API.
 
 #### 0.6.0 - August 8, 2015
 
