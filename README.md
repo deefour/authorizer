@@ -473,8 +473,9 @@ class CreateArticleRequest extends FormRequest
 
 ## Changelog
 
-#### 0.6.1 - TBD
+#### 1.0.0 - October 7, 2015
 
+ - Release 1.0.0.
  - New `skipAuthorization()` and `skipScoping()` methods have been added
  to bypass the exception throwing of the verification API.
 

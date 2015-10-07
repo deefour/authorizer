@@ -8,7 +8,7 @@
     "php": ">=5.5.0",
     "illuminate/support": "^5.0",
     "symfony/http-kernel": "^2.7",
-    "deefour/producer": "^0.2.0"
+    "deefour/producer": "^1.0.0"
   },
   "require-dev": {
     "phpspec/phpspec": "^2.2.0"
