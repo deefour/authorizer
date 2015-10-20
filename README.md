@@ -350,7 +350,22 @@ Authorizer::policy(new Article); //=> ArticlePolicy
 
 ### Helper Methods
 
-Global `authorizer()` and `policy()`, and `scope()` functions can be made globally available by including the `helpers.php` file in your project's `composer.json`. Authorizer doesn't autoload this file, giving you the choice whether or not to 'pollute' the global environment with these functions.
+Global `authorizer()` and `policy()`, and `scope()` functions can be made globally available by including the `helpers.php` file in your project. Authorizer doesn't autoload this file, giving you the choice whether or not to 'pollute' the global environment with these functions.
+
+These helpers are particularly useful within views. For example, to conditionally show an 'Edit' link for a specific `$article` based on the current user's ability to edit that article
+
+```php
+@if (policy($article)->can('edit'))
+  <a href="{{ URL::route('articles.edit', [ 'id' => $article->id ]) }}">Edit</a>
+@endif
+```
+
+The `can()` method above is simply an alternative syntax to `policy($article)->edit()`.
+
+
+#### For Laraval <= 5.1.10
+
+For older versions of Laravel 5.1, add the include to the `'files'` section of your `composer.json` and run `composer dump-autoload`.
 
 ```php
 "autoload": {
@@ -363,15 +378,17 @@ Global `authorizer()` and `policy()`, and `scope()` functions can be made global
 }
 ```
 
-These helpers are particularly useful within views. For example, to conditionally show an 'Edit' link for a specific `$article` based on the current user's ability to edit that article
+#### For Laravel >= 5.1.11
+
+Laravel 5.1.11 introduces it's own authorization system. It comes with it's own, conflicting implementation of a `policy()` method. To tell Laravel to use this package's method
+
+ 1. Remove the line mentioned above in the `composer.json` file's `'files'` section.
+ 2. Add the following **above** the `autoload.php` require line in `bootstrap/autoload.php`
 
 ```php
-@if (policy($article)->can('edit'))
-  <a href="{{ URL::route('articles.edit', [ 'id' => $article->id ]) }}">Edit</a>
-@endif
+     require __DIR__.'/../vendor/deefour/authorizer/src/helpers.php';
+     require __DIR__.'/../vendor/autoload.php'; // <= this line already exists in the file
 ```
-
-The `can()` method above is simply an alternative syntax to `policy($article)->edit()`.
 
 ### Gracefully Handling Unauthorized Exceptions
 
