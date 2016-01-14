@@ -6,10 +6,10 @@ use Deefour\Authorizer\Stubs\Model;
 
 class Article extends Model
 {
-  public function policyNamespace()
-  {
-      return 'Deefour\\Authorizer\\Stubs';
-  }
+    public function policyNamespace()
+    {
+        return 'Deefour\\Authorizer\\Stubs';
+    }
 
     public function policyClass()
     {

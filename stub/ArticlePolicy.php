@@ -6,10 +6,10 @@ use Deefour\Authorizer\Policy;
 
 class ArticlePolicy extends Policy
 {
-  public function create()
-  {
-      return true;
-  }
+    public function create()
+    {
+        return true;
+    }
 
     public function edit()
     {

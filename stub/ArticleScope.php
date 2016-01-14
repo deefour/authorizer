@@ -6,8 +6,8 @@ use Deefour\Authorizer\Scope;
 
 class ArticleScope extends Scope
 {
-  public function resolve()
-  {
-      return $this->scope;
-  }
+    public function resolve()
+    {
+        return $this->scope;
+    }
 }

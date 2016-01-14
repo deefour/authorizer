@@ -27,7 +27,8 @@ class NotScopeableException extends Exception
      * @param Scopeable $scopeable
      * @param string $scope
      */
-    public function __construct(Scopeable $scopeable, $scope) {
+    public function __construct(Scopeable $scopeable, $scope)
+    {
         $this->scopeable = $scopeable;
         $this->scope     = $scope;
 
@@ -39,7 +40,8 @@ class NotScopeableException extends Exception
      *
      * @return string
      */
-    protected function message() {
+    protected function message()
+    {
         return sprintf(
             'The [%s] object does not implement [%s]. It cannot be used to ' .
             'decorate [%s]',

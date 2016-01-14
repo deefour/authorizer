@@ -42,7 +42,7 @@ class AuthorizerSpec extends ObjectBehavior
 
     public function it_returns_null_via_get_policy_for_unknown_authorizable()
     {
-      $this->getPolicy(new User(), new Category())->shouldReturn(null);
+        $this->getPolicy(new User(), new Category())->shouldReturn(null);
     }
 
     public function it_generates_policies_via_get_scope()
@@ -52,7 +52,7 @@ class AuthorizerSpec extends ObjectBehavior
 
     public function it_returns_null_via_get_scope_for_unknown_authorizable()
     {
-      $this->getScope(new User(), new Category())->shouldReturn(null);
+        $this->getScope(new User(), new Category())->shouldReturn(null);
     }
 
     public function it_authorizes_actions()
@@ -63,7 +63,8 @@ class AuthorizerSpec extends ObjectBehavior
 
     public function it_passes_reason_string_through_to_exception_from_policy()
     {
-        $this->shouldThrow(new AccessDeniedHttpException('You are not an admin.'))->during('authorize', [new Article(), 'update']);
+        $this->shouldThrow(new AccessDeniedHttpException('You are not an admin.'))
+            ->during('authorize', [new Article(), 'update']);
     }
 
     public function it_should_pass_additional_context_through_to_policy()

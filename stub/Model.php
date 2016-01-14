@@ -8,13 +8,13 @@ use Deefour\Authorizer\ProducesPoliciesAndScopes;
 
 abstract class Model implements Authorizable, Scopeable
 {
-  use ProducesPoliciesAndScopes;
+    use ProducesPoliciesAndScopes;
 
-  /**
-   * {@inheritdoc}
-   */
-  public function baseScope()
-  {
-      return 'foo';
-  }
+    /**
+     * {@inheritdoc}
+     */
+    public function baseScope()
+    {
+        return 'foo';
+    }
 }

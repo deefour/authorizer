@@ -19,11 +19,11 @@ trait ProducesPoliciesAndScopes
     public function policy(Authorizee $authorizee, $policy = null)
     {
         if (is_null($policy)) {
-          return (new Authorizer($authorizee))->policy($this);
+            return (new Authorizer($authorizee))->policy($this);
         }
 
         if (is_a($policy, Policy::class, true)) {
-          return new $policy($authorizee, $this);
+            return new $policy($authorizee, $this);
         }
 
         throw new NotAuthorizableException($this, $policy);
@@ -35,11 +35,11 @@ trait ProducesPoliciesAndScopes
     public function scope(Authorizee $authorizee, $scope = null)
     {
         if (is_null($scope)) {
-          return (new Authorizer($authorizee))->scope($this);
+            return (new Authorizer($authorizee))->scope($this);
         }
 
         if (is_a($scope, Scope::class, true)) {
-          return new $scope($authorizee, $this->baseScope());
+            return new $scope($authorizee, $this->baseScope());
         }
 
         throw new NotScopeableException($this, $scope);

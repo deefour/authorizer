@@ -7,5 +7,5 @@ use Deefour\Authorizer\PassthruPolicyAndScopeProduction;
 
 class User extends Model implements AuthorizeeContract
 {
-  use PassthruPolicyAndScopeProduction;
+    use PassthruPolicyAndScopeProduction;
 }

@@ -12,27 +12,27 @@ use Prophecy\Argument;
 
 class ArticleSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Deefour\Authorizer\Stubs\Article');
     }
 
-    function it_should_resolve_a_policy()
+    public function it_should_resolve_a_policy()
     {
         $this->policy(new User)->shouldReturnAnInstanceOf(ArticlePolicy::class);
     }
 
-    function it_should_resolve_a_custom_policy()
+    public function it_should_resolve_a_custom_policy()
     {
         $this->policy(new User, FeaturedArticlePolicy::class)->shouldReturnAnInstanceOf(FeaturedArticlePolicy::class);
     }
 
-    function it_should_resolve_a_scope()
+    public function it_should_resolve_a_scope()
     {
         $this->scope(new User)->shouldReturnAnInstanceOf(ArticleScope::class);
     }
 
-    function it_should_resolve_a_custom_scope()
+    public function it_should_resolve_a_custom_scope()
     {
         $this->scope(new User, FeaturedArticleScope::class)->shouldReturnAnInstanceOf(FeaturedArticleScope::class);
     }

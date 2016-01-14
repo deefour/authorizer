@@ -27,7 +27,8 @@ class NotAuthorizableException extends Exception
      * @param Authorizable $authorizable
      * @param string $policy
      */
-    public function __construct(Authorizable $authorizable, $policy) {
+    public function __construct(Authorizable $authorizable, $policy)
+    {
         $this->authorizable = $authorizable;
         $this->policy       = $policy;
 
@@ -39,7 +40,8 @@ class NotAuthorizableException extends Exception
      *
      * @return string
      */
-    protected function message() {
+    protected function message()
+    {
         return sprintf(
             'The [%s] object does not implement [%s]. It cannot be used to ' .
             'decorate [%s]',

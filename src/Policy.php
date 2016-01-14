@@ -71,8 +71,9 @@ abstract class Policy implements Producible
      *
      * @return array
      */
-    public function permittedAttributes() {
-      return [];
+    public function permittedAttributes()
+    {
+        return [];
     }
 
     /**
@@ -81,7 +82,8 @@ abstract class Policy implements Producible
      * @param string $method
      * @param array $args
      */
-    public function __call($method, $args) {
+    public function __call($method, $args)
+    {
         throw new BadMethodCallException(sprintf(
             'No [%s] method exists on [%s]',
             $method,

@@ -6,4 +6,5 @@ use Deefour\Authorizer\Policy;
 
 class EmptyPolicy extends Policy
 {
+    //
 }

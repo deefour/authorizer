@@ -4,8 +4,8 @@ namespace Deefour\Authorizer\Stubs;
 
 class FeaturedArticleScope extends ArticleScope
 {
-  public function resolve()
-  {
-      return $this->scope;
-  }
+    public function resolve()
+    {
+        return $this->scope;
+    }
 }

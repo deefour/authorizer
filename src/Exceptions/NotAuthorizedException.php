@@ -67,7 +67,8 @@ class NotAuthorizedException extends AccessDeniedHttpException
      *
      * @return string
      */
-    protected function message() {
+    protected function message()
+    {
         if ($this->reason) {
             return $this->reason;
         }
