@@ -36,6 +36,13 @@ class NotAuthorizedException extends AccessDeniedHttpException
     public $action;
 
     /**
+     * The reason why the authorization failed.
+     *
+     * @var string
+     */
+    public $reason;
+
+    /**
      * Constructor.
      *
      * {@inheritdoc}
@@ -43,12 +50,14 @@ class NotAuthorizedException extends AccessDeniedHttpException
      * @param Authorizable $record
      * @param Policy $policy
      * @param string $action
+     * @param string $reason [optional]
      */
-    public function __construct(Authorizable $record, Policy $policy, $action)
+    public function __construct(Authorizable $record, Policy $policy, $action, $reason = '')
     {
         $this->record = $record;
         $this->policy = $policy;
         $this->action = $action;
+        $this->reason = $reason;
 
         parent::__construct($this->message());
     }
@@ -59,6 +68,10 @@ class NotAuthorizedException extends AccessDeniedHttpException
      * @return string
      */
     protected function message() {
+        if ($this->reason) {
+            return $this->reason;
+        }
+
         return sprintf(
             'Not allowed to [%s] the [%s] (according to [%s])',
             $this->action,

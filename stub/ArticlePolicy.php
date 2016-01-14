@@ -21,6 +21,11 @@ class ArticlePolicy extends Policy
         return $foo === 'baz';
     }
 
+    public function update()
+    {
+        return 'You are not an admin.';
+    }
+
     public function permittedAttributes()
     {
         return ['title', 'user_id'];

@@ -84,13 +84,34 @@ class Policy extends BasePolicy
     public function __construct(AuthorizeeContract $user, $record)
     {
         if (is_null($user) or ! $user->exists) {
-            throw new NotAuthorizedException('You must be logged in!');
+            throw new NotAuthorizedException($record, $this, 'initalization', 'You must be logged in!');
         }
 
         parent::__construct($user, $record);
     }
 }
 ```
+
+### Failure Reasons
+
+Authorizer considers any value other than `true` returned from a policy action an authorization failure. If a string is returned, it will be passed through as the message on the thrown `NotAuthorizedException`. This message can be used to inform a user exactly why their attempt to perform action was denied.
+
+```php
+use Deefour\Authorizer\Policy;
+
+class ArticlePolicy extends Policy
+{
+    public function edit()
+    {
+        if ($this->user->id === $this->record->author_id) {
+            return true;
+        }
+
+        return 'You are not the owner of this article.';
+    }
+}
+```
+
 
 ## Scopes
 
@@ -213,7 +234,7 @@ $query = Article::newQuery();
 $this->scope($query); //=> Properly scoped collection of Articles via ArticleScope::resolve()
 ```
 
-A failing authorization can trigger a loud response, throwing `Deefour\Authorizer\Exceptions\NotAuthorizedException`. This can short-circuit method execution with a single line of code.
+A failing authorization will throw an instance of `Deefour\Authorizer\Exceptions\NotAuthorizedException`. This can short-circuit method execution with a single line of code.
 
 ```php
 public function edit($id)
@@ -490,6 +511,11 @@ class CreateArticleRequest extends FormRequest
 
 ## Changelog
 
+#### 1.1.0 - January 14, 2016
+
+ - The `Authorizer` now does a strict type check. A `NotAuthorizedException` unless `true` is returned. Other 'truthy' values will fail authorization.
+ - A string returned from a policy will now be set as the 'reason' for the authorization failure.
+
 #### 1.0.0 - October 7, 2015
 
  - Release 1.0.0.
@@ -540,4 +566,4 @@ class CreateArticleRequest extends FormRequest
 
 ## License
 
-Copyright (c) 2014 [Jason Daly](http://www.deefour.me) ([deefour](https://github.com/deefour)). Released under the [MIT License](http://deefour.mit-license.org/).
+Copyright (c) 2016 [Jason Daly](http://www.deefour.me) ([deefour](https://github.com/deefour)). Released under the [MIT License](http://deefour.mit-license.org/).

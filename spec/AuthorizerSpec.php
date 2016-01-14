@@ -2,15 +2,16 @@
 
 namespace spec\Deefour\Authorizer;
 
-use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 use Deefour\Authorizer\Exceptions\AuthorizationNotPerformedException;
+use Deefour\Authorizer\Exceptions\NotAuthorizedException;
 use Deefour\Authorizer\Exceptions\ScopingNotPerformedException;
 use Deefour\Authorizer\Stubs\Article;
-use Deefour\Authorizer\Stubs\Category;
 use Deefour\Authorizer\Stubs\ArticlePolicy;
 use Deefour\Authorizer\Stubs\ArticleScope;
+use Deefour\Authorizer\Stubs\Category;
 use Deefour\Authorizer\Stubs\User;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class AuthorizerSpec extends ObjectBehavior
 {
@@ -58,6 +59,11 @@ class AuthorizerSpec extends ObjectBehavior
     {
         $this->shouldThrow(NotAuthorizedException::class)->during('authorize', [new Article(), 'edit']);
         $this->authorize(new Article(), 'create')->shouldBeBoolean();
+    }
+
+    public function it_passes_reason_string_through_to_exception_from_policy()
+    {
+        $this->shouldThrow(new AccessDeniedHttpException('You are not an admin.'))->during('authorize', [new Article(), 'update']);
     }
 
     public function it_should_pass_additional_context_through_to_policy()

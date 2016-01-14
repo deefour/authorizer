@@ -11,7 +11,7 @@
     "deefour/producer": "^1.0.1"
   },
   "require-dev": {
-    "phpspec/phpspec": "^2.2.0"
+    "phpspec/phpspec": "^2.4.1"
   },
   "license": "MIT",
   "authors": [

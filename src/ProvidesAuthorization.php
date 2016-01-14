@@ -78,12 +78,11 @@ trait ProvidesAuthorization
             }
         }
 
-        $policy = $this->policy($record);
+        $policy   = $this->policy($record);
+        $response = call_user_func_array([$policy, $action], $args);
 
-        if (!call_user_func_array([$policy, $action], $args)) {
-            $exception = new NotAuthorizedException($record, $policy, $action);
-
-            throw $exception;
+        if ($response !== true) {
+            throw new NotAuthorizedException($record, $policy, $action, $response);
         }
 
         return true;
