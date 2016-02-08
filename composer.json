@@ -7,7 +7,7 @@
   "require": {
     "php": ">=5.5.0",
     "illuminate/support": "^5.0",
-    "symfony/http-kernel": "^2.7",
+    "symfony/http-kernel": "2.8.*|3.0.*",
     "deefour/producer": "^1.0.1"
   },
   "require-dev": {
