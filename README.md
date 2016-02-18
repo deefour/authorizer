@@ -288,7 +288,7 @@ Authorizer comes with a service provider for `Deefour\Authorizer\Authorizer`. In
 
   // ...
 
-  'Deefour\Authorizer\Providers\AuthorizationServiceProvider',
+  Deefour\Authorizer\Providers\AuthorizationServiceProvider::class,
 
 ],
 ```
@@ -306,7 +306,7 @@ $this->app->bind(Authorizee::class, function ($app)
 });
 ```
 
-This can be overridden in your `app/Providers/AppServiceProvider.php`.
+This can be overridden in your `app/Providers/AuthServiceProvider.php`.
 
 ```php
 protected function bindAuthorizeeWithDefault()
@@ -358,7 +358,7 @@ Add the following to `app/config/app.php`
 
   // ...
 
-  'Authorizer' => 'Deefour\Authorizer\Facades\Authorizer',
+  'Authorizer' => Deefour\Authorizer\Facades\Authorizer::class,
 
 ],
 ```
@@ -384,7 +384,7 @@ These helpers are particularly useful within views. For example, to conditionall
 The `can()` method above is simply an alternative syntax to `policy($article)->edit()`.
 
 
-#### For Laraval <= 5.1.10
+#### For Laravel <= 5.1.10
 
 For older versions of Laravel 5.1, add the include to the `'files'` section of your `composer.json` and run `composer dump-autoload`.
 
@@ -420,9 +420,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Deefour\Authorizer\Exceptions\NotAuthorizedException;
-use Illuminate\Contracts\Routing\Middleware;
 
-class HandleNotAuthorizedExceptionMiddleware implements Middleware
+class HandleUnauthorizedRequests
 {
     /**
      * Run the request filter.
@@ -526,7 +525,7 @@ class CreateArticleRequest extends FormRequest
 
  - Large rewrite of the policy and scope resolver, now using [`deefour/producer`](https://github.com/deefour/producer).
  - The `policyNamespace()`, `policyClass()`, `scopeNamespace()` and `scopeClass()` methods have all been removed in favor of a single `resolve()` method now, used by the `deefour/producer` resolver.
- - Policies now **require** an `Authorizeee` be passed to the constructor.
+ - Policies now **require** an `Authorizee` be passed to the constructor.
 
 #### 0.5.2 - July 31, 2015
 
