@@ -48,7 +48,7 @@ if ( ! function_exists('scope')) {
      * If the original object passed is Scopeable, the 'base scope' will be pulled
      * from that object as the root of the query.
      *
-     * A query builder instance will be returned.
+     * A scope instance will be returned.
      *
      * @param Scopeable|string $object
      *
@@ -58,19 +58,23 @@ if ( ! function_exists('scope')) {
      */
     function scope($object)
     {
-        $baseScope  = dup($object);
         $authorizer = app('authorizer');
+        $base       = $object;
 
-        if (is_string($object)) {
+        if (is_object($object)) {
+            $object = clone $object;
+        } elseif (is_string($object)) {
             $object = app($object);
-        } elseif ($object instanceof Builder) {
+        }
+
+        if ($object instanceof Builder) {
             $object = $object->getModel();
         }
 
         $scope = $authorizer->scope($object);
 
-        if ($baseScope instanceof Builder) {
-            $scope->setScope($baseScope);
+        if ($base instanceof Builder) {
+            $scope->setScope($base);
         }
 
         return $scope;
