@@ -77,7 +77,7 @@ if ( ! function_exists('scope')) {
             $scope->setScope($base);
         }
 
-        return $scope;
+        return $scope->resolve();
     }
 }
 
