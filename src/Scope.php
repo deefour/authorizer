@@ -33,7 +33,7 @@ abstract class Scope implements Producible
      */
     public function __construct(Authorizee $user, $scope)
     {
-        $this->user  = $user;
+        $this->user = $user;
 
         $this->setScope($scope);
     }
