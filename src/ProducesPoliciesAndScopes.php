@@ -2,7 +2,6 @@
 
 namespace Deefour\Authorizer;
 
-use Deefour\Producer\ProducesClasses;
 use Deefour\Authorizer\Contracts\Authorizee;
 
 /**
@@ -11,8 +10,6 @@ use Deefour\Authorizer\Contracts\Authorizee;
  */
 trait ProducesPoliciesAndScopes
 {
-    use ProducesClasses;
-
     /**
      * @inheritdoc
      */

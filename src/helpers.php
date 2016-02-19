@@ -2,7 +2,6 @@
 
 use Deefour\Authorizer\Authorizer;
 use Deefour\Authorizer\Contracts\Authorizable;
-use Deefour\Authorizer\Contracts\ResolvesAuthorizable;
 use Deefour\Authorizer\Contracts\Scopeable;
 use Deefour\Authorizer\Exceptions\NotScopeableException;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,10 +10,6 @@ if ( ! function_exists('policy')) {
     /**
      * Retrieve policy class for the passed object. The argument can be a FQCN
      * or an identifier that can be resolved through Laravel's service container.
-     *
-     * If the resolved class itself is not authorizable but implements the
-     * ResolvesAuthorizable contract, resolution will be performed by calling through
-     * to that method.
      *
      * @param Authorizable|string $object
      *
@@ -26,10 +21,6 @@ if ( ! function_exists('policy')) {
 
         if (is_string($object)) {
             $object = app($object);
-        }
-
-        if ($object instanceof ResolvesAuthorizable) {
-            $object = $object->resolveAuthorizable();
         }
 
         return $authorizer->policy($object);

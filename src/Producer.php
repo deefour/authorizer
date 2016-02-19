@@ -33,7 +33,7 @@ class Producer implements ProducerContract
      */
     public function __construct(Authorizable $record, Authorizee $user)
     {
-        $this->record = $record;
+        $this->record = $record->resolvable();
         $this->user   = $user;
     }
 
@@ -47,18 +47,24 @@ class Producer implements ProducerContract
      */
     public function resolve($what)
     {
-        if ( ! method_exists($this->record, 'resolve')) {
+        try {
+            return $this->record->resolve($what);
+        } catch (BadMethodCallException $e) {
+            if ( ! strpos($e->getMessage(), '::resolve')) {
+                throw $e;
+            }
+
             return get_class($this->record) . ucfirst($what);
         }
-
-        return $this->record->resolve($what);
     }
 
     public function make($producible)
     {
+        $resolvable = $this->record->resolvable();
+
         return new $producible(
             $this->user,
-            is_a($producible, Scope::class, true) ? $this->record->baseScope() : $this->record
+            is_a($producible, Scope::class, true) ? $resolvable->baseScope() : $resolvable
         );
     }
 }
