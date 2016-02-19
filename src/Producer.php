@@ -38,7 +38,7 @@ class Producer implements ProducerContract
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * Instantiates an instance of the FQCN passed, injecting the user and record
      * into it.

@@ -45,7 +45,7 @@ class NotAuthorizedException extends AccessDeniedHttpException
     /**
      * Constructor.
      *
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @param Authorizable $record
      * @param Policy $policy

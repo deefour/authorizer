@@ -11,7 +11,7 @@ use Deefour\Authorizer\Contracts\Authorizable;
 trait PassthruPolicyAndScopeProduction
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function policyFor(Authorizable $authorizable)
     {
@@ -19,7 +19,7 @@ trait PassthruPolicyAndScopeProduction
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function scopeFor(Authorizable $authorizable)
     {

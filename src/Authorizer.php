@@ -37,7 +37,7 @@ class Authorizer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function user()
     {

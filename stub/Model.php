@@ -11,7 +11,7 @@ abstract class Model implements Authorizable, Scopeable
     use ProducesPoliciesAndScopes;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function baseScope()
     {
