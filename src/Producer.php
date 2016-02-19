@@ -47,7 +47,7 @@ class Producer implements ProducerContract
      */
     public function resolve($what)
     {
-        if (!method_exists($this->record, 'resolve')) {
+        if ( ! method_exists($this->record, 'resolve')) {
             return get_class($this->record) . ucfirst($what);
         }
 

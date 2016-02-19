@@ -198,7 +198,7 @@ trait ProvidesAuthorization
      */
     public function verifyAuthorized()
     {
-        if (!$this->_policyAuthorized) {
+        if ( ! $this->_policyAuthorized) {
             throw new AuthorizationNotPerformedException();
         }
     }
@@ -214,7 +214,7 @@ trait ProvidesAuthorization
      */
     public function verifyScoped()
     {
-        if (!$this->_policyScoped) {
+        if ( ! $this->_policyScoped) {
             throw new ScopingNotPerformedException();
         }
     }

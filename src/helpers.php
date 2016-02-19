@@ -7,7 +7,7 @@ use Deefour\Authorizer\Contracts\Scopeable;
 use Deefour\Authorizer\Exceptions\NotScopeableException;
 use Illuminate\Database\Eloquent\Builder;
 
-if (!function_exists('policy')) {
+if ( ! function_exists('policy')) {
     /**
      * Retrieve policy class for the passed object. The argument can be a FQCN
      * or an identifier that can be resolved through Laravel's service container.
@@ -36,7 +36,7 @@ if (!function_exists('policy')) {
     }
 }
 
-if (!function_exists('scope')) {
+if ( ! function_exists('scope')) {
     /**
      * Retrieve a scoped query for the passed object. The argument can be a FQCN,
      * an identifier that can be resolved through Laravel's service container, or
@@ -77,7 +77,7 @@ if (!function_exists('scope')) {
     }
 }
 
-if (!function_exists('authorizer')) {
+if ( ! function_exists('authorizer')) {
     /**
      * Resolve an implementation of the authorization manager from Laravel's service
      * container.
