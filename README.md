@@ -347,28 +347,6 @@ class ArticleController extends Controller
 }
 ```
 
-### Facade
-
-The `Authorizer` generated via the IoC container can also be accessed via a facade by the same name. In Laravel's `config/app.php` file, add the `Authorizer` facade to the list of aliases.
-
-Add the following to `app/config/app.php`
-
-```php
-'aliases' => [
-
-  // ...
-
-  'Authorizer' => Deefour\Authorizer\Facades\Authorizer::class,
-
-],
-```
-
-and use the facade anywhere in your application
-
-```php
-Authorizer::policy(new Article); //=> ArticlePolicy
-```
-
 ### Helper Methods
 
 Global `authorizer()` and `policy()`, and `scope()` functions can be made globally available by including the `helpers.php` file in your project. Authorizer doesn't autoload this file, giving you the choice whether or not to 'pollute' the global environment with these functions.
