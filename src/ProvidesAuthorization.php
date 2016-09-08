@@ -27,7 +27,7 @@ trait ProvidesAuthorization
      *
      * @var bool
      */
-    protected $_policyScoped = false;
+    protected $policyScoped = false;
 
     /**
      * Wether a request to derive and retrieve a policy class has been made for
@@ -35,7 +35,7 @@ trait ProvidesAuthorization
      *
      * @var bool
      */
-    protected $_policyAuthorized = false;
+    protected $policyAuthorized = false;
 
     /**
      * Authorizes the current user against the passed `$record` for a specific
@@ -65,7 +65,7 @@ trait ProvidesAuthorization
 
         $action = array_shift($args);
 
-        $this->_policyAuthorized = true;
+        $this->policyAuthorized = true;
 
         if (is_null($action)) {
             $action = debug_backtrace(false)[1]['function'];
@@ -117,7 +117,7 @@ trait ProvidesAuthorization
      */
     public function scope(Scopeable $record)
     {
-        $this->_policyScoped = true;
+        $this->policyScoped = true;
 
         return $this->getScopeOrFail($this->user(), $record);
     }
@@ -198,7 +198,7 @@ trait ProvidesAuthorization
      */
     public function verifyAuthorized()
     {
-        if ( ! $this->_policyAuthorized) {
+        if ( ! $this->policyAuthorized) {
             throw new AuthorizationNotPerformedException();
         }
     }
@@ -214,7 +214,7 @@ trait ProvidesAuthorization
      */
     public function verifyScoped()
     {
-        if ( ! $this->_policyScoped) {
+        if ( ! $this->policyScoped) {
             throw new ScopingNotPerformedException();
         }
     }
@@ -226,7 +226,7 @@ trait ProvidesAuthorization
      */
     public function skipAuthorization()
     {
-        $this->_policyAuthorized = true;
+        $this->policyAuthorized = true;
     }
 
     /**
@@ -236,7 +236,7 @@ trait ProvidesAuthorization
      */
     public function skipScoping()
     {
-        $this->_policyScoped = true;
+        $this->policyScoped = true;
     }
 
     /**
