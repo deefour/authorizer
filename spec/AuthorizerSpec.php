@@ -2,110 +2,61 @@
 
 namespace spec\Deefour\Authorizer;
 
-use Deefour\Authorizer\Exceptions\AuthorizationNotPerformedException;
-use Deefour\Authorizer\Exceptions\NotAuthorizedException;
-use Deefour\Authorizer\Exceptions\ScopingNotPerformedException;
-use Deefour\Authorizer\Stubs\Article;
-use Deefour\Authorizer\Stubs\ArticlePolicy;
-use Deefour\Authorizer\Stubs\ArticleScope;
-use Deefour\Authorizer\Stubs\Category;
-use Deefour\Authorizer\Stubs\User;
+use BadMethodCallException;
+use Deefour\Authorizer\Authorizer;
+use Deefour\Authorizer\Exception\NotAuthorizedException;
+use Deefour\Authorizer\Exception\NotDefinedException;
+use Deefour\Authorizer\Stub\Article;
+use Deefour\Authorizer\Stub\ArticlePolicy;
+use Deefour\Authorizer\Stub\ArticleScope;
+use Deefour\Authorizer\Stub\Quote;
+use Deefour\Authorizer\Stub\Tag;
+use Deefour\Authorizer\Stub\User;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Prophecy\Argument;
 
 class AuthorizerSpec extends ObjectBehavior
 {
-    public function let(User $user)
+    function it_is_initializable()
     {
-        $this->beConstructedWith($user);
+        $this->shouldHaveType(Authorizer::class);
     }
 
-    public function it_is_initializable()
+    function it_can_retrieve_policies_for_valid_records()
     {
-        $this->shouldHaveType('Deefour\Authorizer\Authorizer');
+        $this->policy(new User, new Article)->shouldReturnAnInstanceOf(ArticlePolicy::class);
     }
 
-    public function it_generates_policies()
+    function it_can_retrieve_scopes_for_valid_records()
     {
-        $this->policy(new Article())->shouldBeAnInstanceOf(ArticlePolicy::class);
+        $this->scope(new User, new Article)->shouldReturn(true);
     }
 
-    public function it_generates_scopes()
+    function it_will_return_null_for_records_without_policies_or_scopes()
     {
-        $this->scope(new Article())->resolve()->shouldBe('foo');
+        $this->policy(new User, new Tag)->shouldReturn(null);
+        $this->scope(new User, new Tag)->shouldReturn(null);
     }
 
-    public function it_generates_policies_via_get_policy()
+    function it_can_throw_an_exception_for_records_without_policies_or_scopes()
     {
-        $this->getPolicy(new User(), new Article())->shouldBeAnInstanceOf(ArticlePolicy::class);
+        $this->shouldThrow(NotDefinedException::class)->during('policyOrFail', [ new User, new Tag ]);
+        $this->shouldThrow(NotDefinedException::class)->during('scopeOrFail', [ new User, new Tag ]);
     }
 
-    public function it_returns_null_via_get_policy_for_unknown_authorizable()
+    function it_can_find_policies_and_scopes_using_class_name_as_record()
     {
-        $this->getPolicy(new User(), new Category())->shouldReturn(null);
+        $this->policy(new User, Article::class)->shouldReturnAnInstanceOf(ArticlePolicy::class);
     }
 
-    public function it_generates_policies_via_get_scope()
+    function it_can_authorize_user_against_a_policy()
     {
-        $this->getScope(new User(), new Article())->shouldBeAnInstanceOf(ArticleScope::class);
+        $this->shouldThrow(NotAuthorizedException::class)->during('authorize', [new User, Article::class, 'edit']);
     }
 
-    public function it_returns_null_via_get_scope_for_unknown_authorizable()
+    function it_will_throw_exception_during_authorization_for_record_without_policy()
     {
-        $this->getScope(new User(), new Category())->shouldReturn(null);
-    }
-
-    public function it_authorizes_actions()
-    {
-        $this->shouldThrow(NotAuthorizedException::class)->during('authorize', [new Article(), 'edit']);
-        $this->authorize(new Article(), 'create')->shouldBeBoolean();
-    }
-
-    public function it_passes_reason_string_through_to_exception_from_policy()
-    {
-        $this->shouldThrow(new AccessDeniedHttpException('You are not an admin.'))
-            ->during('authorize', [new Article(), 'update']);
-    }
-
-    public function it_should_pass_additional_context_through_to_policy()
-    {
-        $this->shouldThrow(NotAuthorizedException::class)->during('authorize', [new Article(), 'destroy', 'bar']);
-        $this->authorize(new Article(), 'destroy', 'baz')->shouldReturn(true);
-    }
-
-    public function it_should_mark_authorized_flag()
-    {
-        $this->shouldThrow(AuthorizationNotPerformedException::class)->during('verifyAuthorized');
-
-        $this->authorize(new Article(), 'destroy', 'baz');
-
-        $this->verifyAuthorized()->shouldReturn(null);
-    }
-
-    public function it_should_mark_scoped_flag()
-    {
-        $this->shouldThrow(ScopingNotPerformedException::class)->during('verifyScoped');
-
-        $this->scope(new Article())->resolve()->shouldBe('foo');
-
-        $this->verifyScoped()->shouldReturn(null);
-    }
-
-    public function it_should_allow_authorization_to_be_skipped()
-    {
-        $this->shouldThrow(AuthorizationNotPerformedException::class)->during('verifyAuthorized');
-
-        $this->skipAuthorization();
-
-        $this->verifyAuthorized()->shouldReturn(null);
-    }
-
-    public function it_should_allow_scoping_to_be_skipped()
-    {
-        $this->shouldThrow(ScopingNotPerformedException::class)->during('verifyScoped');
-
-        $this->skipScoping();
-
-        $this->verifyScoped()->shouldReturn(null);
+        $this->shouldThrow(NotDefinedException::class)
+            ->during('authorize', [new User, new Tag, 'create']);
     }
 }

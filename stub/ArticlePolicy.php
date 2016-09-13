@@ -1,10 +1,8 @@
 <?php
 
-namespace Deefour\Authorizer\Stubs;
+namespace Deefour\Authorizer\Stub;
 
-use Deefour\Authorizer\Policy;
-
-class ArticlePolicy extends Policy
+class ArticlePolicy
 {
     public function create()
     {
@@ -16,11 +14,6 @@ class ArticlePolicy extends Policy
         return false;
     }
 
-    public function destroy($foo)
-    {
-        return $foo === 'baz';
-    }
-
     public function update()
     {
         return 'You are not an admin.';
@@ -28,6 +21,11 @@ class ArticlePolicy extends Policy
 
     public function permittedAttributes()
     {
-        return ['title', 'user_id'];
+        return ['bar'];
+    }
+
+    public function permittedAttributesForUpdate()
+    {
+        return ['bar', 'baz'];
     }
 }

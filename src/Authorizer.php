@@ -2,45 +2,67 @@
 
 namespace Deefour\Authorizer;
 
-use Deefour\Authorizer\Contracts\Authorizee;
+use Deefour\Authorizer\Exception\NotAuthorizedException;
 
-/**
- * Provides easy access to much of Authorizer's functionality.
- *
- * Policy/Scope lookups and authorization can be performed against an
- * instance using a select subset of methods found on the
- * `Deefour\Authorizer\ProvidesAuthorization` class.
- *
- *   $authorizer->authorize(new Article, 'create'); //=> boolean
- *   $authorizer->policy(new Article); //=> ArticlePolicy
- *   $authorizer->scope(new Article);  //=> ArticleScope
- */
 class Authorizer
 {
-    use ProvidesAuthorization;
-
     /**
-     * The current user.
-     *
-     * @var Authorizee
+     * @api
      */
-    protected $user;
-
-    /**
-     * Configure the policy class with the current user and context.
-     *
-     * @param Authorizee $user
-     */
-    public function __construct(Authorizee $user = null)
+    public function authorize($user, $record, $query)
     {
-        $this->user = $user;
+        $policy = $this->policyOrFail($user, $record);
+        $result = $policy->$query();
+        $options = array_merge(compact('query', 'record', 'policy'), [ 'message' => $result ]);
+
+        if ($result !== true) {
+            throw new NotAuthorizedException($options);
+        }
+
+        return $record;
     }
 
     /**
-     * @inheritdoc
+     * @api
      */
-    protected function user()
+    public function scope($user, $scope)
     {
-        return $this->user;
+        $scope = (new Resolver($scope))->scope();
+
+        if ($scope) {
+            return (new $scope($user, $scope))->resolve();
+        }
+    }
+
+    /**
+     * @api
+     */
+    public function scopeOrFail($user, $scope)
+    {
+        $scope = (new Resolver($scope))->scopeOrFail();
+
+        return (new $scope($user, $scope))->resolve();
+    }
+
+    /**
+     * @api
+     */
+    public function policy($user, $record)
+    {
+        $policy = (new Resolver($record))->policy();
+
+        if ($policy) {
+            return new $policy($user, $record);
+        }
+    }
+
+    /**
+     * @api
+     */
+    public function policyOrFail($user, $record)
+    {
+        $policy = (new Resolver($record))->policyOrFail();
+
+        return new $policy($user, $record);
     }
 }

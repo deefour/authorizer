@@ -2,7 +2,7 @@
 
 namespace Deefour\Authorizer\Stub;
 
-class User
+class Blog
 {
     //
 }

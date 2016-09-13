@@ -1,8 +1,8 @@
 <?php
 
-namespace Deefour\Authorizer\Stubs;
+namespace Deefour\Authorizer\Stub;
 
-class Article extends Model
+class Article
 {
     //
 }

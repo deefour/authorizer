@@ -1,11 +1,10 @@
 <?php
+namespace Deefour\Authorizer\Stub;
 
-namespace Deefour\Authorizer\Stubs;
-
-use Deefour\Authorizer\Scope;
-
-class ArticleScope extends Scope
+class ArticleScope
 {
+    public $scope = true;
+
     public function resolve()
     {
         return $this->scope;

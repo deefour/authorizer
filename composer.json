@@ -1,36 +1,32 @@
 {
-  "name": "deefour/authorizer",
-  "description": "Simple Authorization via PHP Classes",
-  "homepage": "https://github.com/deefour/authorizer",
-  "keywords": ["authorizer", "deefour", "authorization", "policies", "policy", "scope", "laravel"],
-  "license": "MIT",
-  "require": {
-    "php": ">=5.5.0",
-    "illuminate/support": "^5.0",
-    "symfony/http-kernel": "^2.7|^3.0",
-    "deefour/producer": "^1.1.1"
-  },
-  "require-dev": {
-    "phpspec/phpspec": "^2.4.1"
-  },
-  "authors": [
-    {
-      "name": "Jason Daly",
-      "email": "jason@deefour.me"
-    }
-  ],
-  "minimum-stability": "dev",
-  "autoload": {
-    "psr-4": {
-      "Deefour\\Authorizer\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Deefour\\Authorizer\\Stubs\\": "stub/"
+    "name": "deefour/authorizer",
+    "description": "Simple Authorization via PHP Classes",
+    "homepage": "https://github.com/deefour/authorizer",
+    "keywords": ["authorizer", "deefour", "authorization", "policies", "policy", "scope", "laravel"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.5.0",
+        "deefour/transformer": "^1.2"
     },
-    "files": [
-      "src/helpers.php"
-    ]
-  }
+    "require-dev": {
+        "phpspec/phpspec": "^3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jason Daly",
+            "email": "jason@deefour.me"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Deefour\\Authorizer\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Deefour\\Authorizer\\Stub\\": "stub/"
+        }
+    }
 }
