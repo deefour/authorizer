@@ -26,7 +26,7 @@ class NotAuthorizedException extends Exception
 
             $recordName = is_object($this->record) ? get_class($this->record) : $this->record;
             $default    = sprintf('Not allowed to %s this %s', $this->query, $recordName);
-            $message    = $options['message'] ?? $default;
+            $message    = $options['message'] ?: $default;
         }
 
         parent::__construct($message);
