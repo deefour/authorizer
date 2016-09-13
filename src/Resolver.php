@@ -71,7 +71,7 @@ class Resolver
             $lookupMethod = strtolower($suffix) . 'Class';
 
             if ($reflection->hasMethod($lookupMethod)) {
-                return call_user_func(join('::', [ $reflection->getName(), $lookupMethod ]));
+                return call_user_func(join('::', [ $reflection->name, $lookupMethod ]));
             }
         }
 
@@ -85,8 +85,8 @@ class Resolver
     /**
      *
      * @link  https://github.com/symfony/symfony/blob/2.8/src/Symfony/Component/DependencyInjection/Container.php#L575
-     * @param  [type] $subject [description]
-     * @return [type]          [description]
+     * @param  mixed $subject
+     * @return string
      */
     protected function findClassName($subject)
     {
@@ -97,7 +97,7 @@ class Resolver
         $reflection = new ReflectionClass($subject);
 
         if ($reflection->hasMethod('modelName')) {
-            return call_user_func($reflection->getName() . '::modelName');
+            return call_user_func($reflection->name . '::modelName');
         }
 
        if (is_string($subject)) {

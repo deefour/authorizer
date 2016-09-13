@@ -16,7 +16,7 @@ trait ProvidesAuthorization
 
     protected $authorizerPolicies = [];
 
-    protected $authorizerPolicyScopes = [];
+    protected $authorizerScopes = [];
 
     public function hasBeenAuthorized()
     {
@@ -72,7 +72,7 @@ trait ProvidesAuthorization
 
     public function scope($scope, callable $lookup = null)
     {
-        $this->authorizerPolicyScoped = true;
+        $this->authorizerScoped = true;
 
         return $this->authorizerScope($scope, $lookup);
     }
