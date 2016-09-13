@@ -25,9 +25,10 @@ class Authorizer
     /**
      * @api
      */
-    public function scope($user, $scope)
+    public function scope($user, $scope, callable $lookup = null)
     {
-        $scope = (new Resolver($scope))->scope();
+        $record = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
+        $scope  = (new Resolver($record))->scope();
 
         if ($scope) {
             return (new $scope($user, $scope))->resolve();
@@ -37,9 +38,10 @@ class Authorizer
     /**
      * @api
      */
-    public function scopeOrFail($user, $scope)
+    public function scopeOrFail($user, $scope, callable $lookup = null)
     {
-        $scope = (new Resolver($scope))->scopeOrFail();
+        $record = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
+        $scope = (new Resolver($record))->scopeOrFail();
 
         return (new $scope($user, $scope))->resolve();
     }

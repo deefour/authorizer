@@ -70,11 +70,11 @@ trait ProvidesAuthorization
         return $this->authorizerPolicies[$hash] = (new Authorizer)->policyOrFail($this->authorizerUser(), $record);
     }
 
-    public function scope($scope)
+    public function scope($scope, callable $lookup = null)
     {
         $this->authorizerPolicyScoped = true;
 
-        return $this->authorizerScope($scope);
+        return $this->authorizerScope($scope, $lookup);
     }
 
     public function skipAuthorization()
@@ -118,14 +118,15 @@ trait ProvidesAuthorization
         throw new BadMethodCallException('The authorizerAttributes method must be defined');
     }
 
-    private function authorizerScope($scope)
+    private function authorizerScope($scope, callable $lookup = null)
     {
-        $hash = is_object($scope) ? spl_object_hash($scope) : $scope;
+        $record = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
+        $hash   = is_object($scope) ? spl_object_hash($record) : $record;
 
         if (isset($this->authorizerScopes[$hash])) {
             return $this->authorizerScopes[$hash];
         }
 
-        return $this->authorizerScopes[$hash] = (new Authorizer)->scopeOrFail($this->authorizerUser(), $scope);
+        return $this->authorizerScopes[$hash] = (new Authorizer)->scopeOrFail($this->authorizerUser(), $scope, $lookup);
     }
 }

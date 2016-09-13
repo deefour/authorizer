@@ -10,6 +10,7 @@ use Deefour\Authorizer\Stub\Article;
 use Deefour\Authorizer\Stub\ArticlePolicy;
 use Deefour\Authorizer\Stub\Blog;
 use Deefour\Authorizer\Stub\CompleteAuthorizationProvider;
+use Deefour\Authorizer\Stub\QueryBuilder;
 use Deefour\Authorizer\Stub\Tag;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -96,5 +97,12 @@ class CompleteAuthorizationProviderSpec extends ObjectBehavior
         $this->permittedAttributes(Article::class, 'update')->shouldHaveKey('bar');
         $this->permittedAttributes(Article::class, 'update')->shouldHaveKey('baz');
         $this->permittedAttributes(Article::class, 'update')->shouldNotHaveKey('foo');
+    }
+
+    function it_resolves_scopes_using_help_from_closure()
+    {
+        $this->scope(new QueryBuilder, function ($scope) {
+            return $scope->source();
+        })->shouldReturn(true);
     }
 }
