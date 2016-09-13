@@ -271,7 +271,7 @@ This should return the user object to authorize. It can be useful to return a ne
 
 This should return the name of the action on the policy to be called. Often this is based on the controller method handling the current request.
 
-#### `authorizerRequest()`
+#### `authorizerAttributes()`
 
 This should return an array of input data for the request. This only needs to be overridden if you are taking advantage of the mass assignment protection.
 
@@ -322,7 +322,7 @@ $this->authorize($article, 'modify');
 
 #### Mass Assignment
 
-Model attributes can be safely mass assigned too. Calling `permittedAttributes()` will pull a whitelist of attributes from the request info returned from the `authorizerRequest()` method. A policy is instantiated for the `$record` behind the scenes, again with the `$user` and `$action` needed being derived from the `authorizerUser()` and `authorizerAction()` method overrides.
+Model attributes can be safely mass assigned too. Calling `permittedAttributes()` will pull a whitelist of attributes from the request info returned from the `authorizerAttributes()` method. A policy is instantiated for the `$record` behind the scenes, again with the `$user` and `$action` needed being derived from the `authorizerUser()` and `authorizerAction()` method overrides.
 
 ```php
 public function update(Article $article)
@@ -367,7 +367,7 @@ class Controller extends BaseController
         return Auth::user() ?: new User;
     }
 
-    protected function authorizerParams()
+    protected function authorizerAttributes()
     {
         return Request::all();
     }
@@ -453,9 +453,9 @@ class CreateArticleRequest extends FormRequest
         return $this->user();
     }
 
-    protected authorizerRequest()
+    protected authorizerAttributes()
     {
-        return $this;
+        return $this->all();
     }
 
     protected authorizerAction()
@@ -477,7 +477,7 @@ class CreateArticleRequest extends FormRequest
  - Complete rewrite
  - Much of the API is the same, but many interfaces and base classes have been removed for simplicity
  - Laravel-specific global functions, facade, and service provider have been removed
- - Class resolution has been simplified (no more dependence on [deefour/producer](https://github.com/deefour/producer)
+ - Class resolution has been simplified (no more dependence on [deefour/producer](https://github.com/deefour/producer))
 
 #### 1.1.0 - January 14, 2016
 

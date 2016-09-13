@@ -98,7 +98,7 @@ trait ProvidesAuthorization
             $whitelist = $policy->$method();
         }
 
-        $params = new Transformer($this->authorizerParams());
+        $params = new Transformer($this->authorizerAttributes());
 
         return $params->only($whitelist);
     }
@@ -113,9 +113,9 @@ trait ProvidesAuthorization
         throw new BadMethodCallException('The authorizerUser method must be defined');
     }
 
-    protected function authorizerParams()
+    protected function authorizerAttributes()
     {
-        throw new BadMethodCallException('The authorizerParams method must be defined');
+        throw new BadMethodCallException('The authorizerAttributes method must be defined');
     }
 
     private function authorizerScope($scope)

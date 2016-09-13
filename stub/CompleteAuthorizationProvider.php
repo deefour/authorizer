@@ -18,7 +18,7 @@ class CompleteAuthorizationProvider
         return new User;
     }
 
-    protected function authorizerParams()
+    protected function authorizerAttributes()
     {
         return [ 'foo' => 1, 'bar' => 2, 'baz' => 3 ];
     }

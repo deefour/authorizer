@@ -13,7 +13,7 @@ class Authorizer
         return $this->user;
     }
 
-    protected function authorizerParams()
+    protected function authorizerAttributes()
     {
         return $this->params;
     }
