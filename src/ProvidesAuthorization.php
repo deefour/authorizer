@@ -134,18 +134,13 @@ trait ProvidesAuthorization
      */
     public function permittedAttributes($record, $action = null)
     {
-        $action = $action ?: $this->authorizerAction();
-        $policy = $this->policy($record);
-        $method = 'permittedAttributesFor' . ucfirst($action);
-        $whitelist = $policy->permittedAttributes();
+        $whitelist = (new Authorizer)->permittedAttributes(
+            $this->authorizerUser(), $record, $action
+        );
 
-        if (method_exists($policy, $method)) {
-            $whitelist = $policy->$method();
-        }
+        $attributes = new Transformer($this->authorizerAttributes());
 
-        $params = new Transformer($this->authorizerAttributes());
-
-        return $params->only($whitelist);
+        return $attributes->only($whitelist);
     }
 
     /**

@@ -67,4 +67,10 @@ class AuthorizerSpec extends ObjectBehavior
             return $scope->source();
         })->shouldReturn(true);
     }
+
+    function it_should_filter_attributes()
+    {
+        $this->permittedAttributes(new User, Article::class, 'store')->shouldBe([ 'bar' ]);
+        $this->permittedAttributes(new User, Article::class, 'update')->shouldBe([ 'bar', 'baz' ]);
+    }
 }

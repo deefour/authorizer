@@ -3,6 +3,7 @@
 namespace Deefour\Authorizer;
 
 use Deefour\Authorizer\Exception\NotAuthorizedException;
+use Deefour\Transformer\Transformer;
 
 /**
  * Standalone class to perform authorization, resolve policy classes, and scope
@@ -107,5 +108,29 @@ class Authorizer
         $scope = (new Resolver($record))->scopeOrFail();
 
         return (new $scope($user, $scope))->resolve();
+    }
+
+    /**
+     * Filter request input by a policy function that provides a whitelist of
+     * attribute names based on a user's privilege over the $record for the
+     * $action specified.
+     *
+     * @api
+     * @param  mixed $user
+     * @param  mixed $record
+     * @param  array $attributes
+     * @param  string|null $action
+     * @return array
+     */
+    public function permittedAttributes($user, $record, $action = null)
+    {
+        $policy = $this->policyOrFail($user, $record);
+        $method = 'permittedAttributesFor' . ucfirst($action);
+
+        if ( ! is_null($action) && method_exists($policy, $method)) {
+            return $policy->$method();
+        }
+
+        return $policy->permittedAttributes();
     }
 }
