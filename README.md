@@ -237,6 +237,15 @@ try {
 }
 ```
 
+### Permitted Attributes
+
+Authorizer can fetch a whitelist of attribute names permitted for mass assignment for a particular action.
+
+```php
+(new Authorizer)->permittedAttributes(new User, new Article); //=> ArticlePolicy::permittedAttributes()
+(new Authorizer)->permittedAttributes(new User, new Article, 'store'); //=> ArticlePolicy::permittedAttributesForStore()
+```
+
 ### Closed System
 
 Many apps only allow users to perform actions while authenticated. Instead of verifying on every policy action that the current user is logged in, you can create a base policy all others extend.
@@ -472,12 +481,17 @@ class CreateArticleRequest extends FormRequest
 
 ## Changelog
 
+#### 2.1.0 - September 16, 2016
+
+ - Made `permittedAttributes()` available in the `Authorizer` class.
+ - Docblocks throughout.
+
 #### 2.0.0 - September 16, 2016
 
- - Complete rewrite
- - Much of the API is the same, but many interfaces and base classes have been removed for simplicity
- - Laravel-specific global functions, facade, and service provider have been removed
- - Class resolution has been simplified (no more dependence on [deefour/producer](https://github.com/deefour/producer))
+ - Complete rewrite.
+ - Much of the API is the same, but many interfaces and base classes have been removed for simplicity.
+ - Laravel-specific global functions, facade, and service provider have been removed.
+ - Class resolution has been simplified (no more dependence on [deefour/producer](https://github.com/deefour/producer)).
 
 #### 1.1.0 - January 14, 2016
 
@@ -487,7 +501,7 @@ class CreateArticleRequest extends FormRequest
 #### 1.0.0 - October 7, 2015
 
  - Release 1.0.0.
- - New `skipAuthorization()` and `skipScoping()` methods have been added
+ - New `skipAuthorization()` and `skipScoping()` methods have been added.
  to bypass the exception throwing of the verification API.
 
 #### 0.6.0 - August 8, 2015
@@ -518,7 +532,7 @@ class CreateArticleRequest extends FormRequest
 
 #### 0.3.0 - March 19, 2015
 
- - Adding much improved support for policy scopes
+ - Adding much improved support for policy scopes.
  - Remove `helpers.php` from Composer autoload. Developers should be able to choose whether these functions are included.
  - Cleaned up docblocks.
 
