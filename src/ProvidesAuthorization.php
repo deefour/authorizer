@@ -198,9 +198,12 @@ trait ProvidesAuthorization
     }
 
     /**
-     *
+     * Allow the request lifecycle to complete without any authorization check
+     * being performed, preventing an exception from being thrown when verifyAuthorized()
+     * is called.
      *
      * @api
+     * @see self::verifyAuthorized()
      * @return void
      */
     public function skipAuthorization()
@@ -209,9 +212,12 @@ trait ProvidesAuthorization
     }
 
     /**
-     *
+     * Allow the request lifecycle to complete without any object scoping being
+     * performed, preventing an exception from being thrown when verifyScoped()
+     * is called.
      *
      * @api
+     * @see self::verifyScoped()
      * @return void
      */
     public function skipScoping()
@@ -220,7 +226,13 @@ trait ProvidesAuthorization
     }
 
     /**
+     * Provides the name of the action to call on a policy during an authorization
+     * check if one has not been explicitly provided to the calling method.
      *
+     * NOTE: This method should be overridden by the end user.
+     *
+     * @see self::authorize()
+     * @see self::permittedAttributes()
      * @throws \BadMethodCallException
      * @return void
      */
@@ -230,6 +242,10 @@ trait ProvidesAuthorization
     }
 
     /**
+     * Provides the user to use during policy and scope instantiation. This is
+     * usually the currently logged in user for the request.
+     *
+     * NOTE: This method should be overridden by the end user.
      *
      * @throws \BadMethodCallException
      * @return void
@@ -240,7 +256,11 @@ trait ProvidesAuthorization
     }
 
     /**
+     * Provides the request attributes to filter during a call to permittedAttributes().
      *
+     * NOTE: This method should be overridden by the end user.
+     *
+     * @see self::permittedAttributes()
      * @throws \BadMethodCallException
      * @return void
      */
