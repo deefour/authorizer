@@ -9,6 +9,7 @@ use Deefour\Authorizer\Exception\NotDefinedException;
 use Deefour\Authorizer\Stub\Article;
 use Deefour\Authorizer\Stub\ArticlePolicy;
 use Deefour\Authorizer\Stub\ArticleScope;
+use Deefour\Authorizer\Stub\QueryBuilder;
 use Deefour\Authorizer\Stub\Quote;
 use Deefour\Authorizer\Stub\Tag;
 use Deefour\Authorizer\Stub\User;
@@ -58,5 +59,12 @@ class AuthorizerSpec extends ObjectBehavior
     {
         $this->shouldThrow(NotDefinedException::class)
             ->during('authorize', [new User, new Tag, 'create']);
+    }
+
+    function it_resolves_scopes_using_help_from_closure()
+    {
+        $this->scope(new User, new QueryBuilder, function ($scope) {
+            return $scope->source();
+        })->shouldReturn(true);
     }
 }

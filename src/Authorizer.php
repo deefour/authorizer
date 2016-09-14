@@ -4,13 +4,17 @@ namespace Deefour\Authorizer;
 
 use Deefour\Authorizer\Exception\NotAuthorizedException;
 
+/**
+ * Standalone class to perform authorization, resolve policy classes, and scope
+ * query objects.
+ */
 class Authorizer
 {
     /**
      * Authorize a $user to perform an $action on a $record.
      *
      * @api
-     * @throws NotAuthorizedException
+     * @throws \Deefour\Authorizer\Exception\NotAuthorizedException
      * @param  mixed $user
      * @param  mixed $record
      * @param  string $action
@@ -30,6 +34,9 @@ class Authorizer
     }
 
     /**
+     * Resolve a policy class for the $record, instantiating it with the $user and
+     * $record provided.
+     *
      * @api
      * @param  mixed $user
      * @param  mixed $record
@@ -51,11 +58,13 @@ class Authorizer
      * @api
      * @param  mixed $user
      * @param  mixed $scope
+     * @param  callable|null $lookup
      * @return mixed
      */
-    public function scope($user, $scope)
+    public function scope($user, $scope, callable $lookup = null)
     {
-        $scope = (new Resolver($scope))->scope();
+        $record = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
+        $scope  = (new Resolver($record))->scope();
 
         if ($scope) {
             return (new $scope($user, $scope))->resolve();
@@ -68,7 +77,7 @@ class Authorizer
      *
      * @api
      * @see self::policy()
-     * @throws NotDefinedException
+     * @throws \Deefour\Authorizer\Exception\NotDefinedException
      * @param  mixed $user
      * @param  mixed $record
      * @return mixed
@@ -81,16 +90,21 @@ class Authorizer
     }
 
     /**
-     * Resolve a scope class for the $record. Throw an exception if the policy
+     * Resolve a scope class for the $record. Throw an exception if the scope
      * class can't be resolved.
      *
      * @api
      * @see self::scope()
+     * @throws \Deefour\Authorizer\Exception\NotDefinedException
+     * @param  mixed $user
+     * @param  mixed $scope
+     * @param  callable|null $lookup
      * @return mixed
      */
-    public function scopeOrFail($user, $scope)
+    public function scopeOrFail($user, $scope, callable $lookup = null)
     {
-        $scope = (new Resolver($scope))->scopeOrFail();
+        $record = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
+        $scope = (new Resolver($record))->scopeOrFail();
 
         return (new $scope($user, $scope))->resolve();
     }

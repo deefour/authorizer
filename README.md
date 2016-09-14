@@ -15,7 +15,7 @@ Run the following to add Authorizer to your project's `composer.json`. See [Pack
 composer require deefour/authorizer
 ```
 
-**`>=PHP5.5.0` is required.**
+**`>=PHP5.6.0` is required.**
 
 ## Policies
 
