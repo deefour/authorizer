@@ -1,9 +1,9 @@
 # Authorizer
 
-[![Build Status](https://travis-ci.org/deefour/authorizer.svg)](https://travis-ci.org/deefour/authorizer)
-[![Packagist Version](http://img.shields.io/packagist/v/deefour/authorizer.svg)](https://packagist.org/packages/deefour/authorizer)
-[![Code Climate](https://codeclimate.com/github/deefour/authorizer/badges/gpa.svg)](https://codeclimate.com/github/deefour/authorizer)
-[![License](https://poser.pugx.org/deefour/authorizer/license)](https://packagist.org/packages/deefour/authorizer)
+<a href="https://travis-ci.org/deefour/authorizer"><img src="https://travis-ci.org/deefour/authorizer.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/deefour/authorizer"><img src="https://poser.pugx.org/deefour/authorizer/d/total.svg" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/deefour/authorizer"><img src="https://poser.pugx.org/deefour/authorizer/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/deefour/authorizer"><img src="https://poser.pugx.org/deefour/authorizer/license.svg" alt="License"></a>
 
 Simple Authorization via PHP Classes. Inspired by [elabs/**pundit**](https://github.com/elabs/pundit).
 
@@ -480,7 +480,6 @@ class CreateArticleRequest extends FormRequest
 - Source Code: https://github.com/deefour/authorizer
 
 ## Changelog
-
 
 #### 2.1.0 - September 14, 2016
 
