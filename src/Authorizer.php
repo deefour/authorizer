@@ -47,7 +47,7 @@ class Authorizer
     {
         $policy = (new Resolver($record))->policy();
 
-        if ($policy) {
+        if ( ! is_null($policy)) {
             return new $policy($user, $record);
         }
     }
@@ -67,7 +67,7 @@ class Authorizer
         $record = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
         $scope  = (new Resolver($record))->scope();
 
-        if ($scope) {
+        if ( ! is_null($scope)) {
             return (new $scope($user, $scope))->resolve();
         }
     }
@@ -118,7 +118,6 @@ class Authorizer
      * @api
      * @param  mixed $user
      * @param  mixed $record
-     * @param  array $attributes
      * @param  string|null $action
      * @return array
      */
