@@ -65,10 +65,10 @@ class Authorizer
     public function scope($user, $scope, callable $lookup = null)
     {
         $record = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
-        $scope  = (new Resolver($record))->scope();
+        $scopeClass  = (new Resolver($record))->scope();
 
         if ( ! is_null($scope)) {
-            return (new $scope($user, $scope))->resolve();
+            return (new $scopeClass($user, $scope))->resolve();
         }
     }
 
