@@ -66,7 +66,7 @@ trait ProvidesAuthorization
 
         $policy  = $this->policy($record);
         $result  = $policy->$action();
-        $options = array_merge(compact('query', 'record', 'policy'), [ 'message' => $result ]);
+        $options = array_merge(compact('query', 'record', 'policy', 'action'), [ 'message' => $result ]);
 
         if ($result !== true) {
             throw new NotAuthorizedException($options);
