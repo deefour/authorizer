@@ -47,7 +47,7 @@ class NotAuthorizedException extends Exception
                 $options
             );
 
-            $this->action  = $options['action'];
+            $this->action = $options['action'];
             $this->record = $options['record'];
             $this->policy = $options['policy'];
 
