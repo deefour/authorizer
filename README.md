@@ -481,6 +481,10 @@ class CreateArticleRequest extends FormRequest
 
 ## Changelog
 
+#### 2.1.1 - February 8, 2017
+
+ - Bugfixes for scope resolution, thanks to @gmedeiros. 
+
 #### 2.1.0 - September 14, 2016
 
  - Made `permittedAttributes()` available in the `Authorizer` class.
