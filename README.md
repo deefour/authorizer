@@ -483,7 +483,7 @@ class CreateArticleRequest extends FormRequest
 
 #### 2.1.1 - February 8, 2017
 
- - Bugfixes for scope resolution, thanks to @gmedeiros. 
+ - Bugfixes for scope resolution, thanks to [@gmedeiros](https://github.com/gmedeiros). 
 
 #### 2.1.0 - September 14, 2016
 
