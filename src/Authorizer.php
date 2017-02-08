@@ -64,10 +64,10 @@ class Authorizer
      */
     public function scope($user, $scope, callable $lookup = null)
     {
-        $record = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
-        $scopeClass  = (new Resolver($record))->scope();
+        $record     = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
+        $scopeClass = (new Resolver($record))->scope();
 
-        if ( ! is_null($scope)) {
+        if ( ! is_null($scopeClass)) {
             return (new $scopeClass($user, $scope))->resolve();
         }
     }
@@ -104,10 +104,10 @@ class Authorizer
      */
     public function scopeOrFail($user, $scope, callable $lookup = null)
     {
-        $record = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
-        $scope = (new Resolver($record))->scopeOrFail();
+        $record     = is_null($lookup) ? $scope : call_user_func($lookup, $scope);
+        $scopeClass = (new Resolver($record))->scopeOrFail();
 
-        return (new $scope($user, $scope))->resolve();
+        return (new $scopeClass($user, $scope))->resolve();
     }
 
     /**

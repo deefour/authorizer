@@ -2,7 +2,9 @@
 
 namespace Deefour\Authorizer\Stub;
 
-class QueryBuilder
+use Deefour\Transformer\Transformer;
+
+class QueryBuilder extends Transformer
 {
     public function source()
     {

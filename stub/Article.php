@@ -2,7 +2,9 @@
 
 namespace Deefour\Authorizer\Stub;
 
-class Article
+use Deefour\Transformer\Transformer;
+
+class Article extends Transformer
 {
     //
 }

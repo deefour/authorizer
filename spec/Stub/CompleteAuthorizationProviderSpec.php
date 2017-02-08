@@ -57,7 +57,9 @@ class CompleteAuthorizationProviderSpec extends ObjectBehavior
 
     function it_should_resolve_scopes()
     {
-        $this->scope(new Article)->shouldReturn(true);
+        $article = new Article([ 'foo' => 'baz' ]);
+
+        $this->scope($article)->shouldReturn('baz');
         $this->shouldThrow(NotDefinedException::class)->during('scope', [ new Tag ]);
     }
 
@@ -101,8 +103,10 @@ class CompleteAuthorizationProviderSpec extends ObjectBehavior
 
     function it_resolves_scopes_using_help_from_closure()
     {
-        $this->scope(new QueryBuilder, function ($scope) {
+        $builder = new QueryBuilder([ 'foo' => 'bar' ]);
+
+        $this->scope($builder, function ($scope) {
             return $scope->source();
-        })->shouldReturn(true);
+        })->shouldReturn('bar');
     }
 }

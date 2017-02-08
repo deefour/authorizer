@@ -30,7 +30,9 @@ class AuthorizerSpec extends ObjectBehavior
 
     function it_can_retrieve_scopes_for_valid_records()
     {
-        $this->scope(new User, new Article)->shouldReturn(true);
+        $article = new Article([ 'foo' => 'bar' ]);
+
+        $this->scope(new User, $article)->shouldReturn('bar');
     }
 
     function it_will_return_null_for_records_without_policies_or_scopes()
@@ -63,9 +65,11 @@ class AuthorizerSpec extends ObjectBehavior
 
     function it_resolves_scopes_using_help_from_closure()
     {
-        $this->scope(new User, new QueryBuilder, function ($scope) {
+        $builder = new QueryBuilder([ 'foo' => 'blip' ]);
+
+        $this->scope(new User, $builder, function ($scope) {
             return $scope->source();
-        })->shouldReturn(true);
+        })->shouldReturn('blip');
     }
 
     function it_should_filter_attributes()
