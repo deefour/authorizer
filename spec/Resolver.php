@@ -12,45 +12,44 @@ use Deefour\Authorizer\Stub\Note;
 use Deefour\Authorizer\Stub\Quote;
 use Deefour\Authorizer\Stub\Tag;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ResolverSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->beConstructedWith(new Tag);
         $this->shouldHaveType(Resolver::class);
     }
 
-    function it_returns_null_when_finding_for_null()
+    public function it_returns_null_when_finding_for_null()
     {
         $this->beConstructedWith(null);
         $this->policy()->shouldReturn(null);
         $this->scope()->shouldReturn(null);
     }
 
-    function it_returns_null_for_failed_find()
+    public function it_returns_null_for_failed_find()
     {
         $this->beConstructedWith(new Tag);
         $this->policy()->shouldReturn(null);
         $this->scope()->shouldReturn(null);
     }
 
-    function it_throws_exception_for_null_during_strict_check()
+    public function it_throws_exception_for_null_during_strict_check()
     {
         $this->beConstructedWith(null);
         $this->shouldThrow(NotDefinedException::class)->during('policyOrFail');
         $this->shouldThrow(NotDefinedException::class)->during('scopeOrFail');
     }
 
-    function it_throws_exception_for_failed_find_during_strict_check()
+    public function it_throws_exception_for_failed_find_during_strict_check()
     {
         $this->beConstructedWith(new Tag);
         $this->shouldThrow(NotDefinedException::class)->during('policyOrFail');
         $this->shouldThrow(NotDefinedException::class)->during('scopeOrFail');
     }
 
-    function it_finds_by_appending_suffix()
+    public function it_finds_by_appending_suffix()
     {
         $this->beConstructedWith(new Article);
         $this->policy()->shouldReturn(ArticlePolicy::class);
@@ -59,28 +58,28 @@ class ResolverSpec extends ObjectBehavior
         $this->scopeOrFail()->shouldReturn(ArticleScope::class);
     }
 
-    function it_finds_by_resolving_model_names()
+    public function it_finds_by_resolving_model_names()
     {
         $this->beConstructedWith(new Quote);
         $this->policy()->shouldReturn(ArticlePolicy::class);
         $this->scope()->shouldReturn(ArticleScope::class);
     }
 
-    function it_finds_from_class_names()
+    public function it_finds_from_class_names()
     {
         $this->beConstructedWith(Article::class);
         $this->policy()->shouldReturn(ArticlePolicy::class);
         $this->scope()->shouldReturn(ArticleScope::class);
     }
 
-    function it_finds_from_invalid_class_names()
+    public function it_finds_from_invalid_class_names()
     {
         $this->beConstructedWith('InvalidClassNameHere');
         $this->policy()->shouldReturn(null);
         $this->scope()->shouldReturn(null);
     }
 
-    function it_finds_from_policy_and_scope_model_methods()
+    public function it_finds_from_policy_and_scope_model_methods()
     {
         $this->beConstructedWith(new Note);
         $this->policy()->shouldReturn(ArticlePolicy::class);

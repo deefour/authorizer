@@ -3,7 +3,6 @@
 namespace Deefour\Authorizer;
 
 use Deefour\Authorizer\Exception\NotAuthorizedException;
-use Deefour\Transformer\Transformer;
 
 /**
  * Standalone class to perform authorization, resolve policy classes, and scope
@@ -16,15 +15,16 @@ class Authorizer
      *
      * @api
      * @throws \Deefour\Authorizer\Exception\NotAuthorizedException
-     * @param  mixed $user
-     * @param  mixed $record
+     *
+     * @param  mixed  $user
+     * @param  mixed  $record
      * @param  string $action
      * @return mixed
      */
     public function authorize($user, $record, $action)
     {
-        $policy = $this->policyOrFail($user, $record);
-        $result = $policy->$action();
+        $policy  = $this->policyOrFail($user, $record);
+        $result  = $policy->$action();
         $options = array_merge(compact('query', 'record', 'policy', 'action'), [ 'message' => $result ]);
 
         if ($result !== true) {
@@ -39,6 +39,7 @@ class Authorizer
      * $record provided.
      *
      * @api
+     *
      * @param  mixed $user
      * @param  mixed $record
      * @return mixed
@@ -57,8 +58,9 @@ class Authorizer
      * privilege to what is typically an iterable collection of results.
      *
      * @api
-     * @param  mixed $user
-     * @param  mixed $scope
+     *
+     * @param  mixed         $user
+     * @param  mixed         $scope
      * @param  callable|null $lookup
      * @return mixed
      */
@@ -79,6 +81,7 @@ class Authorizer
      * @api
      * @see self::policy()
      * @throws \Deefour\Authorizer\Exception\NotDefinedException
+     *
      * @param  mixed $user
      * @param  mixed $record
      * @return mixed
@@ -97,8 +100,9 @@ class Authorizer
      * @api
      * @see self::scope()
      * @throws \Deefour\Authorizer\Exception\NotDefinedException
-     * @param  mixed $user
-     * @param  mixed $scope
+     *
+     * @param  mixed         $user
+     * @param  mixed         $scope
      * @param  callable|null $lookup
      * @return mixed
      */
@@ -116,8 +120,8 @@ class Authorizer
      * $action specified.
      *
      * @api
-     * @param  mixed $user
-     * @param  mixed $record
+     * @param  mixed       $user
+     * @param  mixed       $record
      * @param  string|null $action
      * @return array
      */

@@ -1,4 +1,5 @@
 <?php
+
 namespace Deefour\Authorizer\Stub;
 
 class ArticleScope

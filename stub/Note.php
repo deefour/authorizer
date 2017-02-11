@@ -4,12 +4,12 @@ namespace Deefour\Authorizer\Stub;
 
 class Note
 {
-    static public function policyClass()
+    public static function policyClass()
     {
         return ArticlePolicy::class;
     }
 
-    static public function scopeClass()
+    public static function scopeClass()
     {
         return BlogScope::class;
     }

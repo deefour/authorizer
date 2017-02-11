@@ -34,7 +34,7 @@ class Resolver
     /**
      * Constructor.
      *
-     * @param  mixed $object
+     * @param mixed $object
      */
     public function __construct($object)
     {
@@ -69,7 +69,7 @@ class Resolver
 
     /**
      * Resolve the FQN of the policy class related to the object set on this class
-     * instance. Throw an exception if the class could not be resolved
+     * instance. Throw an exception if the class could not be resolved.
      *
      * @throws \Deefour\Authorizer\Exception\NotDefinedException
      * @return string
@@ -89,7 +89,7 @@ class Resolver
 
     /**
      * Resolve the FQN of the scope class related to the object set on this class
-     * instance. Throw an exception if the class could not be resolved
+     * instance. Throw an exception if the class could not be resolved.
      *
      * @throws \Deefour\Authorizer\Exception\NotDefinedException
      * @return string
@@ -107,7 +107,6 @@ class Resolver
         throw new NotDefinedException('unable to find scope for ' . get_class($this->object));
     }
 
-
     /**
      * Resolve the class name using the $suffix as the type of class to resolve
      * for the $object on this class instance.
@@ -120,7 +119,7 @@ class Resolver
      * of a related class instance to treat as the source of the policy or scope
      * name.
      *
-     * @param  string $suffix
+     * @param  string     $suffix
      * @return mixed|null
      */
     protected function find($suffix = self::POLICY)
@@ -151,14 +150,14 @@ class Resolver
      * reflection checks for a static modelName() method on the $subject. 'Policy'
      * or 'Scope' will be appended to the returned FQN.
      *
-     * @param  mixed $subject
+     * @param  mixed  $subject
      * @return string
      */
     protected function findClassName($subject)
     {
         if (is_string($subject) && ! class_exists($subject)) {
             return null;
-        };
+        }
 
         $reflection = new ReflectionClass($subject);
 
@@ -166,7 +165,7 @@ class Resolver
             return call_user_func($reflection->name . '::modelName');
         }
 
-       if (is_string($subject)) {
+        if (is_string($subject)) {
             return $subject;
         }
 

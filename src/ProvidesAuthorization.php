@@ -54,8 +54,8 @@ trait ProvidesAuthorization
      * @see self::authorizerUser()
      * @see self::authorizerAction()
      * @throws \Deefour\Authorizer\Exception\NotAuthorizedException
-     * @param  mixed $record
-     * @param  mixed|null $action
+     * @param  mixed                                                $record
+     * @param  mixed|null                                           $action
      * @return mixed
      */
     public function authorize($record, $action = null)
@@ -101,7 +101,7 @@ trait ProvidesAuthorization
      * privilege to what is typically an iterable collection of results.
      *
      * @api
-     * @param  mixed $scope
+     * @param  mixed         $scope
      * @param  callable|null $lookup
      * @return mixed
      */
@@ -128,7 +128,7 @@ trait ProvidesAuthorization
      *
      * @api
      * @see self::authorizerAttributes()
-     * @param  mixed $record
+     * @param  mixed       $record
      * @param  string|null $action
      * @return array
      */
@@ -152,7 +152,7 @@ trait ProvidesAuthorization
      */
     public function hasBeenAuthorized()
     {
-        return !!$this->authorizerAuthorized;
+        return ! ! $this->authorizerAuthorized;
     }
 
     /**
@@ -164,7 +164,7 @@ trait ProvidesAuthorization
      */
     public function hasBeenScoped()
     {
-        return !!$this->authorizerScoped;
+        return ! ! $this->authorizerScoped;
     }
 
     /**
@@ -173,7 +173,6 @@ trait ProvidesAuthorization
      * @api
      * @see  self::hasBeenAuthorized()
      * @throws \Deefour\Authorizer\Exception\AuthorizationNotPerformedException
-     * @return void
      */
     public function verifyAuthorized()
     {
@@ -188,7 +187,6 @@ trait ProvidesAuthorization
      * @api
      * @see  self::hasBeenScoped()
      * @throws \Deefour\Authorizer\Exception\ScopingNotPerformedException
-     * @return void
      */
     public function verifyScoped()
     {
@@ -204,7 +202,6 @@ trait ProvidesAuthorization
      *
      * @api
      * @see self::verifyAuthorized()
-     * @return void
      */
     public function skipAuthorization()
     {
@@ -218,7 +215,6 @@ trait ProvidesAuthorization
      *
      * @api
      * @see self::verifyScoped()
-     * @return void
      */
     public function skipScoping()
     {
@@ -234,7 +230,6 @@ trait ProvidesAuthorization
      * @see self::authorize()
      * @see self::permittedAttributes()
      * @throws \BadMethodCallException
-     * @return void
      */
     protected function authorizerAction()
     {
@@ -248,7 +243,6 @@ trait ProvidesAuthorization
      * NOTE: This method should be overridden by the end user.
      *
      * @throws \BadMethodCallException
-     * @return void
      */
     protected function authorizerUser()
     {
@@ -262,7 +256,6 @@ trait ProvidesAuthorization
      *
      * @see self::permittedAttributes()
      * @throws \BadMethodCallException
-     * @return void
      */
     protected function authorizerAttributes()
     {
