@@ -9,7 +9,8 @@
         "deefour/transformer": "^1.2"
     },
     "require-dev": {
-        "phpspec/phpspec": "^3.0"
+        "phpspec/phpspec": "^3.1",
+        "friendsofphp/php-cs-fixer": "2.1.0"
     },
     "authors": [
         {
