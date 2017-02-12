@@ -147,7 +147,7 @@ class Resolver
     /**
      * Attempt to use reflecton to determine the FQN of a class related to $subject
      * that should be treated as the soure of the policy or scope name. The
-     * reflection checks for a static modelName() method on the $subject. 'Policy'
+     * reflection checks for a static modelClass() method on the $subject. 'Policy'
      * or 'Scope' will be appended to the returned FQN.
      *
      * @param  mixed  $subject
@@ -161,8 +161,8 @@ class Resolver
 
         $reflection = new ReflectionClass($subject);
 
-        if ($reflection->hasMethod('modelName')) {
-            return call_user_func($reflection->name . '::modelName');
+        if ($reflection->hasMethod('modelClass')) {
+            return call_user_func($reflection->name . '::modelClass');
         }
 
         if (is_string($subject)) {

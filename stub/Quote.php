@@ -4,7 +4,7 @@ namespace Deefour\Authorizer\Stub;
 
 class Quote
 {
-    public static function modelName()
+    public static function modelClass()
     {
         return Article::class;
     }
