@@ -65,6 +65,20 @@ class ResolverSpec extends ObjectBehavior
         $this->scope()->shouldReturn(ArticleScope::class);
     }
 
+    public function it_finds_policies_and_scopes()
+    {
+        $this->beConstructedWith('InvalidClassNameHere');
+        $this->find(Resolver::POLICY)->shouldReturn(null);
+        $this->find(Resolver::SCOPE)->shouldReturn(null);
+    }
+
+    public function it_finds_null_for_unknown_classes()
+    {
+        $this->beConstructedWith(new Quote);
+        $this->find(Resolver::POLICY)->shouldReturn(ArticlePolicy::class);
+        $this->find(Resolver::SCOPE)->shouldReturn(ArticleScope::class);
+    }
+
     public function it_finds_from_class_names()
     {
         $this->beConstructedWith(Article::class);

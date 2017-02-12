@@ -122,7 +122,7 @@ class Resolver
      * @param  string     $suffix
      * @return mixed|null
      */
-    protected function find($suffix = self::POLICY)
+    public function find($suffix = self::POLICY)
     {
         if (is_null($this->object)) {
             return null;
