@@ -155,7 +155,7 @@ class Resolver
      */
     protected function findClassName($subject)
     {
-        if (is_string($subject) && ! class_exists($subject)) {
+        if ( ! is_object($subject) && ! class_exists($subject)) {
             return null;
         }
 
